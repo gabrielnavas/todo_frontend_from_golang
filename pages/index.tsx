@@ -1,12 +1,12 @@
 import Head from 'next/head'
-import ListAllTodoPage from '../src/ListAllTodoPage/views'
+import StatusTodo from '../src/StatusTodo/views'
 
 const Page = () => (
   <>
     <Head>
       <title>Meus Todos</title>
     </Head>
-    <ListAllTodoPage />
+    <StatusTodo />
   </>
 )
 
