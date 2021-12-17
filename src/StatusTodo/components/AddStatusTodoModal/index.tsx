@@ -1,7 +1,7 @@
-import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 
 import {
+  Container,
   TextFieldName,
   ButtonsStack,
   Button,
@@ -9,30 +9,29 @@ import {
   FormStack
 } from './styles'
 
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
-  border: '0.5px solid #0008',
-  borderRadius: 2,
-  boxShadow: 24,
-  padding: '50px 70px'
-}
-
 type Props = {
   handleClose: () => void
   open: boolean
 }
 
 const AddStatusTodoModal = (props: Props) => {
+  /** TODO:
+   * usar formik
+   * validar dados
+   * tentar criar o status todo
+   * mostrar error no toastify se der status 400
+   * retornar status todo
+   * adicionar na lista principal do app via callback function
+   * mostrar mensagem via toastify que deu certo.
+   *
+   */
+
   return (
     <Modal
       open={props.open}
       onClose={props.handleClose}
     >
-      <Box sx={style}>
+      <Container>
         <Title variant="h6" >
           Insert novo status.
         </Title>
@@ -40,17 +39,17 @@ const AddStatusTodoModal = (props: Props) => {
           <TextFieldName
             error
             id="standard-error-helper-text"
-            label="Nome do novo status"
+            label="Nome"
             defaultValue="Hello World"
             helperText="Incorrect entry."
             variant="standard"
           />
           <ButtonsStack direction='row' spacing={4}>
-            <Button variant="contained" color="warning">Cancelar</Button>
-            <Button variant="contained" color="success">Inserir</Button>
+            <Button variant="contained" color="error">Cancelar</Button>
+            <Button variant="contained" >Inserir</Button>
           </ButtonsStack>
         </FormStack>
-      </Box>
+      </Container>
     </Modal>
   )
 }
