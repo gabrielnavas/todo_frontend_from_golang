@@ -27,6 +27,9 @@ export const Header = styled(Stack)(({ theme }) => ({
 
 export const Title = styled('span')(({ theme }) => ({
   display: 'flex',
+
+  width: '100%',
+
   padding: '7px',
 
   fontWeight: '500',
@@ -57,9 +60,13 @@ export const Description = styled('span')(() => ({
 
   cursor: 'pointer',
 
+  margin: '5px 0',
+  padding: '10px 0',
+
   '&:hover': {
     background: '#1232'
   }
+
 }))
 
 export const Image = styled('img')(({ theme }) => ({
