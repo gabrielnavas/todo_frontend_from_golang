@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles'
 
 export const Container = styled('div')(({ theme }) => ({
   overflow: 'auto',
-  margin: '15px 25px 10px 15px',
+  margin: '15px 15px 10px 15px',
   padding: '0px 20px 20px 20px',
   background: 'white',
 
@@ -79,5 +79,5 @@ export const ButtonHeader = styled(Button)(() => ({
 }))
 
 export const Body = styled('ul')(() => ({
-  marginLeft: 8
+  padding: 0
 }))
