@@ -18,6 +18,7 @@ import { useGetTodoList } from '../hooks/http/useGetTodoList'
 
 import { useMergeStatusWithTodos } from '../hooks/ui/useMergeStatusWithTodos'
 import { useAlert } from '../../shared/hooks/alert/useAlert'
+import AddStatusTodoModal from '../components/AddStatusTodoModal'
 
 type Todo = {
   id: number
@@ -39,6 +40,7 @@ type StatusTodo = {
 
 const StatusTodoView = () => {
   const [statusTodo, setStatusTodo] = useState<StatusTodo[]>([])
+  const [toggleAddStatusTodo, setToggleAddStatusTodo] = useState(false)
 
   const alert = useAlert()
 
@@ -67,7 +69,10 @@ const StatusTodoView = () => {
         <Paper>
           <Header>
             <Title>Todo App</Title>
-            <ButtonAddStatusTodo variant="contained" size="small">
+            <ButtonAddStatusTodo
+              variant="contained"
+              size="small"
+              onClick={() => setToggleAddStatusTodo(true)}>
               <IconAddStatusTodo />
             </ButtonAddStatusTodo>
           </Header>
@@ -76,6 +81,9 @@ const StatusTodoView = () => {
           </BodyStack>
         </Paper>
       </Container>
+      <AddStatusTodoModal
+        open={toggleAddStatusTodo}
+        handleClose={() => setToggleAddStatusTodo(false)} />
     </Page>
   )
 }
