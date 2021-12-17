@@ -11,7 +11,6 @@ import {
 
 import { IconDelete } from './icons'
 
-// TODO: declarar a imagem como opicional no type
 type Todo = {
   id: number
   title: string
@@ -19,6 +18,7 @@ type Todo = {
   createdAt: Date
   updatedAt: Date
   statusId: number
+  imageUrl?: string
 }
 
 type Props = {
@@ -48,10 +48,11 @@ const TodoItem = (props: Props) => {
       <Description>
         {props.todo.description}
       </Description>
-      {/* {
-        props.todo.image &&
-          <Image src={props.todo.image}/>
-      } */}
+      {
+        props.todo.imageUrl && (
+          <Image src={props.todo.imageUrl}/>
+        )
+      }
     </Container>
   )
 }

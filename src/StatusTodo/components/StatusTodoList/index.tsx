@@ -15,7 +15,6 @@ import {
   IconRemoveAddTodo
 } from './icons'
 
-// TODO: declarar a imagem como opicional no type
 type Todo = {
   id: number
   title: string
@@ -23,6 +22,7 @@ type Todo = {
   createdAt: Date
   updatedAt: Date
   statusId: number
+  imageUrl?: string
 }
 
 type StatusTodo = {
