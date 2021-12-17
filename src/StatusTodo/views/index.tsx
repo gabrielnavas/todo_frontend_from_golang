@@ -17,6 +17,7 @@ import { useGetStatusTodoList } from '../hooks/http/useGetStatusTodoList'
 import { useGetTodoList } from '../hooks/http/useGetTodoList'
 
 import { useMergeStatusWithTodos } from '../hooks/ui/useMergeStatusWithTodos'
+import { useAlert } from '../../shared/hooks/alert/useAlert'
 
 type Todo = {
   id: number
@@ -39,6 +40,8 @@ type StatusTodo = {
 const StatusTodoView = () => {
   const [statusTodo, setStatusTodo] = useState<StatusTodo[]>([])
 
+  const alert = useAlert()
+
   const statusTodoList = useGetStatusTodoList()
   const todoList = useGetTodoList()
   const mergeStatusWithTodos = useMergeStatusWithTodos()
@@ -51,8 +54,9 @@ const StatusTodoView = () => {
       setStatusTodo(statusTodosMerged)
     }
 
-    // TODO: usar toastify para mostrar mensagens aqui
-    _fetchData().then().catch(() => console.log('Xii, servidor offline, tente novamente mais tarde.'))
+    _fetchData()
+      .then()
+      .catch(() => alert.handle('error', 'Xii, servidor offline, tente novamente mais tarde.'))
   }, [])
 
   const isLoading = statusTodoList.isLoading || todoList.isLoading
