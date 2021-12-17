@@ -3,31 +3,53 @@ import {
   EmptyStatusTodo
 } from './styles'
 
+// TODO: declarar a imagem como opicional no type
 type Todo = {
   id: number
   title: string
   description: string
-  image: string
+  createdAt: Date
+  updatedAt: Date
+  statusId: number
 }
 
 type StatusTodo = {
   id: number
   name: string
+  createdAt: Date
+  updateAt: Date
   todos: Todo[]
 }
 
 type Props = {
   statusTodoLists: StatusTodo[]
+  isLoading: boolean
 }
 
 /**
  * Componente que renderiza todos status todo
  * @param props statusTodoLists: lista de todos status
- * @returns returna o component renderizado com todos status todo e seus todos dentro
+ * @returns Se tiver carregando retorna um componente de loading
+ * @returns Se não tiver dados, retorna uma mensagem que a lista está vazia
+ * @returns Retorna um Status Todo com vários todos
  */
 const StatusTodoLists = (props: Props) => {
-  const renderStatusTodoList = () => (
-    <>
+  // TODO: refatorar esses nomes grandes(talvez?)
+
+  if (props.isLoading) {
+    return <EmptyStatusTodo>
+    Carregando, aguarde.
+  </EmptyStatusTodo>
+  }
+
+  // TODO: fazer um componente próprio em vez desse EmptyStatusTodo
+  if (props.statusTodoLists.length === 0) {
+    return <EmptyStatusTodo>
+    Nenhum todo status adicionado ainda, cliquei no botão acima para iniciar um.
+  </EmptyStatusTodo>
+  }
+
+  return <>
     {
       props.statusTodoLists.map(statusTodo => (
         <StatusTodoList
@@ -36,18 +58,7 @@ const StatusTodoLists = (props: Props) => {
         />
       ))
     }
-    </>
-  )
-
-  const renderEmptyStatusTodoList = () => (
-    <EmptyStatusTodo>
-      Nenhum todo status adicionado ainda, cliquei no botão acima para iniciar um.
-    </EmptyStatusTodo>
-  )
-
-  return props.statusTodoLists.length === 0
-    ? renderEmptyStatusTodoList()
-    : renderStatusTodoList()
+  </>
 }
 
 export default StatusTodoLists

@@ -3,11 +3,14 @@ import {
   EmptyTodoItemList
 } from './styles'
 
+// TODO: declarar a imagem como opicional no type
 type Todo = {
   id: number
   title: string
   description: string
-  image: string
+  createdAt: Date
+  updatedAt: Date
+  statusId: number
 }
 
 type Props = {
