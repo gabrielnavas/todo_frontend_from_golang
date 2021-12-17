@@ -12,7 +12,7 @@ import { IconAddStatusTodo } from './icons'
 import StatusTodoLists from '../components/StatusTodoLists'
 import { fakeDataStatusTodo } from './fakeData'
 
-const ListAllTodoPage = () => {
+const StatusTodoView = () => {
   return (
     <Page>
       <Container>
@@ -32,4 +32,4 @@ const ListAllTodoPage = () => {
   )
 }
 
-export default ListAllTodoPage
+export default StatusTodoView
