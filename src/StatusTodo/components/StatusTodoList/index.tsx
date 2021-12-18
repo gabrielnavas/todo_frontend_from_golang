@@ -29,7 +29,7 @@ type StatusTodo = {
   id: number
   name: string
   createdAt: Date
-  updateAt: Date
+  updatedAt: Date
   todos: Todo[]
 }
 

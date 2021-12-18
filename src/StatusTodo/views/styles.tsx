@@ -9,7 +9,6 @@ export const Page = styled('div')(({ theme }) => ({
 export const Container = styled('div')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
-  paddingTop: 20
 }))
 
 export const Paper = styled(PaperMUI)(({ theme }) => ({
@@ -17,11 +16,14 @@ export const Paper = styled(PaperMUI)(({ theme }) => ({
   alignItems: 'center',
   flexDirection: 'column',
 
+  marginTop: 100,
+
   background: '#FFF1',
 
   [theme.breakpoints.down('sm')]: {
     background: 'none',
-    width: '100%'
+    width: '100%',
+    marginTop: 20,
   }
 }))
 

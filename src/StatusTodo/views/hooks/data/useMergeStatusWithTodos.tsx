@@ -2,7 +2,7 @@ type StatusTodoDto = {
   id: number
   name: string
   createdAt: Date
-  updateAt: Date
+  updatedAt: Date
 }
 
 type TodoDto = {
@@ -18,7 +18,7 @@ type StatusTodo = {
   id: number
   name: string
   createdAt: Date
-  updateAt: Date
+  updatedAt: Date
   todos: TodoDto[]
 }
 
@@ -32,11 +32,13 @@ const useMergeStatusWithTodos = () => {
 
     for (const statusTodo of statusTodosList) {
       const todosFilter: TodoDto[] = getAllTodoByStatusTodoId(todosList, statusTodo.id)
-      const statusTodoFinal = {
-        ...statusTodo,
+      statusTodoListFinal.push({
+        id: statusTodo.id,
+        name: statusTodo.name,
+        createdAt: statusTodo.createdAt,
+        updatedAt: statusTodo.updatedAt,
         todos: todosFilter
-      }
-      statusTodoListFinal.push(statusTodoFinal)
+      })
     }
 
     return statusTodoListFinal

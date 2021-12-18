@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import {
   Page,
@@ -13,10 +13,10 @@ import {
 import { IconAddStatusTodo } from './icons'
 import StatusTodoLists from '../components/StatusTodoLists'
 
-import { useGetStatusTodoList } from '../hooks/http/useGetStatusTodoList'
-import { useGetTodoList } from '../hooks/http/useGetTodoList'
+import { useGetStatusTodoList } from './hooks/http/useGetStatusTodoList'
+import { useGetTodoList } from './hooks/http/useGetTodoList'
 
-import { useMergeStatusWithTodos } from '../hooks/ui/useMergeStatusWithTodos'
+import { useMergeStatusWithTodos } from './hooks/data/useMergeStatusWithTodos'
 import { useAlert } from '../../shared/hooks/alert/useAlert'
 import AddStatusTodoModal from '../components/AddStatusTodoModal'
 
@@ -34,13 +34,13 @@ type StatusTodo = {
   id: number
   name: string
   createdAt: Date
-  updateAt: Date
+  updatedAt: Date
   todos: Todo[]
 }
 
 const StatusTodoView = () => {
   const [statusTodo, setStatusTodo] = useState<StatusTodo[]>([])
-  const [toggleAddStatusTodo, setToggleAddStatusTodo] = useState(false)
+  const [toggleAddStatusTodoModal, setToggleAddStatusTodoModal] = useState(false)
 
   const alert = useAlert()
 
@@ -61,6 +61,15 @@ const StatusTodoView = () => {
       .catch(() => alert.handle('error', 'Xii, servidor offline, tente novamente mais tarde.'))
   }, [])
 
+  const insertIntoStatusTodoCallback = useCallback((statusTodo: Omit<StatusTodo, 'todos'>) => {
+    const newStatusTodo: StatusTodo = {
+      ...statusTodo,
+      todos: []
+    }
+    setStatusTodo(old => [newStatusTodo, ...old])
+    setToggleAddStatusTodoModal(false)
+  }, [])
+
   const isLoading = statusTodoList.isLoading || todoList.isLoading
 
   return (
@@ -72,18 +81,21 @@ const StatusTodoView = () => {
             <ButtonAddStatusTodo
               variant="contained"
               size="small"
-              onClick={() => setToggleAddStatusTodo(true)}>
+              onClick={() => setToggleAddStatusTodoModal(true)}>
               <IconAddStatusTodo />
             </ButtonAddStatusTodo>
           </Header>
           <BodyStack direction='row'>
-            <StatusTodoLists statusTodoLists={statusTodo} isLoading={isLoading} />
+            <StatusTodoLists 
+              statusTodoLists={statusTodo} 
+              isLoading={isLoading} />
           </BodyStack>
         </Paper>
       </Container>
       <AddStatusTodoModal
-        open={toggleAddStatusTodo}
-        handleClose={() => setToggleAddStatusTodo(false)} />
+        getStatusTodoCreated={insertIntoStatusTodoCallback}
+        open={toggleAddStatusTodoModal}
+        handleClose={() => setToggleAddStatusTodoModal(false)} />
     </Page>
   )
 }
