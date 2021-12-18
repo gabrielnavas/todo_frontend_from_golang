@@ -14,6 +14,9 @@ import {
   IconEditAddTodo,
   IconRemoveAddTodo
 } from './icons'
+import { useCallback } from 'react'
+import { useApi } from '../../../shared/hooks/api/useApi'
+import { useAlert } from '../../../shared/hooks/alert/useAlert'
 
 type Todo = {
   id: number
@@ -35,9 +38,35 @@ type StatusTodo = {
 
 type Props = {
   statusTodo: StatusTodo
+  removeStatusTodoAfterRequest: (statusTodoId: number) => void
 }
 
 const StatusTodoList = (props: Props) => {
+
+  const api = useApi()
+  const alerts = useAlert()
+
+  // TODO: ADicionar handleRemoveStatusTodo em um hook
+  const handleRemoveStatusTodo = useCallback(() => {
+    (async () => {
+      const response = await fetch(`${api.getEndpoint()}/todos/status/${props.statusTodo.id}`, {
+        method: "DELETE"
+      })
+
+      if (response.status === 204) {
+        props.removeStatusTodoAfterRequest(props.statusTodo.id)
+        alerts.handle('success', 'status todo removido')
+        return
+      }
+
+      if (response.status === 400) {
+        const data = await response.json()
+        alerts.handle('warning', data.message)
+        return
+      }
+    })()
+  }, [])
+  
   return (
     <Container>
       <HeaderStack>
@@ -45,13 +74,22 @@ const StatusTodoList = (props: Props) => {
           {props.statusTodo.name}
         </Title>
         <ButtonsHeader>
-          <ButtonHeader variant="contained" size="small">
+          <ButtonHeader 
+            variant="contained" 
+            size="small">
             <IconAddTodo />
           </ButtonHeader>
-          <ButtonHeader variant="contained" size="small" color="warning">
+          <ButtonHeader 
+            variant="contained" 
+            size="small" 
+            color="warning">
             <IconEditAddTodo />
           </ButtonHeader>
-          <ButtonHeader variant="contained" size="small" color="error">
+          <ButtonHeader 
+            variant="contained" 
+            size="small" 
+            color="error"
+            onClick={handleRemoveStatusTodo}>
             <IconRemoveAddTodo />
           </ButtonHeader>
         </ButtonsHeader>

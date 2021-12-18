@@ -24,6 +24,7 @@ type StatusTodo = {
 type Props = {
   statusTodoLists: StatusTodo[]
   isLoading: boolean
+  removeStatusTodoAfterRequest: (statusTodoId: number) => void
 }
 
 /**
@@ -53,6 +54,7 @@ const StatusTodoLists = (props: Props) => {
     {
       props.statusTodoLists.map(statusTodo => (
         <StatusTodoList
+          removeStatusTodoAfterRequest={props.removeStatusTodoAfterRequest}
           key={statusTodo.id}
           statusTodo={statusTodo}
         />

@@ -70,6 +70,10 @@ const StatusTodoView = () => {
     setToggleAddStatusTodoModal(false)
   }, [])
 
+  const removeStatusTodoAfterRequest = useCallback((statusTodoId: number): void => {
+    setStatusTodo(old => old.filter(item => item.id !==statusTodoId))
+  }, [])
+
   const isLoading = statusTodoList.isLoading || todoList.isLoading
 
   return (
@@ -87,6 +91,7 @@ const StatusTodoView = () => {
           </Header>
           <BodyStack direction='row'>
             <StatusTodoLists 
+              removeStatusTodoAfterRequest={removeStatusTodoAfterRequest}
               statusTodoLists={statusTodo} 
               isLoading={isLoading} />
           </BodyStack>
