@@ -4,7 +4,12 @@ const useUtils = () => {
     return strCapitalized
   }
 
-  return {capitalize}
+  const capitalizeWithEndDot = (str: string) => {
+    const strCapitalized = `${capitalize(str)}.`
+    return strCapitalized
+  }
+
+  return {capitalize, capitalizeWithEndDot}
 }
 
 export {useUtils}
