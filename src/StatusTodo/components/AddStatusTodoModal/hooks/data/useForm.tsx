@@ -1,6 +1,4 @@
 import { useFormik } from 'formik'
-import { useState } from 'react';
-import { useCreateStatusTodo } from '../http/useCreateStatusTodo'
 
 type StatusTodoDto = {
   name: string
@@ -28,7 +26,6 @@ const useForm = () => {
     values: formik.values,
     errors: formik.errors,
     setValues: formik.setValues,
-    submit: formik.handleSubmit,
     validate: formik.validateForm
   }
 }

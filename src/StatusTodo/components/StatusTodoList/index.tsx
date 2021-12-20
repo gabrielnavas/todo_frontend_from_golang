@@ -16,10 +16,10 @@ import {
   IconEditAddTodo,
   IconRemoveAddTodo
 } from './icons'
-import { useApi } from '../../../shared/hooks/api/useApi'
 import { useAlert } from '../../../shared/hooks/alert/useAlert'
 import { useRemoveStatusTodo } from './hooks/useRemoveStatusTodo'
 import { useUtils } from '../../../shared/hooks/utils/useUtils'
+import AddTodoModal from './components/AddTodoModal'
 
 type Todo = {
   id: number
@@ -46,11 +46,12 @@ type Props = {
 
 const StatusTodoList = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [toggleAddStatusTodoModal, setToggleAddStatusTodoModal] = useState(false)
 
-  const removeStatusTodo = useRemoveStatusTodo()
   const utils = useUtils()
-  
   const alerts = useAlert()
+  
+  const removeStatusTodo = useRemoveStatusTodo()
 
   const handleRemoveStatusTodo = useCallback(() => {
     async function _remove() {
@@ -70,7 +71,7 @@ const StatusTodoList = (props: Props) => {
       .then()
       .catch(() => alerts.handle('error', "Sistema fora do ar, tente novamente mais tarde"))
   }, [removeStatusTodo.handle,  alerts.handle])
-  
+
   return (
     <Container>
       <HeaderStack>
@@ -81,7 +82,8 @@ const StatusTodoList = (props: Props) => {
           <ButtonHeader 
             disabled={isLoading}
             variant="contained" 
-            size="small">
+            size="small"
+            onClick={() => setToggleAddStatusTodoModal(true)}>
             <IconAddTodo />
           </ButtonHeader>
           <ButtonHeader 
@@ -104,6 +106,10 @@ const StatusTodoList = (props: Props) => {
       <Body>
         <TodoList todos={props.statusTodo.todos} isLoading={isLoading} />
       </Body>
+      <AddTodoModal 
+        handleClose={() => setToggleAddStatusTodoModal(false)}
+        open={toggleAddStatusTodoModal}
+      />
     </Container>
   )
 }
