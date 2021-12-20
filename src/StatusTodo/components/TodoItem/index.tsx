@@ -23,6 +23,7 @@ type Todo = {
 
 type Props = {
   todo: Todo
+  isLoading: boolean
 }
 
 /**
@@ -41,7 +42,11 @@ const TodoItem = (props: Props) => {
         <Title>
           {props.todo.title}
         </Title>
-        <ButtonHeader variant="contained" size="small" color="error">
+        <ButtonHeader 
+          disabled={props.isLoading}
+          variant="contained" 
+          size="small" 
+          color="error">
           <IconDelete />
         </ButtonHeader>
       </Header>

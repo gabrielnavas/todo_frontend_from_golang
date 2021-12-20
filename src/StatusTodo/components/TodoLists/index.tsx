@@ -15,6 +15,7 @@ type Todo = {
 
 type Props = {
   todos: Todo[]
+  isLoading: boolean
 }
 
 /**
@@ -27,7 +28,10 @@ const TodoList = (props: Props) => {
     <>
     {
       props.todos.map(todo => (
-        <TodoItem key={todo.id} todo={todo} />
+        <TodoItem 
+          key={todo.id} 
+          isLoading={props.isLoading} 
+          todo={todo} />
       ))
     }
     </>
