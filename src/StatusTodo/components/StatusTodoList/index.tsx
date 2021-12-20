@@ -1,3 +1,5 @@
+import { useCallback, useState } from 'react'
+
 import TodoList from '../TodoLists'
 
 import {
@@ -14,9 +16,10 @@ import {
   IconEditAddTodo,
   IconRemoveAddTodo
 } from './icons'
-import { useCallback } from 'react'
 import { useApi } from '../../../shared/hooks/api/useApi'
 import { useAlert } from '../../../shared/hooks/alert/useAlert'
+import { useRemoveStatusTodo } from './hooks/useRemoveStatusTodo'
+import { useUtils } from '../../../shared/hooks/utils/useUtils'
 
 type Todo = {
   id: number
@@ -42,30 +45,31 @@ type Props = {
 }
 
 const StatusTodoList = (props: Props) => {
+  const [isLoading, setIsLoading] = useState(false)
 
-  const api = useApi()
+  const removeStatusTodo = useRemoveStatusTodo()
+  const utils = useUtils()
+  
   const alerts = useAlert()
 
-  // TODO: ADicionar handleRemoveStatusTodo em um hook
   const handleRemoveStatusTodo = useCallback(() => {
-    (async () => {
-      const response = await fetch(`${api.getEndpoint()}/todos/status/${props.statusTodo.id}`, {
-        method: "DELETE"
-      })
-
-      if (response.status === 204) {
+    async function _remove() {
+      setIsLoading(true)
+      const resultRequest = await removeStatusTodo.handle(props.statusTodo.id)
+      const message =  utils.capitalizeWithEndDot(resultRequest.message)
+      setIsLoading(false)
+      if (resultRequest.ok) {
         props.removeStatusTodoAfterRequest(props.statusTodo.id)
-        alerts.handle('success', 'status todo removido')
-        return
+        alerts.handle('success', message)
+      } else {
+        alerts.handle('warning', message)
       }
+    }
 
-      if (response.status === 400) {
-        const data = await response.json()
-        alerts.handle('warning', data.message)
-        return
-      }
-    })()
-  }, [])
+    _remove()
+      .then()
+      .catch(() => alerts.handle('error', "Sistema fora do ar, tente novamente mais tarde"))
+  }, [removeStatusTodo.handle,  alerts.handle])
   
   return (
     <Container>
@@ -75,17 +79,20 @@ const StatusTodoList = (props: Props) => {
         </Title>
         <ButtonsHeader>
           <ButtonHeader 
+            disabled={isLoading}
             variant="contained" 
             size="small">
             <IconAddTodo />
           </ButtonHeader>
           <ButtonHeader 
+            disabled={isLoading}
             variant="contained" 
             size="small" 
             color="warning">
             <IconEditAddTodo />
           </ButtonHeader>
           <ButtonHeader 
+            disabled={isLoading}
             variant="contained" 
             size="small" 
             color="error"
@@ -95,7 +102,7 @@ const StatusTodoList = (props: Props) => {
         </ButtonsHeader>
       </HeaderStack>
       <Body>
-        <TodoList todos={props.statusTodo.todos} />
+        <TodoList todos={props.statusTodo.todos} isLoading={isLoading} />
       </Body>
     </Container>
   )
