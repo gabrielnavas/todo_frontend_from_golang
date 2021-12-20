@@ -16,7 +16,6 @@ type StatusTodoResponse = {
 }
 
 
-// TODO: FALTA TESTA ISSO DAQUI :)
 const useCreateStatusTodo = () => {
   const api = useApi()
 
