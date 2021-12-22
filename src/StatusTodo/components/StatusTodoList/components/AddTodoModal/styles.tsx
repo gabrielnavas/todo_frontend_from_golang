@@ -33,15 +33,20 @@ export const ButtonFileUpload = styled(Button)(({ theme }) => ({
   width: '100%'
 }))
 
-export const FileUploadContainer =  styled('div')(({ theme }) => ({
+export const FileUploadContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
   padding: '20px 0'
 }))
 
 export const TitleFileUpload = styled('span')(({ theme }) => ({
+  textAlign: 'center',
   width: '250px',
   overflow: 'hidden',
   whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
+  textOverflow: 'ellipsis'
 }))
 
 export const StackFileUploadButtons = styled(Stack)(({ theme }) => ({

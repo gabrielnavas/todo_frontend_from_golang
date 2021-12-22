@@ -6,7 +6,7 @@ import { useCreateStatusTodo } from './hooks/http/useCreateStatusTodo'
 import useForm from './hooks/data/useForm'
 
 import { useAlert } from '../../../shared/hooks/alert/useAlert'
-import {useUtils} from '../../../shared/hooks/utils/useUtils'
+import { useUtils } from '../../../shared/hooks/utils/useUtils'
 
 import {
   Container,
@@ -31,13 +31,11 @@ type Props = {
 }
 
 const AddStatusTodoModal = (props: Props) => {
-
   const alerts = useAlert()
   const [isLoading, setIsLoading] = useState(false)
   const createStatusTodo = useCreateStatusTodo()
   const form = useForm()
   const utils = useUtils()
-  
 
   const handleCreateStatusTodo = useCallback(async () => {
     const errors = await form.validate()
@@ -49,23 +47,21 @@ const AddStatusTodoModal = (props: Props) => {
     try {
       const statusTodoCreated = await createStatusTodo.handlerRequest(form.values)
       if (statusTodoCreated.messageError) {
-        alerts.handle("warning", utils.capitalize(statusTodoCreated.messageError))
+        alerts.handle('warning', utils.capitalize(statusTodoCreated.messageError))
         return
       }
       props.getStatusTodoCreated({
         id: statusTodoCreated.id,
         name: statusTodoCreated.name,
         createdAt: statusTodoCreated.createdAt,
-        updatedAt: statusTodoCreated.updatedAt,
+        updatedAt: statusTodoCreated.updatedAt
       })
-      form.setValues(old => ({...old, name: ''}))
-      alerts.handle("success", "Status criado com success!")
-    }
-    catch(ex) {
-      console.log(ex);
-      alerts.handle("error", "Não foi possível criar o status, tente novamente mais tarde")
-    }
-    finally {
+      form.setValues(old => ({ ...old, name: '' }))
+      alerts.handle('success', 'Status criado com success!')
+    } catch (ex) {
+      console.log(ex)
+      alerts.handle('error', 'Não foi possível criar o status, tente novamente mais tarde')
+    } finally {
       setIsLoading(false)
     }
   }, [form.values, createStatusTodo.handlerRequest])
@@ -87,18 +83,18 @@ const AddStatusTodoModal = (props: Props) => {
             error={!!form.errors.name}
             value={form.values.name}
             helperText={form.errors.name && form.errors.name}
-            onChange={e => form.setValues(old => ({...old, name: e.target.value}))}
-            onKeyPress={e => e.key === "Enter" && handleCreateStatusTodo()}
+            onChange={e => form.setValues(old => ({ ...old, name: e.target.value }))}
+            onKeyPress={e => e.key === 'Enter' && handleCreateStatusTodo()}
           />
           <ButtonsStack direction='row' spacing={4}>
-            <Button 
+            <Button
               disabled={isLoading}
-              variant="contained" 
+              variant="contained"
               color="error"
               onClick={props.handleClose}>
                 Cancelar
             </Button>
-            <Button 
+            <Button
               disabled={isLoading}
               variant="contained"
               onClick={handleCreateStatusTodo}>

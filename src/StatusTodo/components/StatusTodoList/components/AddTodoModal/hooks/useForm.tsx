@@ -1,6 +1,6 @@
-import { useCallback, useRef } from "react"
+import { useCallback, useRef } from 'react'
 
-import { useFormik } from "formik";
+import { useFormik } from 'formik'
 
 type Todo = {
   title:string
@@ -9,7 +9,7 @@ type Todo = {
 }
 
 const useForm = () => {
-  const inputFileRef = useRef<HTMLInputElement | null>(null);
+  const inputFileRef = useRef<HTMLInputElement | null>(null)
 
   const formik = useFormik({
     initialValues: {
@@ -19,22 +19,17 @@ const useForm = () => {
     } as Todo,
     validate: values => { },
     onSubmit: async values => { }
-  });
-  
-  /**
-   * TODO: Esta setando a imagem, mas quando retiro tento adicionar a mesma imagem
-   * a imagem nao adiciona
-   */
+  })
+
   const handlerOnChangeImage = useCallback(() => {
     const files = inputFileRef.current.files
-    formik.setValues(old => ({...old, image: files[0]}))
-    console.log('oi');
-    
-  }, [formik.setValues, inputFileRef.current])
+    formik.setValues(old => ({ ...old, image: files[0] }))
+  }, [formik.setValues])
 
   const handlerRemoveImage = useCallback(() => {
-    formik.setValues(old => ({...old, image: null}))
-  }, [formik.setValues,inputFileRef.current])
+    inputFileRef.current.value = null
+    formik.setValues(old => ({ ...old, image: null }))
+  }, [formik.setValues])
 
   return {
     values: formik.values,
@@ -47,4 +42,4 @@ const useForm = () => {
   }
 }
 
-export {useForm}
+export { useForm }

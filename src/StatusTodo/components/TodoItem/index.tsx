@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
 import {
   Container,
@@ -10,7 +10,6 @@ import {
 } from './styles'
 
 import { IconDelete } from './icons'
-import AddTodoModal from '../StatusTodoList/components/AddTodoModal'
 
 type Todo = {
   id: number
@@ -32,7 +31,7 @@ type Props = {
  * @param props todo: Todo é um simples todo
  * @returns um Todo Item
  */
-const TodoItem = (props: Props) => {  
+const TodoItem = (props: Props) => {
   const handleTodoItem = useCallback(() => {
     console.log('voce clicou no titulo, descricao ou imagem do todo')
   }, [])
@@ -43,10 +42,10 @@ const TodoItem = (props: Props) => {
         <Title>
           {props.todo.title}
         </Title>
-        <ButtonHeader 
+        <ButtonHeader
           disabled={props.isLoading}
-          variant="contained" 
-          size="small" 
+          variant="contained"
+          size="small"
           color="error">
           <IconDelete />
         </ButtonHeader>

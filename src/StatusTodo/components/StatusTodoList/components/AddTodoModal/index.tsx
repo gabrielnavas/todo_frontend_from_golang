@@ -1,5 +1,5 @@
 import Modal from '@mui/material/Modal'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useForm } from './hooks/useForm'
 
 import {
@@ -16,8 +16,7 @@ import {
   FormStack
 } from './styles'
 
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 
 type Props = {
   handleClose: () => void
@@ -26,7 +25,7 @@ type Props = {
 
 const AddTodoModal = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false)
-  
+
   const form = useForm()
 
   const handleCreateTodo = useCallback(async () => {
@@ -35,15 +34,51 @@ const AddTodoModal = (props: Props) => {
       // TODO: request POST
       setIsLoading(false)
       // TODO: handler errors 400
-    }
-    catch(ex) {
+    } catch (ex) {
       // TODO: handler error 500
-    }
-    finally {
+    } finally {
       setIsLoading(false)
     }
   }, [])
 
+  const renderImageUpload = () => {
+    return (
+      <FileUploadContainer>
+        <input
+          onChange={() => form.onChangeImage()}
+          type="file"
+          hidden
+          ref={form.fileRef}
+        />
+        <StackFileUploadButtons>
+          {
+            form.values.image
+              ? (
+              <ButtonFileUpload
+                color="error"
+                onClick={() => form.onClickRemoveImage()}>
+                <PhotoCameraIcon />
+                {' Remover imagem'}
+              </ButtonFileUpload>
+                )
+              : (
+              <ButtonFileUpload
+                color="info"
+                onClick={() => form.fileRef.current.click()}>
+                <PhotoCameraIcon />
+                {' Selecione uma imagem'}
+              </ButtonFileUpload>
+                )
+          }
+        </StackFileUploadButtons>
+        <TitleFileUpload>
+        {
+          form.values.image && `${form.values.image.name} `
+        }
+        </TitleFileUpload>
+      </FileUploadContainer>
+    )
+  }
 
   return (
     <Modal
@@ -62,8 +97,8 @@ const AddTodoModal = (props: Props) => {
             error={!!form.errors.title}
             value={form.values.title}
             helperText={form.errors.title && form.errors.title}
-            onChange={e => form.setValues(old => ({...old, title: e.target.value}))}
-            onKeyPress={e => e.key === "Enter" && handleCreateTodo()}
+            onChange={e => form.setValues(old => ({ ...old, title: e.target.value }))}
+            onKeyPress={e => e.key === 'Enter' && handleCreateTodo()}
           />
           <TextFieldDescription
             label="Descrição"
@@ -72,50 +107,19 @@ const AddTodoModal = (props: Props) => {
             error={!!form.errors.description}
             value={form.values.description}
             helperText={form.errors.description && form.errors.description}
-            onChange={e => form.setValues(old => ({...old, description: e.target.value}))}
-            onKeyPress={e => e.key === "Enter" && handleCreateTodo()}
+            onChange={e => form.setValues(old => ({ ...old, description: e.target.value }))}
+            onKeyPress={e => e.key === 'Enter' && handleCreateTodo()}
           />
-          <FileUploadContainer>
-            <input 
-              onChange={() => form.onChangeImage()}
-              type="file" 
-              hidden 
-              ref={form.fileRef} 
-            />
-            <StackFileUploadButtons>
-              {
-                form.values.image ? (
-                  <ButtonFileUpload 
-                    color="error"
-                    onClick={() => form.onClickRemoveImage()}>
-                    <PhotoCameraIcon />
-                    {' Remover imagem'}
-                  </ButtonFileUpload>
-                ) : (
-                  <ButtonFileUpload 
-                    color="info"
-                    onClick={() => form.fileRef.current.click()}>
-                    <PhotoCameraIcon />
-                    {' Selecione uma imagem'}
-                  </ButtonFileUpload>
-                )
-              }
-              </StackFileUploadButtons>
-              <TitleFileUpload>
-              {
-                form.values.image && `${form.values.image.name} ` 
-              }  
-              </TitleFileUpload>
-          </FileUploadContainer>
+          {renderImageUpload}
           <ButtonsStack direction='row' spacing={4}>
-            <ButtonFinish 
+            <ButtonFinish
               disabled={isLoading}
-              variant="contained" 
+              variant="contained"
               color="error"
               onClick={props.handleClose}>
                 Cancelar
             </ButtonFinish>
-            <ButtonFinish 
+            <ButtonFinish
               disabled={isLoading}
               variant="contained"
               onClick={handleCreateTodo}>

@@ -50,14 +50,14 @@ const StatusTodoList = (props: Props) => {
 
   const utils = useUtils()
   const alerts = useAlert()
-  
+
   const removeStatusTodo = useRemoveStatusTodo()
 
   const handleRemoveStatusTodo = useCallback(() => {
-    async function _remove() {
+    async function _remove () {
       setIsLoading(true)
       const resultRequest = await removeStatusTodo.handle(props.statusTodo.id)
-      const message =  utils.capitalizeWithEndDot(resultRequest.message)
+      const message = utils.capitalizeWithEndDot(resultRequest.message)
       setIsLoading(false)
       if (resultRequest.ok) {
         props.removeStatusTodoAfterRequest(props.statusTodo.id)
@@ -69,8 +69,8 @@ const StatusTodoList = (props: Props) => {
 
     _remove()
       .then()
-      .catch(() => alerts.handle('error', "Sistema fora do ar, tente novamente mais tarde"))
-  }, [removeStatusTodo.handle,  alerts.handle])
+      .catch(() => alerts.handle('error', 'Sistema fora do ar, tente novamente mais tarde'))
+  }, [removeStatusTodo.handle, alerts.handle])
 
   return (
     <Container>
@@ -79,24 +79,24 @@ const StatusTodoList = (props: Props) => {
           {props.statusTodo.name}
         </Title>
         <ButtonsHeader>
-          <ButtonHeader 
+          <ButtonHeader
             disabled={isLoading}
-            variant="contained" 
+            variant="contained"
             size="small"
             onClick={() => setToggleAddStatusTodoModal(true)}>
             <IconAddTodo />
           </ButtonHeader>
-          <ButtonHeader 
+          <ButtonHeader
             disabled={isLoading}
-            variant="contained" 
-            size="small" 
+            variant="contained"
+            size="small"
             color="warning">
             <IconEditAddTodo />
           </ButtonHeader>
-          <ButtonHeader 
+          <ButtonHeader
             disabled={isLoading}
-            variant="contained" 
-            size="small" 
+            variant="contained"
+            size="small"
             color="error"
             onClick={handleRemoveStatusTodo}>
             <IconRemoveAddTodo />
@@ -106,7 +106,7 @@ const StatusTodoList = (props: Props) => {
       <Body>
         <TodoList todos={props.statusTodo.todos} isLoading={isLoading} />
       </Body>
-      <AddTodoModal 
+      <AddTodoModal
         handleClose={() => setToggleAddStatusTodoModal(false)}
         open={toggleAddStatusTodoModal}
       />
