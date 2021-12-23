@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react'
 import TodoItem from '../TodoItem'
 import {
   EmptyTodoItemList
@@ -24,13 +25,20 @@ type Props = {
  * @returns returna a lista de renderizado um StatusTodo
  */
 const TodoList = (props: Props) => {
+  const [todos, setTodos] = useState(props.todos)
+
+  const handlerAfterDeleteTodoItem = useCallback((todoId: number) => {
+    setTodos(old => old.filter(todo => todo.id !== todoId))
+  }, [])
+
   const renderTodoList = () =>
     <>
     {
-      props.todos.map(todo => (
-        <TodoItem 
-          key={todo.id} 
-          isLoading={props.isLoading} 
+      todos.map(todo => (
+        <TodoItem
+          key={todo.id}
+          afterDelete={handlerAfterDeleteTodoItem}
+          isLoading={props.isLoading}
           todo={todo} />
       ))
     }
