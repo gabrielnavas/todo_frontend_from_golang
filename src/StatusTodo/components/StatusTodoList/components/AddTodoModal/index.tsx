@@ -1,6 +1,9 @@
-import Modal from '@mui/material/Modal'
 import { useCallback, useState } from 'react'
-import { useForm } from './hooks/useForm'
+
+import Modal from '@mui/material/Modal'
+
+import { useForm } from './hooks/data/useForm'
+import { useAddTodo } from './hooks/http/useAddTodo'
 
 import {
   Container,
@@ -17,8 +20,26 @@ import {
 } from './styles'
 
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
+import { useAlert } from '../../../../../shared/hooks/alert/useAlert'
+
+type Todo = {
+  id: number
+  title: string
+  description: string
+  createdAt: Date
+  updatedAt: Date
+  statusId: number
+  imageUrl?: string
+}
+
+type StatusTodo = {
+  id: number
+  name: string
+}
 
 type Props = {
+  statusTodo: StatusTodo
+  getTodoAfterAdd: (todo: Todo) => void
   handleClose: () => void
   open: boolean
 }
@@ -27,19 +48,30 @@ const AddTodoModal = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm()
+  const addTodo = useAddTodo()
+  const alerts = useAlert()
 
   const handleCreateTodo = useCallback(async () => {
+    setIsLoading(true)
     try {
-      setIsLoading(true)
-      // TODO: request POST
-      setIsLoading(false)
-      // TODO: handler errors 400
+      const result = await addTodo.handler({
+        title: form.values.title,
+        description: form.values.description,
+        image: form.values.image,
+        statusId: props.statusTodo.id
+      })
+      if (result.hasError) {
+        alerts.handle('warning', result.message)
+        return
+      }
+      alerts.handle('success', result.message)
+      props.getTodoAfterAdd(result.todo)
     } catch (ex) {
-      // TODO: handler error 500
+      alerts.handle('success', 'Ocorreu um problema com o servidor, tente adicionar mais tarde.')
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [form.values])
 
   const renderImageUpload = () => {
     return (
@@ -87,7 +119,7 @@ const AddTodoModal = (props: Props) => {
     >
       <Container>
         <Title variant="h6" >
-          Insert novo status.
+          Novo todo.
         </Title>
         <FormStack spacing={4}>
           <TextFieldTitle
@@ -110,7 +142,7 @@ const AddTodoModal = (props: Props) => {
             onChange={e => form.setValues(old => ({ ...old, description: e.target.value }))}
             onKeyPress={e => e.key === 'Enter' && handleCreateTodo()}
           />
-          {renderImageUpload}
+          {renderImageUpload()}
           <ButtonsStack direction='row' spacing={4}>
             <ButtonFinish
               disabled={isLoading}

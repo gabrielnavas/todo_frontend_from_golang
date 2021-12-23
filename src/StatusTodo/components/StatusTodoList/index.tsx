@@ -47,6 +47,7 @@ type Props = {
 const StatusTodoList = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [toggleAddStatusTodoModal, setToggleAddStatusTodoModal] = useState(false)
+  const [statusTodo, setStatusTodo] = useState<StatusTodo>(props.statusTodo)
 
   const utils = useUtils()
   const alerts = useAlert()
@@ -56,11 +57,11 @@ const StatusTodoList = (props: Props) => {
   const handleRemoveStatusTodo = useCallback(() => {
     async function _remove () {
       setIsLoading(true)
-      const resultRequest = await removeStatusTodo.handle(props.statusTodo.id)
+      const resultRequest = await removeStatusTodo.handle(statusTodo.id)
       const message = utils.capitalizeWithEndDot(resultRequest.message)
       setIsLoading(false)
       if (resultRequest.ok) {
-        props.removeStatusTodoAfterRequest(props.statusTodo.id)
+        props.removeStatusTodoAfterRequest(statusTodo.id)
         alerts.handle('success', message)
       } else {
         alerts.handle('warning', message)
@@ -72,11 +73,15 @@ const StatusTodoList = (props: Props) => {
       .catch(() => alerts.handle('error', 'Sistema fora do ar, tente novamente mais tarde'))
   }, [removeStatusTodo.handle, alerts.handle])
 
+  const handleGetTodoAfterAdd = useCallback((todo: Todo) => {
+    setStatusTodo(old => ({ ...old, todos: [todo, ...old.todos] }))
+  }, [])
+
   return (
     <Container>
       <HeaderStack>
         <Title>
-          {props.statusTodo.name}
+          {statusTodo.name}
         </Title>
         <ButtonsHeader>
           <ButtonHeader
@@ -104,9 +109,11 @@ const StatusTodoList = (props: Props) => {
         </ButtonsHeader>
       </HeaderStack>
       <Body>
-        <TodoList todos={props.statusTodo.todos} isLoading={isLoading} />
+        <TodoList todos={statusTodo.todos} isLoading={isLoading} />
       </Body>
       <AddTodoModal
+        statusTodo={statusTodo}
+        getTodoAfterAdd={handleGetTodoAfterAdd}
         handleClose={() => setToggleAddStatusTodoModal(false)}
         open={toggleAddStatusTodoModal}
       />
