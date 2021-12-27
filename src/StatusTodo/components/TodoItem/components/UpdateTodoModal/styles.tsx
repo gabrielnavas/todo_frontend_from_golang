@@ -4,7 +4,8 @@ import {
   Typography,
   Stack,
   Box,
-  Button
+  Button,
+  Autocomplete
 } from '@mui/material'
 
 import { styled } from '@mui/material/styles'
@@ -62,4 +63,7 @@ export const FormStack = styled(Stack)(({ theme }) => ({
 }))
 
 export const ButtonsStack = styled(Stack)(({ theme }) => ({
+}))
+
+export const SelectStatusTodo = styled(Autocomplete)(({ theme }) => ({
 }))

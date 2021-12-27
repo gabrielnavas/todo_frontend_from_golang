@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import StatusTodoList from '../StatusTodoList'
 import {
   EmptyStatusTodo
@@ -37,6 +38,20 @@ type Props = {
 const StatusTodoLists = (props: Props) => {
   // TODO: refatorar esses nomes grandes(talvez?)
 
+  const [statusTodoLists, setStatusTodoLists] = useState<StatusTodo[]>(props.statusTodoLists)
+
+  const getTodoAfterUpdated = (todo: Todo, statusTodoId: number) => {
+    debugger
+    /**
+     * TODO:
+     * pegar o status todo correto antigo
+     * remover o todo dele
+     * pegar o status todo novo
+     * adicionar o todo nele
+     * adicionar novamente no state toda lista de lista
+     */
+  }
+
   if (props.isLoading) {
     return <EmptyStatusTodo>
     Carregando, aguarde.
@@ -54,6 +69,7 @@ const StatusTodoLists = (props: Props) => {
     {
       props.statusTodoLists.map(statusTodo => (
         <StatusTodoList
+          getTodoAfterUpdated={getTodoAfterUpdated}
           removeStatusTodoAfterRequest={props.removeStatusTodoAfterRequest}
           key={statusTodo.id}
           statusTodo={statusTodo}

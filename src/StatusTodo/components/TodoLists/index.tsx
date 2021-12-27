@@ -24,7 +24,7 @@ type Props = {
   todos: Todo[]
   statusTodo: StatusTodo
   afterDeleteTodoItem: (todoId: number) => void
-  getTodoAfterUpdate: (todo: Todo) => void
+  getTodoAfterUpdate: (todo: Todo, statusTodoId: number) => void
   isLoading: boolean
 }
 

@@ -29,9 +29,9 @@ const urlBlobToFile = async (url: string, fileName: string): Promise<File> => {
 const useUpdateTodo = () => {
   const api = useApi()
 
-  const handler = useCallback(async (todo: Todo): Promise<Result> => {
+  const handler = useCallback(async (payload: Todo): Promise<Result> => {
     let image: File | null = null
-    const response = await postForm(todo.id, todo.title, todo.description, todo.statusId)
+    const response = await postForm(payload.id, payload.title, payload.description, payload.statusId)
 
     if (response.status !== 204) {
       const data = await response.json()
@@ -42,9 +42,9 @@ const useUpdateTodo = () => {
       }
     }
 
-    if (todo.imageUrl) {
-      image = await urlBlobToFile(todo.imageUrl, 'image')
-      const response = await patchImage(todo.id, image)
+    if (payload.imageUrl) {
+      image = await urlBlobToFile(payload.imageUrl, 'image')
+      const response = await patchImage(payload.id, image)
       if (response.status !== 204) {
         const data = await response.json()
         return {
@@ -54,7 +54,7 @@ const useUpdateTodo = () => {
         }
       }
     } else {
-      const response = await deleteImage(todo.id)
+      const response = await deleteImage(payload.id)
       if (response.status !== 204) {
         const data = await response.json()
         return {
@@ -66,12 +66,12 @@ const useUpdateTodo = () => {
     }
     return {
       todo: {
-        id: todo.id,
-        title: todo.title,
-        description: todo.description,
+        id: payload.id,
+        title: payload.title,
+        description: payload.description,
         updatedAt: new Date(),
         imageUrl: image ? URL.createObjectURL(image) : null,
-        statusId: todo.statusId
+        statusId: payload.statusId
       } as Todo,
       hasError: false,
       message: 'Todo atualizado com sucesso!'

@@ -20,6 +20,7 @@ type TodoFormik = {
   title:string
   description: string
   imageUrl: string | null
+  statusId: number
 }
 
 const useForm = (props: Props) => {
@@ -29,7 +30,8 @@ const useForm = (props: Props) => {
     initialValues: {
       title: props.todo.title,
       description: props.todo.description,
-      imageUrl: props.todo.imageUrl ? props.todo.imageUrl : null
+      imageUrl: props.todo.imageUrl ? props.todo.imageUrl : null,
+      statusId: props.todo.statusId
     } as TodoFormik,
     validate: values => {
       const errors = {} as any

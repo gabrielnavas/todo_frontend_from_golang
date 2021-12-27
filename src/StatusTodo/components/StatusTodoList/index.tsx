@@ -44,6 +44,7 @@ type StatusTodo = {
 type Props = {
   statusTodo: StatusTodo
   removeStatusTodoAfterRequest: (statusTodoId: number) => void
+  getTodoAfterUpdated: (todo: Todo, statusTodoId: number) => void
 }
 
 const StatusTodoList = (props: Props) => {
@@ -84,10 +85,6 @@ const StatusTodoList = (props: Props) => {
 
   const handlerAfterDeleteTodoItem = useCallback((todoId: number) => {
     setStatusTodo(old => ({ ...old, todos: old.todos.filter(todo => todo.id !== todoId) }))
-  }, [])
-
-  const handlerGetTodoAfterUpdate = useCallback((todo: Todo) => {
-    setStatusTodo(old => ({ ...old, todos: old.todos.map(t => t.id === todo.id ? todo : t) }))
   }, [])
 
   const getStatusTodoAfterUpdated = (statusTodo: StatusTodo) => {
@@ -131,7 +128,7 @@ const StatusTodoList = (props: Props) => {
           todos={statusTodo.todos}
           statusTodo={props.statusTodo}
           afterDeleteTodoItem={handlerAfterDeleteTodoItem}
-          getTodoAfterUpdate={handlerGetTodoAfterUpdate}
+          getTodoAfterUpdate={props.getTodoAfterUpdated}
           isLoading={isLoading}
         />
       </Body>

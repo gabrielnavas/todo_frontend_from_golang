@@ -37,7 +37,7 @@ type Props = {
   statusTodo: StatusTodo
   isLoading: boolean
   afterDelete: (todoId: number) => void
-  getTodoAfterUpdate: (todo: Todo) => void
+  getTodoAfterUpdate:(todo: Todo, statusTodoId: number) => void
 }
 
 /**

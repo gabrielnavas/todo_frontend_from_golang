@@ -1,9 +1,12 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import Modal from '@mui/material/Modal'
+import { TextField } from '@mui/material'
 
 import { useForm } from './hooks/data/useForm'
 import { useUpdateTodo } from './hooks/http/useUpdateTodo'
+
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 
 import {
   Container,
@@ -14,13 +17,14 @@ import {
   ButtonFileUpload,
   FileUploadContainer,
   StackFileUploadButtons,
+  SelectStatusTodo,
   ButtonFinish,
   Title,
   FormStack
 } from './styles'
 
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { useAlert } from '../../../../../shared/hooks/alert/useAlert'
+import useGetAllStatusTodo from './hooks/http/useGetAllStatusTodo'
 
 type Todo = {
   id: number
@@ -32,27 +36,49 @@ type Todo = {
   imageUrl?: string
 }
 
-type StatusTodo = {
+export type StatusTodo = {
   id: number
   name: string
   createdAt: Date
   updatedAt: Date
 }
 
+export type StatusTodoOptions = {
+  label: string
+  statusTodo: StatusTodo
+}
+
 type Props = {
   todo: Todo
   statusTodo: StatusTodo
-  getTodoAfterUpdate: (todo: Todo) => void
+  getTodoAfterUpdate: (todo: Todo, statusTodoId: number) => void
   onClose: () => void
   open: boolean
 }
 
 const UpdateTodoModal = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [statusTodoOptions, setStatusTodoOptions] = useState<StatusTodoOptions[]>([])
 
   const form = useForm({ todo: props.todo })
   const updateTodo = useUpdateTodo()
+  const getAllStatusTodo = useGetAllStatusTodo()
+
   const alerts = useAlert()
+
+  useEffect(() => {
+    async function _getStatusTodosOptions () {
+      setIsLoading(true)
+      const statusTodos = await getAllStatusTodo.handlerRequest(props.statusTodo.id)
+      setIsLoading(false)
+      console.log(statusTodos)
+      setStatusTodoOptions(statusTodos)
+    }
+
+    _getStatusTodosOptions()
+      .then()
+      .catch(ex => alerts.handle('error', 'Servidor fora do ar'))
+  }, [])
 
   const handleUpdateTodo = useCallback(async () => {
     const errors = await form.validate()
@@ -68,7 +94,7 @@ const UpdateTodoModal = (props: Props) => {
         title: form.values.title,
         description: form.values.description,
         imageUrl: form.values.imageUrl,
-        statusId: props.statusTodo.id,
+        statusId: form.values.statusId,
         createdAt: props.todo.createdAt,
         updatedAt: props.todo.updatedAt
       })
@@ -77,7 +103,7 @@ const UpdateTodoModal = (props: Props) => {
         return
       }
       alerts.handle('success', result.message)
-      props.getTodoAfterUpdate(result.todo)
+      props.getTodoAfterUpdate(result.todo, form.values.statusId)
       props.onClose()
     } catch (ex) {
       console.log(ex)
@@ -103,6 +129,7 @@ const UpdateTodoModal = (props: Props) => {
               <ButtonFileUpload
                 color="error"
                 onClick={() => form.onClickRemoveImage()}>
+                  {/* // TODO: MUDAR PARA ICONE DE REMOVER FOTO OU ALGO DO TIPO */}
                 <PhotoCameraIcon />
                 {' Remover imagem'}
               </ButtonFileUpload>
@@ -152,6 +179,12 @@ const UpdateTodoModal = (props: Props) => {
             helperText={form.errors.description && form.errors.description}
             onChange={e => form.setValues(old => ({ ...old, description: e.target.value }))}
             onKeyPress={e => e.key === 'Enter' && handleUpdateTodo()}
+          />
+          <SelectStatusTodo
+            options={statusTodoOptions}
+            onChange={(e: any, value: StatusTodoOptions) => form.setValues(old => ({ ...old, statusId: value.statusTodo.id }))}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Mover para Status" />}
           />
           {renderImageUpload()}
           <ButtonsStack direction='row' spacing={4}>
