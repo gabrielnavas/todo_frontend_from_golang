@@ -17,7 +17,23 @@ const useForm = () => {
       description: '',
       image: null
     } as Todo,
-    validate: values => { },
+    validate: values => {
+      const errors = {} as any
+      if (values.title.length === 0) {
+        errors.title = 'Digite um título'
+      }
+      if (values.title.length > 150) {
+        errors.title = 'Título está muito grande'
+      }
+      if (values.description.length === 0) {
+        errors.description = 'Faça uma descrição'
+      }
+
+      if (values.description.length > 255) {
+        errors.description = 'Descrição está muito grande'
+      }
+      return errors
+    },
     onSubmit: async values => { }
   })
 

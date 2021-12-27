@@ -55,11 +55,11 @@ const UpdateTodoModal = (props: Props) => {
   const alerts = useAlert()
 
   const handleUpdateTodo = useCallback(async () => {
-    /**
-     * TODO: validar os dados antes de criar o todo item
-     * const errors = form.validate()
-     * if (erros...)
-     */
+    const errors = await form.validate()
+    const errorsList = Object.keys(errors)
+    if (errorsList.length > 0) {
+      return
+    }
 
     setIsLoading(true)
     try {
