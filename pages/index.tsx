@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import StatusTodo from '../src/StatusTodo/views'
+import StatusTodo from '../src/StatusTodo'
 
 const Page = () => (
   <>

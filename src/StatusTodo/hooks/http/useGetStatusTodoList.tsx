@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { useApi } from '../../../../shared/hooks/api/useApi'
+import { useApi } from '../../../shared/hooks/api/useApi'
 
 type StatusTodo = {
   id: number

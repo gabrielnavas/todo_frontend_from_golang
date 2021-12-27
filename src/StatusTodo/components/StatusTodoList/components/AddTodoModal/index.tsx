@@ -52,6 +52,12 @@ const AddTodoModal = (props: Props) => {
   const alerts = useAlert()
 
   const handleCreateTodo = useCallback(async () => {
+    /**
+     * TODO: validar os dados antes de criar o todo item
+     * const errors = form.validate()
+     * if (erros...)
+     */
+
     setIsLoading(true)
     try {
       const result = await addTodo.handler({

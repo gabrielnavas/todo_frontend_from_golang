@@ -20,6 +20,7 @@ import { useAlert } from '../../../shared/hooks/alert/useAlert'
 import { useRemoveStatusTodo } from './hooks/useRemoveStatusTodo'
 import { useUtils } from '../../../shared/hooks/utils/useUtils'
 import AddTodoModal from './components/AddTodoModal'
+import UpdateStatusTodoModal from './components/UpdateStatusTodoModal'
 
 type Todo = {
   id: number
@@ -46,7 +47,8 @@ type Props = {
 
 const StatusTodoList = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [toggleAddStatusTodoModal, setToggleAddStatusTodoModal] = useState(false)
+  const [toggleAddTodoModal, setToggleAddTodoModal] = useState(false)
+  const [toggleUpdateStatusTodoModal, setToggleUpdateStatusTodoModal] = useState(false)
   const [statusTodo, setStatusTodo] = useState<StatusTodo>(props.statusTodo)
 
   const utils = useUtils()
@@ -73,9 +75,20 @@ const StatusTodoList = (props: Props) => {
       .catch(() => alerts.handle('error', 'Sistema fora do ar, tente novamente mais tarde'))
   }, [removeStatusTodo.handle, alerts.handle])
 
+  // TODO: Não está atualizando a lista sozinha
   const handleGetTodoAfterAdd = useCallback((todo: Todo) => {
-    setStatusTodo(old => ({ ...old, todos: [todo, ...old.todos] }))
-  }, [])
+    debugger
+    if (statusTodo.todos.length > 0) {
+      setStatusTodo(old => ({ ...old, todos: [todo, ...old.todos] }))
+    } else {
+      setStatusTodo(old => ({ ...old, todos: [todo] }))
+    }
+    debugger
+  }, [statusTodo.todos])
+
+  const getStatusTodoAfterUpdated = (statusTodo: StatusTodo) => {
+    setStatusTodo(statusTodo)
+  }
 
   return (
     <Container>
@@ -88,14 +101,15 @@ const StatusTodoList = (props: Props) => {
             disabled={isLoading}
             variant="contained"
             size="small"
-            onClick={() => setToggleAddStatusTodoModal(true)}>
+            onClick={() => setToggleAddTodoModal(true)}>
             <IconAddTodo />
           </ButtonHeader>
           <ButtonHeader
             disabled={isLoading}
             variant="contained"
             size="small"
-            color="warning">
+            color="warning"
+            onClick={() => setToggleUpdateStatusTodoModal(true)}>
             <IconEditAddTodo />
           </ButtonHeader>
           <ButtonHeader
@@ -114,8 +128,14 @@ const StatusTodoList = (props: Props) => {
       <AddTodoModal
         statusTodo={statusTodo}
         getTodoAfterAdd={handleGetTodoAfterAdd}
-        handleClose={() => setToggleAddStatusTodoModal(false)}
-        open={toggleAddStatusTodoModal}
+        handleClose={() => setToggleAddTodoModal(false)}
+        open={toggleAddTodoModal}
+      />
+      <UpdateStatusTodoModal
+        statusTodo={statusTodo}
+        open={toggleUpdateStatusTodoModal}
+        handleClose={() => setToggleUpdateStatusTodoModal(false)}
+        getStatusTodoAfterUpdated={getStatusTodoAfterUpdated}
       />
     </Container>
   )

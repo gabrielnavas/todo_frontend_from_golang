@@ -1,12 +1,12 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import Modal from '@mui/material/Modal'
 
-import { useCreateStatusTodo } from './hooks/http/useCreateStatusTodo'
+import { useUpdateStatusTodo } from './hooks/http/useUpdateStatusTodo'
 import useForm from './hooks/data/useForm'
 
-import { useAlert } from '../../../shared/hooks/alert/useAlert'
-import { useUtils } from '../../../shared/hooks/utils/useUtils'
+import { useAlert } from '../../../../../shared/hooks/alert/useAlert'
+import { useUtils } from '../../../../../shared/hooks/utils/useUtils'
 
 import {
   Container,
@@ -25,19 +25,27 @@ type StatusTodo = {
 }
 
 type Props = {
-  getStatusTodoCreated: (statusTodo: StatusTodo) => void
+  statusTodo: StatusTodo
+  getStatusTodoAfterUpdated: (statusTodo: StatusTodo) => void
   handleClose: () => void
   open: boolean
 }
 
-const AddStatusTodoModal = (props: Props) => {
+const UpdateStatusTodoModal = (props: Props) => {
   const alerts = useAlert()
   const [isLoading, setIsLoading] = useState(false)
-  const createStatusTodo = useCreateStatusTodo()
+  const updateStatusTodo = useUpdateStatusTodo()
   const form = useForm()
   const utils = useUtils()
 
-  const handleCreateStatusTodo = useCallback(async () => {
+  useEffect(() => {
+    form.setValues({
+      id: props.statusTodo.id,
+      name: props.statusTodo.name
+    })
+  }, [])
+
+  const handleUpdateStatusTodo = useCallback(async () => {
     const errors = await form.validate()
     const hasErrors = errors && Object.keys(errors).length > 0
     if (hasErrors) {
@@ -45,26 +53,27 @@ const AddStatusTodoModal = (props: Props) => {
     }
     setIsLoading(true)
     try {
-      const statusTodoCreated = await createStatusTodo.handlerRequest(form.values)
-      if (statusTodoCreated.messageError) {
-        alerts.handle('warning', utils.capitalize(statusTodoCreated.messageError))
+      const result = await updateStatusTodo.handlerRequest(form.values)
+      if (result.hasError) {
+        alerts.handle('warning', utils.capitalize(result.message))
         return
       }
-      props.getStatusTodoCreated({
-        id: statusTodoCreated.id,
-        name: statusTodoCreated.name,
-        createdAt: statusTodoCreated.createdAt,
-        updatedAt: statusTodoCreated.updatedAt
-      })
+      alerts.handle('success', utils.capitalize(result.message))
       form.setValues(old => ({ ...old, name: '' }))
-      alerts.handle('success', 'Status criado com success!')
+      props.getStatusTodoAfterUpdated({
+        id: form.values.id,
+        name: form.values.name,
+        createdAt: props.statusTodo.createdAt,
+        updatedAt: new Date()
+      })
+      props.handleClose()
+      form.setValues(old => ({ ...old, name: '' }))
     } catch (ex) {
-      console.log(ex)
-      alerts.handle('error', 'Não foi possível criar o status, tente novamente mais tarde')
+      alerts.handle('error', 'Não foi possível atualizar o status, tente novamente mais tarde')
     } finally {
       setIsLoading(false)
     }
-  }, [form.values, createStatusTodo.handlerRequest])
+  }, [form.values.name])
 
   return (
     <Modal
@@ -73,7 +82,7 @@ const AddStatusTodoModal = (props: Props) => {
     >
       <Container>
         <Title variant="h6" >
-          Adicionar novo status.
+          Atualizar novo status.
         </Title>
         <FormStack spacing={4}>
           <TextFieldName
@@ -84,21 +93,22 @@ const AddStatusTodoModal = (props: Props) => {
             value={form.values.name}
             helperText={form.errors.name && form.errors.name}
             onChange={e => form.setValues(old => ({ ...old, name: e.target.value }))}
-            onKeyPress={e => e.key === 'Enter' && handleCreateStatusTodo()}
+            onKeyPress={e => e.key === 'Enter' && handleUpdateStatusTodo()}
           />
           <ButtonsStack direction='row' spacing={4}>
             <Button
+              color="error"
               disabled={isLoading}
               variant="contained"
-              color="error"
               onClick={props.handleClose}>
                 Cancelar
             </Button>
             <Button
+              color='warning'
               disabled={isLoading}
               variant="contained"
-              onClick={handleCreateStatusTodo}>
-                Inserir
+              onClick={handleUpdateStatusTodo}>
+                Atualizar
             </Button>
           </ButtonsStack>
         </FormStack>
@@ -107,4 +117,4 @@ const AddStatusTodoModal = (props: Props) => {
   )
 }
 
-export default AddStatusTodoModal
+export default UpdateStatusTodoModal

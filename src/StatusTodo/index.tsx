@@ -11,14 +11,14 @@ import {
 } from './styles'
 
 import { IconAddStatusTodo } from './icons'
-import StatusTodoLists from '../components/StatusTodoLists'
+import StatusTodoLists from './components/StatusTodoLists'
 
 import { useGetStatusTodoList } from './hooks/http/useGetStatusTodoList'
 import { useGetTodoList } from './hooks/http/useGetTodoList'
 
 import { useMergeStatusWithTodos } from './hooks/data/useMergeStatusWithTodos'
-import { useAlert } from '../../shared/hooks/alert/useAlert'
-import AddStatusTodoModal from '../components/AddStatusTodoModal'
+import { useAlert } from '../shared/hooks/alert/useAlert'
+import AddStatusTodoModal from './components/AddStatusTodoModal'
 
 type Todo = {
   id: number
@@ -71,7 +71,7 @@ const StatusTodoView = () => {
   }, [])
 
   const removeStatusTodoAfterRequest = useCallback((statusTodoId: number): void => {
-    setStatusTodo(old => old.filter(item => item.id !==statusTodoId))
+    setStatusTodo(old => old.filter(item => item.id !== statusTodoId))
   }, [])
 
   const isLoading = statusTodoList.isLoading || todoList.isLoading
@@ -90,9 +90,9 @@ const StatusTodoView = () => {
             </ButtonAddStatusTodo>
           </Header>
           <BodyStack direction='row'>
-            <StatusTodoLists 
+            <StatusTodoLists
               removeStatusTodoAfterRequest={removeStatusTodoAfterRequest}
-              statusTodoLists={statusTodo} 
+              statusTodoLists={statusTodo}
               isLoading={isLoading} />
           </BodyStack>
         </Paper>

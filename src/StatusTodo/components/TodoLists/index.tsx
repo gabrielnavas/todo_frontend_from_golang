@@ -49,7 +49,7 @@ const TodoList = (props: Props) => {
       Adicione um novo clicando no botão no topo da lista
     </EmptyTodoItemList>
 
-  return props.todos.length === 0
+  return todos.length === 0
     ? renderEmptyTodoList()
     : renderTodoList()
 }

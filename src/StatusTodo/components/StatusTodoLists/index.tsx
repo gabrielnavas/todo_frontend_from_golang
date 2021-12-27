@@ -46,8 +46,8 @@ const StatusTodoLists = (props: Props) => {
   // TODO: fazer um componente próprio em vez desse EmptyStatusTodo
   if (props.statusTodoLists.length === 0) {
     return <EmptyStatusTodo>
-    Nenhum todo status adicionado ainda, cliquei no botão acima para iniciar um.
-  </EmptyStatusTodo>
+      Nenhum todo status adicionado ainda, cliquei no botão acima para iniciar um.
+    </EmptyStatusTodo>
   }
 
   return <>
