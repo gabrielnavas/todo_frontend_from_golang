@@ -71,6 +71,11 @@ const AddTodoModal = (props: Props) => {
         return
       }
       alerts.handle('success', result.message)
+      form.setValues({
+        title: '',
+        description: '',
+        image: null
+      })
       props.getTodoAfterAdd(result.todo)
     } catch (ex) {
       alerts.handle('success', 'Ocorreu um problema com o servidor, tente adicionar mais tarde.')

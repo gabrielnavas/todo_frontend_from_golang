@@ -78,15 +78,8 @@ const StatusTodoList = (props: Props) => {
       .finally(() => setToggleRemoveStatusTodoModal(false))
   }, [removeStatusTodo.handle, alerts.handle])
 
-  // TODO: Não está atualizando a lista sozinha
   const handleGetTodoAfterAdd = useCallback((todo: Todo) => {
-    debugger
-    if (statusTodo.todos.length > 0) {
-      setStatusTodo(old => ({ ...old, todos: [todo, ...old.todos] }))
-    } else {
-      setStatusTodo(old => ({ ...old, todos: [todo] }))
-    }
-    debugger
+    setStatusTodo(old => ({ ...old, todos: [todo, ...old.todos] }))
   }, [statusTodo.todos])
 
   const getStatusTodoAfterUpdated = (statusTodo: StatusTodo) => {

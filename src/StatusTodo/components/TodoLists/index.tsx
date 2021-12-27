@@ -34,7 +34,7 @@ const TodoList = (props: Props) => {
   const renderTodoList = () =>
     <>
     {
-      todos.map(todo => (
+      props.todos.map(todo => (
         <TodoItem
           key={todo.id}
           afterDelete={handlerAfterDeleteTodoItem}
