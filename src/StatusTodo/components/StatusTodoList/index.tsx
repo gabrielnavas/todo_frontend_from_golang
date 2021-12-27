@@ -21,6 +21,7 @@ import { useRemoveStatusTodo } from './hooks/useRemoveStatusTodo'
 import { useUtils } from '../../../shared/hooks/utils/useUtils'
 import AddTodoModal from './components/AddTodoModal'
 import UpdateStatusTodoModal from './components/UpdateStatusTodoModal'
+import RemoveStatusTodoDialog from './components/RemoveStatusTodoDialog'
 
 type Todo = {
   id: number
@@ -49,6 +50,7 @@ const StatusTodoList = (props: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [toggleAddTodoModal, setToggleAddTodoModal] = useState(false)
   const [toggleUpdateStatusTodoModal, setToggleUpdateStatusTodoModal] = useState(false)
+  const [toggleRemoveStatusTodoModal, setToggleRemoveStatusTodoModal] = useState(false)
   const [statusTodo, setStatusTodo] = useState<StatusTodo>(props.statusTodo)
 
   const utils = useUtils()
@@ -73,6 +75,7 @@ const StatusTodoList = (props: Props) => {
     _remove()
       .then()
       .catch(() => alerts.handle('error', 'Sistema fora do ar, tente novamente mais tarde'))
+      .finally(() => setToggleRemoveStatusTodoModal(false))
   }, [removeStatusTodo.handle, alerts.handle])
 
   // TODO: Não está atualizando a lista sozinha
@@ -117,7 +120,7 @@ const StatusTodoList = (props: Props) => {
             variant="contained"
             size="small"
             color="error"
-            onClick={handleRemoveStatusTodo}>
+            onClick={() => setToggleRemoveStatusTodoModal(true)}>
             <IconRemoveAddTodo />
           </ButtonHeader>
         </ButtonsHeader>
@@ -136,6 +139,11 @@ const StatusTodoList = (props: Props) => {
         open={toggleUpdateStatusTodoModal}
         handleClose={() => setToggleUpdateStatusTodoModal(false)}
         getStatusTodoAfterUpdated={getStatusTodoAfterUpdated}
+      />
+      <RemoveStatusTodoDialog
+        open={toggleRemoveStatusTodoModal}
+        handleClose={() => setToggleRemoveStatusTodoModal(false)}
+        handleOnSubmit={handleRemoveStatusTodo}
       />
     </Container>
   )
