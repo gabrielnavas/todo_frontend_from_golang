@@ -13,6 +13,14 @@ import { IconDelete } from './icons'
 import { useDeleteTodo } from './hooks/http/useDeleteTodo'
 import { useAlert } from '../../../shared/hooks/alert/useAlert'
 import DeleteConfirmationDialog from './hooks/components/DeleteConfirmationDialog'
+import UpdateTodoModal from './components/UpdateTodoModal'
+
+type StatusTodo = {
+  id: number
+  name: string
+  createdAt: Date
+  updatedAt: Date
+}
 
 type Todo = {
   id: number
@@ -26,8 +34,10 @@ type Todo = {
 
 type Props = {
   todo: Todo
+  statusTodo: StatusTodo
   isLoading: boolean
   afterDelete: (todoId: number) => void
+  getTodoAfterUpdate: (todo: Todo) => void
 }
 
 /**
@@ -37,13 +47,10 @@ type Props = {
  */
 const TodoItem = (props: Props) => {
   const [delTodoOpenDialog, setDelTodoOpenDialog] = useState(false)
+  const [updateTodoOpenModal, setUpdateTodoOpenModal] = useState(false)
   const [isLoading, setIsloading] = useState(false)
   const deleteTodo = useDeleteTodo()
   const alerts = useAlert()
-
-  const handleTodoItem = useCallback(() => {
-    console.log('voce clicou no titulo, descricao ou imagem do todo')
-  }, [])
 
   const handleDeleteTodo = useCallback(async () => {
     setIsloading(true)
@@ -66,9 +73,9 @@ const TodoItem = (props: Props) => {
   const isLoadingAll = props.isLoading || isLoading
 
   return (
-    <Container onClick={handleTodoItem}>
+    <Container>
       <Header>
-        <Title>
+        <Title onClick={() => setUpdateTodoOpenModal(true)}>
           {props.todo.title}
         </Title>
         <ButtonHeader
@@ -80,18 +87,28 @@ const TodoItem = (props: Props) => {
           <IconDelete />
         </ButtonHeader>
       </Header>
-      <Description>
+      <Description onClick={() => setUpdateTodoOpenModal(true)}>
         {props.todo.description}
       </Description>
       {
         props.todo.imageUrl && (
-          <Image src={props.todo.imageUrl}/>
+          <Image
+            onClick={() => setUpdateTodoOpenModal(true)}
+            src={props.todo.imageUrl}
+          />
         )
       }
       <DeleteConfirmationDialog
         open={delTodoOpenDialog}
         onClose={() => setDelTodoOpenDialog(false)}
         onSubmit={handleDeleteTodo}
+      />
+      <UpdateTodoModal
+        todo={props.todo}
+        statusTodo={props.statusTodo}
+        open={updateTodoOpenModal}
+        onClose={() => setUpdateTodoOpenModal(false)}
+        getTodoAfterUpdate={props.getTodoAfterUpdate}
       />
     </Container>
   )

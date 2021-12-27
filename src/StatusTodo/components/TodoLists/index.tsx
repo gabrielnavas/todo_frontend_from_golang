@@ -3,6 +3,13 @@ import {
   EmptyTodoItemList
 } from './styles'
 
+type StatusTodo = {
+  id: number
+  name: string
+  createdAt: Date
+  updatedAt: Date
+}
+
 type Todo = {
   id: number
   title: string
@@ -15,7 +22,9 @@ type Todo = {
 
 type Props = {
   todos: Todo[]
+  statusTodo: StatusTodo
   afterDeleteTodoItem: (todoId: number) => void
+  getTodoAfterUpdate: (todo: Todo) => void
   isLoading: boolean
 }
 
@@ -32,8 +41,11 @@ const TodoList = (props: Props) => {
         <TodoItem
           key={todo.id}
           afterDelete={props.afterDeleteTodoItem}
+          getTodoAfterUpdate={props.getTodoAfterUpdate}
           isLoading={props.isLoading}
-          todo={todo} />
+          todo={todo}
+          statusTodo={props.statusTodo}
+        />
       ))
     }
     </>

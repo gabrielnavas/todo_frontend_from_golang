@@ -86,6 +86,10 @@ const StatusTodoList = (props: Props) => {
     setStatusTodo(old => ({ ...old, todos: old.todos.filter(todo => todo.id !== todoId) }))
   }, [])
 
+  const handlerGetTodoAfterUpdate = useCallback((todo: Todo) => {
+    setStatusTodo(old => ({ ...old, todos: old.todos.map(t => t.id === todo.id ? todo : t) }))
+  }, [])
+
   const getStatusTodoAfterUpdated = (statusTodo: StatusTodo) => {
     setStatusTodo(statusTodo)
   }
@@ -125,7 +129,9 @@ const StatusTodoList = (props: Props) => {
       <Body>
         <TodoList
           todos={statusTodo.todos}
+          statusTodo={props.statusTodo}
           afterDeleteTodoItem={handlerAfterDeleteTodoItem}
+          getTodoAfterUpdate={handlerGetTodoAfterUpdate}
           isLoading={isLoading}
         />
       </Body>
