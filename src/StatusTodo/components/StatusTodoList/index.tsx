@@ -82,6 +82,10 @@ const StatusTodoList = (props: Props) => {
     setStatusTodo(old => ({ ...old, todos: [todo, ...old.todos] }))
   }, [statusTodo.todos])
 
+  const handlerAfterDeleteTodoItem = useCallback((todoId: number) => {
+    setStatusTodo(old => ({ ...old, todos: old.todos.filter(todo => todo.id !== todoId) }))
+  }, [])
+
   const getStatusTodoAfterUpdated = (statusTodo: StatusTodo) => {
     setStatusTodo(statusTodo)
   }
@@ -119,7 +123,11 @@ const StatusTodoList = (props: Props) => {
         </ButtonsHeader>
       </HeaderStack>
       <Body>
-        <TodoList todos={statusTodo.todos} isLoading={isLoading} />
+        <TodoList
+          todos={statusTodo.todos}
+          afterDeleteTodoItem={handlerAfterDeleteTodoItem}
+          isLoading={isLoading}
+        />
       </Body>
       <AddTodoModal
         statusTodo={statusTodo}
