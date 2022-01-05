@@ -43,30 +43,26 @@ const StatusTodoLists = (props: Props) => {
   }, [props.statusTodoLists])
 
   const getTodoAfterUpdated = (todo: Todo, statusTodoId: number) => {
-    /**
-     * TODO:
-     * pegar o status todo correto antigo
-     * remover o todo dele
-     * pegar o status todo novo
-     * adicionar o todo nele
-     * adicionar novamente no state toda lista de lista
-     */
-
     let newStatusTodoLists: StatusTodo[] = [...statusTodoLists]
 
-    // remove todo
-    newStatusTodoLists = statusTodoLists.map(statusTodoList => {
-      statusTodoList.todos = statusTodoList.todos.filter(t => t.id !== todo.id)
-      return statusTodoList
-    })
+    function _removeTodoItem () {
+      newStatusTodoLists = statusTodoLists.map(statusTodoList => {
+        statusTodoList.todos = statusTodoList.todos.filter(t => t.id !== todo.id)
+        return statusTodoList
+      })
+    }
 
-    // add todo
-    newStatusTodoLists = statusTodoLists.map(statusTodoList => {
-      if (statusTodoList.id === statusTodoId) {
-        statusTodoList.todos.push(todo)
-      }
-      return statusTodoList
-    })
+    function _addtodo () {
+      newStatusTodoLists = statusTodoLists.map(statusTodoList => {
+        if (statusTodoList.id === statusTodoId) {
+          statusTodoList.todos.push(todo)
+        }
+        return statusTodoList
+      })
+    }
+
+    _removeTodoItem()
+    _addtodo()
     setStatusTodoLists(newStatusTodoLists)
   }
 
