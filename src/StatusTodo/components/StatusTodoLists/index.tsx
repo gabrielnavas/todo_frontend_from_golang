@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import StatusTodoList from '../StatusTodoList'
 import {
   EmptyStatusTodo
@@ -36,12 +36,13 @@ type Props = {
  * @returns Retorna um Status Todo com vários todos
  */
 const StatusTodoLists = (props: Props) => {
-  // TODO: refatorar esses nomes grandes(talvez?)
+  const [statusTodoLists, setStatusTodoLists] = useState<StatusTodo[]>([])
 
-  const [statusTodoLists, setStatusTodoLists] = useState<StatusTodo[]>(props.statusTodoLists)
+  useEffect(() => {
+    setStatusTodoLists(props.statusTodoLists)
+  }, [props.statusTodoLists])
 
   const getTodoAfterUpdated = (todo: Todo, statusTodoId: number) => {
-    debugger
     /**
      * TODO:
      * pegar o status todo correto antigo
@@ -50,6 +51,23 @@ const StatusTodoLists = (props: Props) => {
      * adicionar o todo nele
      * adicionar novamente no state toda lista de lista
      */
+
+    let newStatusTodoLists: StatusTodo[] = [...statusTodoLists]
+
+    // remove todo
+    newStatusTodoLists = statusTodoLists.map(statusTodoList => {
+      statusTodoList.todos = statusTodoList.todos.filter(t => t.id !== todo.id)
+      return statusTodoList
+    })
+
+    // add todo
+    newStatusTodoLists = statusTodoLists.map(statusTodoList => {
+      if (statusTodoList.id === statusTodoId) {
+        statusTodoList.todos.push(todo)
+      }
+      return statusTodoList
+    })
+    setStatusTodoLists(newStatusTodoLists)
   }
 
   if (props.isLoading) {
@@ -59,7 +77,7 @@ const StatusTodoLists = (props: Props) => {
   }
 
   // TODO: fazer um componente próprio em vez desse EmptyStatusTodo
-  if (props.statusTodoLists.length === 0) {
+  if (statusTodoLists.length === 0) {
     return <EmptyStatusTodo>
       Nenhum todo status adicionado ainda, cliquei no botão acima para iniciar um.
     </EmptyStatusTodo>
@@ -67,7 +85,7 @@ const StatusTodoLists = (props: Props) => {
 
   return <>
     {
-      props.statusTodoLists.map(statusTodo => (
+      statusTodoLists.map(statusTodo => (
         <StatusTodoList
           getTodoAfterUpdated={getTodoAfterUpdated}
           removeStatusTodoAfterRequest={props.removeStatusTodoAfterRequest}
