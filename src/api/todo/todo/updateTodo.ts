@@ -1,4 +1,4 @@
-import { getEndpoint } from '../..'
+import { getEndpoint } from '../../getEndpoint'
 
 const urlBlobToFile = async (url: string, fileName: string): Promise<File> => {
   const theBlob = await fetch(url).then(r => r.blob())

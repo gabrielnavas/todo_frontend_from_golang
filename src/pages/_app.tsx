@@ -1,8 +1,6 @@
 import wrapper from '../store'
 import withReduxSaga from 'next-redux-saga'
 
-import PropTypes from 'prop-types'
-
 import Head from 'next/head'
 
 import { ThemeProvider } from '@mui/material/styles'
@@ -35,12 +33,6 @@ function MyApp (props: any) {
       </ThemeProvider>
     </CacheProvider>
   )
-}
-
-MyApp.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-  emotionCache: PropTypes.object,
-  pageProps: PropTypes.object.isRequired
 }
 
 export default wrapper.withRedux(withReduxSaga(MyApp))

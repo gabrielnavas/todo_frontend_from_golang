@@ -18,7 +18,7 @@ import { IconAddStatusTodo } from './icons'
 import StatusTodoLists from './components/StatusTodoLists'
 import AddStatusTodoModal from './components/AddStatusTodoModal'
 
-import { useAlert } from '../shared/hooks/alert/useAlert'
+import { useAlert } from '../hooks/alert/useAlert'
 
 const StatusTodoView = () => {
   const [toggleAddStatusTodoModal, setToggleAddStatusTodoModal] = useState(false)

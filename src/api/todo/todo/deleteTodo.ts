@@ -1,4 +1,4 @@
-import { getEndpoint } from '../..'
+import { getEndpoint } from '../../getEndpoint'
 
 export type DeleteTodoResponse = {
   ok: boolean

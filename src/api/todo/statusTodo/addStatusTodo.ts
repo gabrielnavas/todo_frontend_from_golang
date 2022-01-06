@@ -1,4 +1,4 @@
-import { getEndpoint } from '../..'
+import { getEndpoint } from '../../getEndpoint'
 
 export type AddStatusTodoParam = {
   name: string

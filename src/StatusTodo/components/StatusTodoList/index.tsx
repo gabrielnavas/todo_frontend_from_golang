@@ -21,7 +21,7 @@ import {
   IconRemoveAddTodo
 } from './icons'
 
-import { useAlert } from '../../../shared/hooks/alert/useAlert'
+import { useAlert } from '../../../hooks/alert/useAlert'
 
 import AddTodoModal from './components/AddTodoModal'
 import UpdateStatusTodoModal from './components/UpdateStatusTodoModal'

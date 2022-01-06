@@ -1,4 +1,4 @@
-import { getEndpoint } from '../..'
+import { getEndpoint } from '../../getEndpoint'
 
 const makeImageUrl = (todoId: number) => {
   const endpoint = getEndpoint()
