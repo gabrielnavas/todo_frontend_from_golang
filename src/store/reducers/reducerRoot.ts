@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
-import statusTodoReducer, { StateStatusTodo } from './todos/statusTodo'
+import statusTodoReducer from './todo/switch'
+import { StateStatusTodo } from './todo/todoTypes'
 
 export type Reducers = {
   statusTodoStore: StateStatusTodo

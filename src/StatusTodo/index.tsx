@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Reducers } from '../store/reducers'
+import { Reducers } from '../store/reducers/reducerRoot'
 import { resetAllMessages } from '../store/actions/todo/errors'
 
 import {

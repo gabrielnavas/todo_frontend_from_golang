@@ -3,7 +3,7 @@ import createSagaMiddleware from 'redux-saga'
 import { createWrapper } from 'next-redux-wrapper'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-import rootReducer from './reducers'
+import rootReducer from './reducers/reducerRoot'
 import rootSagas from './sagas/sagaRoot'
 
 const makeStore = () => {
@@ -12,9 +12,8 @@ const makeStore = () => {
     rootReducer,
     composeWithDevTools(
       applyMiddleware(sagaMiddleware)
-      // other store enhancers if any
     )
-  )
+  ) as any
   store.sagaTask = sagaMiddleware.run(rootSagas)
   return store
 }

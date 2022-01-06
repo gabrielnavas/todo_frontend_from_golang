@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { updateTodoRequest } from '../../../../../store/actions/todo/todo'
-import { Reducers } from '../../../../../store/reducers'
+import { Reducers } from '../../../../../store/reducers/reducerRoot'
 
 import Modal from '@mui/material/Modal'
 import { TextField } from '@mui/material'

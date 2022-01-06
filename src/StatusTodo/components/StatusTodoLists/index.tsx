@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllStatusTodoRequest } from '../../../store/actions/todo/statusTodo'
 import { getAllTodoRequest } from '../../../store/actions/todo/todo'
 
-import { Reducers } from '../../../store/reducers'
+import { Reducers } from '../../../store/reducers/reducerRoot'
 
 import StatusTodoList from '../StatusTodoList'
 
