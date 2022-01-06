@@ -44,7 +44,6 @@ const TodoItem = (props: Props) => {
   const [delTodoOpenDialog, setDelTodoOpenDialog] = useState(false)
   const [updateTodoOpenModal, setUpdateTodoOpenModal] = useState(false)
 
-  const alerts = useAlert()
   const dispatch = useDispatch()
 
   const handleDeleteTodo = useCallback(() => {

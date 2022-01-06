@@ -7,10 +7,9 @@ import { Reducers } from '../../../../../store/reducers'
 
 import Modal from '@mui/material/Modal'
 import { TextField } from '@mui/material'
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 
 import { useForm } from './hooks/data/useForm'
-
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 
 import {
   Container,
@@ -26,8 +25,6 @@ import {
   Title,
   FormStack
 } from './styles'
-
-import { useAlert } from '../../../../../shared/hooks/alert/useAlert'
 
 type Todo = {
   id: number
@@ -66,7 +63,6 @@ const UpdateTodoModal = (props: Props) => {
   const dispatch = useDispatch()
 
   const form = useForm({ todo: props.todo })
-  const alerts = useAlert()
 
   useEffect(() => {
     const statusTodoOptions = store.statusTodoStore.statusTodos.map(statusTodo => ({ label: statusTodo.name, statusTodo }))
@@ -90,6 +86,7 @@ const UpdateTodoModal = (props: Props) => {
       updatedAt: props.todo.updatedAt
     }
     dispatch(updateTodoRequest(payload))
+    props.onClose()
   }, [form.values])
 
   const renderImageUpload = () => {

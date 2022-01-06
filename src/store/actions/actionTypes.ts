@@ -19,6 +19,9 @@ export type AddStatusTodoSuccess = {
   name: string
   createdAt: Date
   updatedAt: Date
+
+  messageOk: string
+  usecaseError: string
 }
 
 export const ADD_STATUS_TODO_FAIL = 'ADD_STATUS_TODO_FAIL'

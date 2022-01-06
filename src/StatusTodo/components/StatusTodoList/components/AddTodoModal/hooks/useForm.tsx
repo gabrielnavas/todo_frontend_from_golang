@@ -54,7 +54,8 @@ const useForm = () => {
     validate: formik.validateForm,
     onChangeImage: handlerOnChangeImage,
     onClickRemoveImage: handlerRemoveImage,
-    fileRef: inputFileRef
+    fileRef: inputFileRef,
+    resertForm: formik.resetForm
   }
 }
 

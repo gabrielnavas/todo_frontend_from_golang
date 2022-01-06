@@ -10,7 +10,8 @@ export type AddStatusTodoResponse = {
   createdAt: Date
   updatedAt: Date
 
-  messageError?: string
+  ok: boolean
+  message: string
 }
 
 export type addStatusTodoFn = (statusTodo: AddStatusTodoParam) => Promise<AddStatusTodoResponse>
@@ -30,7 +31,8 @@ export const addStatusTodo = async (statusTodo: AddStatusTodoParam): Promise<Add
 
   if (response.status === 400) {
     return {
-      messageError: data.message
+      ok: false,
+      message: data.message
     } as AddStatusTodoResponse
   }
 
@@ -39,7 +41,10 @@ export const addStatusTodo = async (statusTodo: AddStatusTodoParam): Promise<Add
       id: data.id,
       name: data.name,
       createdAt: new Date(data.createdAt),
-      updatedAt: new Date(data.updatedAt)
+      updatedAt: new Date(data.updatedAt),
+
+      ok: true,
+      message: 'Todo adicionado com sucesso.'
     }
   }
 

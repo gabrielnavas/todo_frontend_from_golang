@@ -31,7 +31,8 @@ const useForm = (props: Props) => {
     values: formik.values,
     errors: formik.errors,
     setValues: formik.setValues,
-    validate: formik.validateForm
+    validate: formik.validateForm,
+    resetForm: formik.resetForm
   }
 }
 

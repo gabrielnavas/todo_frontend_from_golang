@@ -1,6 +1,11 @@
 import { useCallback } from 'react'
 
+import { useDispatch } from 'react-redux'
+
+import { addTodoRequest } from '../../../../../store/actions/todo/todo'
+
 import Modal from '@mui/material/Modal'
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 
 import { useForm } from './hooks/useForm'
 
@@ -18,11 +23,6 @@ import {
   FormStack
 } from './styles'
 
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
-import { useAlert } from '../../../../../shared/hooks/alert/useAlert'
-import { useDispatch } from 'react-redux'
-import { addTodoRequest } from '../../../../../store/actions/todo/todo'
-
 type StatusTodo = {
   id: number
   name: string
@@ -37,7 +37,6 @@ type Props = {
 
 const AddTodoModal = (props: Props) => {
   const form = useForm()
-  const alerts = useAlert()
 
   const dispatch = useDispatch()
 
@@ -54,6 +53,7 @@ const AddTodoModal = (props: Props) => {
       statusId: props.statusTodo.id
     }
     dispatch(addTodoRequest(payload))
+    form.resertForm()
   }, [form.values])
 
   const renderImageUpload = () => {

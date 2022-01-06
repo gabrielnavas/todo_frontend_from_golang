@@ -61,6 +61,8 @@ const reducer = (state = initialState, action: AnyAction) => {
     case actionTypes.ADD_STATUS_TODO_SUCCESS: {
       const payload = action.payload as actionTypes.AddStatusTodoSuccess
       const newState = { ...state }
+      newState.messageOk = payload.messageOk
+      newState.usecaseError = payload.usecaseError
       newState.statusTodos.unshift({
         id: payload.id,
         name: payload.name,

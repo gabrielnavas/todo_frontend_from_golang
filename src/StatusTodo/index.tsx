@@ -32,20 +32,27 @@ const StatusTodoView = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    debugger
     if (store.statusTodoStore.messageOk) {
       alerts.handle('success', store.statusTodoStore.messageOk)
       return
     }
+    dispatch(resetAllMessages())
+  }, [store.statusTodoStore.messageOk])
+
+  useEffect(() => {
     if (store.statusTodoStore.usecaseError) {
       alerts.handle('warning', store.statusTodoStore.usecaseError)
       return
     }
+    dispatch(resetAllMessages())
+  }, [store.statusTodoStore.usecaseError])
+
+  useEffect(() => {
     if (store.statusTodoStore.serverError) {
       alerts.handle('error', store.statusTodoStore.serverError)
     }
     dispatch(resetAllMessages())
-  }, [store.statusTodoStore.messageOk, store.statusTodoStore.usecaseError, store.statusTodoStore.serverError])
+  }, [store.statusTodoStore.serverError])
 
   return (
     <Page>

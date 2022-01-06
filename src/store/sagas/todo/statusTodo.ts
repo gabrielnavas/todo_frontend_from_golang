@@ -9,12 +9,27 @@ import { CustomActionSaga } from '../sagasType'
 export function * addStatusTodoRequestSaga (actionParam: CustomActionSaga<actionsTypes.AddStatusTodoRequest>) {
   try {
     const statusTodo: statusTodoApi.AddStatusTodoResponse = yield call<statusTodoApi.addStatusTodoFn>(statusTodoApi.addStatusTodo, { name: actionParam.payload.name })
-    yield put(actionStatusTodo.addStatusTodoSuccess({
-      id: statusTodo.id,
-      name: statusTodo.name,
-      createdAt: statusTodo.createdAt,
-      updatedAt: statusTodo.updatedAt
-    }))
+    if (statusTodo.ok) {
+      yield put(actionStatusTodo.addStatusTodoSuccess({
+        id: statusTodo.id,
+        name: statusTodo.name,
+        createdAt: statusTodo.createdAt,
+        updatedAt: statusTodo.updatedAt,
+
+        messageOk: statusTodo.message,
+        usecaseError: ''
+      }))
+    } else {
+      yield put(actionStatusTodo.addStatusTodoSuccess({
+        id: statusTodo.id,
+        name: statusTodo.name,
+        createdAt: statusTodo.createdAt,
+        updatedAt: statusTodo.updatedAt,
+
+        messageOk: '',
+        usecaseError: statusTodo.message
+      }))
+    }
   } catch (e) {
     yield put(actionStatusTodo.addStatusTodoFail({ message: e.message }))
   }

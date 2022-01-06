@@ -63,7 +63,7 @@ export const addTodo = async (payload: Params): Promise<AddTodoResult> => {
   if (response.status !== 201) {
     return {
       todo: null,
-      ok: true,
+      ok: false,
       message: data.message
     }
   }
@@ -92,7 +92,7 @@ export const addTodo = async (payload: Params): Promise<AddTodoResult> => {
   }
   return {
     todo,
-    ok: false,
+    ok: true,
     message: 'Todo adicionado com sucesso!'
   }
 }
