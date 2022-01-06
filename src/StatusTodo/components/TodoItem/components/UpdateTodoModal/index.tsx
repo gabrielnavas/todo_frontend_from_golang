@@ -67,7 +67,7 @@ const UpdateTodoModal = (props: Props) => {
   useEffect(() => {
     const statusTodoOptions = store.statusTodoStore.statusTodos.map(statusTodo => ({ label: statusTodo.name, statusTodo }))
     setStatusTodoOptions(statusTodoOptions)
-  }, [])
+  }, [props.open])
 
   const handleUpdateTodo = useCallback(async () => {
     const errors = await form.validate()

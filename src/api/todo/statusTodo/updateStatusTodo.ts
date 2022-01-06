@@ -25,14 +25,14 @@ export const updateStatusTodo = async (statusTodo: UpdateStatusTodoParam): Promi
   if (response.status === 400) {
     const data = await response.json()
     return {
-      ok: true,
+      ok: false,
       message: data.message
     }
   }
 
   if (response.status === 204) {
     return {
-      ok: false,
+      ok: true,
       message: 'Status todo atualizado!'
     }
   }

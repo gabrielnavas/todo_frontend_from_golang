@@ -67,7 +67,7 @@ export const updateTodo = async (todo: UpdateTodoParams): Promise<UpdateTodoResu
     const data = await response.json()
     return {
       todo: {} as UpdateTodoParams,
-      ok: true,
+      ok: false,
       message: data.message
     }
   }
@@ -103,7 +103,7 @@ export const updateTodo = async (todo: UpdateTodoParams): Promise<UpdateTodoResu
       imageUrl: image ? URL.createObjectURL(image) : null,
       statusId: todo.statusId
     } as UpdateTodoParams,
-    ok: false,
+    ok: true,
     message: 'Todo atualizado com sucesso!'
   }
 }
