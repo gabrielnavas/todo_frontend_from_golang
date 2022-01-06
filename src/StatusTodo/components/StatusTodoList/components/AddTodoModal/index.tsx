@@ -1,9 +1,8 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
 import Modal from '@mui/material/Modal'
 
-import { useForm } from './hooks/data/useForm'
-import { useAddTodo } from './hooks/http/useAddTodo'
+import { useForm } from './hooks/useForm'
 
 import {
   Container,
@@ -21,16 +20,8 @@ import {
 
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { useAlert } from '../../../../../shared/hooks/alert/useAlert'
-
-type Todo = {
-  id: number
-  title: string
-  description: string
-  createdAt: Date
-  updatedAt: Date
-  statusId: number
-  imageUrl?: string
-}
+import { useDispatch } from 'react-redux'
+import { addTodoRequest } from '../../../../../store/actions/todo/todo'
 
 type StatusTodo = {
   id: number
@@ -39,17 +30,16 @@ type StatusTodo = {
 
 type Props = {
   statusTodo: StatusTodo
-  getTodoAfterAdd: (todo: Todo) => void
   handleClose: () => void
   open: boolean
+  isLoading: boolean
 }
 
 const AddTodoModal = (props: Props) => {
-  const [isLoading, setIsLoading] = useState(false)
-
   const form = useForm()
-  const addTodo = useAddTodo()
   const alerts = useAlert()
+
+  const dispatch = useDispatch()
 
   const handleCreateTodo = useCallback(async () => {
     const errors = await form.validate()
@@ -57,31 +47,13 @@ const AddTodoModal = (props: Props) => {
     if (errorsList.length > 0) {
       return
     }
-
-    setIsLoading(true)
-    try {
-      const result = await addTodo.handler({
-        title: form.values.title,
-        description: form.values.description,
-        image: form.values.image,
-        statusId: props.statusTodo.id
-      })
-      if (result.hasError) {
-        alerts.handle('warning', result.message)
-        return
-      }
-      alerts.handle('success', result.message)
-      form.setValues({
-        title: '',
-        description: '',
-        image: null
-      })
-      props.getTodoAfterAdd(result.todo)
-    } catch (ex) {
-      alerts.handle('success', 'Ocorreu um problema com o servidor, tente adicionar mais tarde.')
-    } finally {
-      setIsLoading(false)
+    const payload = {
+      title: form.values.title,
+      image: form.values.image,
+      description: form.values.description,
+      statusId: props.statusTodo.id
     }
+    dispatch(addTodoRequest(payload))
   }, [form.values])
 
   const renderImageUpload = () => {
@@ -136,7 +108,7 @@ const AddTodoModal = (props: Props) => {
           <TextFieldTitle
             variant="standard"
             label="Título"
-            disabled={isLoading}
+            disabled={props.isLoading}
             error={!!form.errors.title}
             value={form.values.title}
             helperText={form.errors.title && form.errors.title}
@@ -156,14 +128,14 @@ const AddTodoModal = (props: Props) => {
           {renderImageUpload()}
           <ButtonsStack direction='row' spacing={4}>
             <ButtonFinish
-              disabled={isLoading}
+              disabled={props.isLoading}
               variant="contained"
               color="error"
               onClick={props.handleClose}>
                 Cancelar
             </ButtonFinish>
             <ButtonFinish
-              disabled={isLoading}
+              disabled={props.isLoading}
               variant="contained"
               onClick={handleCreateTodo}>
                 Inserir

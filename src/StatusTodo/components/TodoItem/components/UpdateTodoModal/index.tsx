@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { useDispatch, useSelector } from 'react-redux'
+
+import { updateTodoRequest } from '../../../../../store/actions/todo/todo'
+import { Reducers } from '../../../../../store/reducers'
+
 import Modal from '@mui/material/Modal'
 import { TextField } from '@mui/material'
 
 import { useForm } from './hooks/data/useForm'
-import { useUpdateTodo } from './hooks/http/useUpdateTodo'
 
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 
@@ -24,7 +28,6 @@ import {
 } from './styles'
 
 import { useAlert } from '../../../../../shared/hooks/alert/useAlert'
-import useGetAllStatusTodo from './hooks/http/useGetAllStatusTodo'
 
 type Todo = {
   id: number
@@ -51,33 +54,23 @@ export type StatusTodoOptions = {
 type Props = {
   todo: Todo
   statusTodo: StatusTodo
-  getTodoAfterUpdate: (todo: Todo, statusTodoId: number) => void
   onClose: () => void
   open: boolean
+  isLoading: boolean
 }
 
 const UpdateTodoModal = (props: Props) => {
-  const [isLoading, setIsLoading] = useState(false)
   const [statusTodoOptions, setStatusTodoOptions] = useState<StatusTodoOptions[]>([])
 
-  const form = useForm({ todo: props.todo })
-  const updateTodo = useUpdateTodo()
-  const getAllStatusTodo = useGetAllStatusTodo()
+  const store = useSelector<Reducers, Reducers>(state => state)
+  const dispatch = useDispatch()
 
+  const form = useForm({ todo: props.todo })
   const alerts = useAlert()
 
   useEffect(() => {
-    async function _getStatusTodosOptions () {
-      setIsLoading(true)
-      const statusTodos = await getAllStatusTodo.handlerRequest(props.statusTodo.id)
-      setIsLoading(false)
-      console.log(statusTodos)
-      setStatusTodoOptions(statusTodos)
-    }
-
-    _getStatusTodosOptions()
-      .then()
-      .catch(ex => alerts.handle('error', 'Servidor fora do ar'))
+    const statusTodoOptions = store.statusTodoStore.statusTodos.map(statusTodo => ({ label: statusTodo.name, statusTodo }))
+    setStatusTodoOptions(statusTodoOptions)
   }, [])
 
   const handleUpdateTodo = useCallback(async () => {
@@ -87,31 +80,16 @@ const UpdateTodoModal = (props: Props) => {
       return
     }
 
-    setIsLoading(true)
-    try {
-      const result = await updateTodo.handler({
-        id: props.todo.id,
-        title: form.values.title,
-        description: form.values.description,
-        imageUrl: form.values.imageUrl,
-        statusId: form.values.statusId,
-        createdAt: props.todo.createdAt,
-        updatedAt: props.todo.updatedAt
-      })
-      if (result.hasError) {
-        alerts.handle('warning', result.message)
-        return
-      }
-      alerts.handle('success', result.message)
-      props.getTodoAfterUpdate(result.todo, form.values.statusId)
-      props.onClose()
-    } catch (ex) {
-      console.log(ex)
-
-      alerts.handle('error', 'Ocorreu um problema com o servidor, tente adicionar mais tarde.')
-    } finally {
-      setIsLoading(false)
+    const payload = {
+      id: props.todo.id,
+      title: form.values.title,
+      description: form.values.description,
+      imageUrl: form.values.imageUrl,
+      statusId: form.values.statusId,
+      createdAt: props.todo.createdAt,
+      updatedAt: props.todo.updatedAt
     }
+    dispatch(updateTodoRequest(payload))
   }, [form.values])
 
   const renderImageUpload = () => {
@@ -163,7 +141,7 @@ const UpdateTodoModal = (props: Props) => {
           <TextFieldTitle
             variant="standard"
             label="Título"
-            disabled={isLoading}
+            disabled={props.isLoading}
             error={!!form.errors.title}
             value={form.values.title}
             helperText={form.errors.title && form.errors.title}
@@ -189,14 +167,14 @@ const UpdateTodoModal = (props: Props) => {
           {renderImageUpload()}
           <ButtonsStack direction='row' spacing={4}>
             <ButtonFinish
-              disabled={isLoading}
+              disabled={props.isLoading}
               variant="contained"
               color="error"
               onClick={props.onClose}>
                 Cancelar
             </ButtonFinish>
             <ButtonFinish
-              disabled={isLoading}
+              disabled={props.isLoading}
               variant="contained"
               onClick={handleUpdateTodo}>
                 Atualizar

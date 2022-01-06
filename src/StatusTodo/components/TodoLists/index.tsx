@@ -23,16 +23,9 @@ type Todo = {
 type Props = {
   todos: Todo[]
   statusTodo: StatusTodo
-  afterDeleteTodoItem: (todoId: number) => void
-  getTodoAfterUpdate: (todo: Todo, statusTodoId: number) => void
   isLoading: boolean
 }
 
-/**
- * Renderiza todos Todo de um StatusTodo
- * @param props todos: lista de Todo de um StatusTodo
- * @returns returna a lista de renderizado um StatusTodo
- */
 const TodoList = (props: Props) => {
   const renderTodoList = () =>
     <>
@@ -40,8 +33,6 @@ const TodoList = (props: Props) => {
       props.todos.map(todo => (
         <TodoItem
           key={todo.id}
-          afterDelete={props.afterDeleteTodoItem}
-          getTodoAfterUpdate={props.getTodoAfterUpdate}
           isLoading={props.isLoading}
           todo={todo}
           statusTodo={props.statusTodo}

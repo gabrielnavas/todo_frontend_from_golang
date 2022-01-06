@@ -1,5 +1,9 @@
 import { useCallback, useState } from 'react'
 
+import { useDispatch } from 'react-redux'
+
+import { deleteStatusTodoRequest } from '../../../store/actions/todo/statusTodo'
+
 import TodoList from '../TodoLists'
 
 import {
@@ -16,9 +20,9 @@ import {
   IconEditAddTodo,
   IconRemoveAddTodo
 } from './icons'
+
 import { useAlert } from '../../../shared/hooks/alert/useAlert'
-import { useRemoveStatusTodo } from './hooks/useRemoveStatusTodo'
-import { useUtils } from '../../../shared/hooks/utils/useUtils'
+
 import AddTodoModal from './components/AddTodoModal'
 import UpdateStatusTodoModal from './components/UpdateStatusTodoModal'
 import RemoveStatusTodoDialog from './components/RemoveStatusTodoDialog'
@@ -43,70 +47,42 @@ type StatusTodo = {
 
 type Props = {
   statusTodo: StatusTodo
-  removeStatusTodoAfterRequest: (statusTodoId: number) => void
-  getTodoAfterUpdated: (todo: Todo, statusTodoId: number) => void
+  isLoading: boolean
 }
 
 const StatusTodoList = (props: Props) => {
-  const [isLoading, setIsLoading] = useState(false)
   const [toggleAddTodoModal, setToggleAddTodoModal] = useState(false)
   const [toggleUpdateStatusTodoModal, setToggleUpdateStatusTodoModal] = useState(false)
   const [toggleRemoveStatusTodoModal, setToggleRemoveStatusTodoModal] = useState(false)
-  const [statusTodo, setStatusTodo] = useState<StatusTodo>(props.statusTodo)
 
-  const utils = useUtils()
   const alerts = useAlert()
 
-  const removeStatusTodo = useRemoveStatusTodo()
+  const dispatch = useDispatch()
 
   const handleRemoveStatusTodo = useCallback(() => {
-    async function _remove () {
-      setIsLoading(true)
-      const resultRequest = await removeStatusTodo.handle(statusTodo.id)
-      const message = utils.capitalizeWithEndDot(resultRequest.message)
-      setIsLoading(false)
-      if (resultRequest.ok) {
-        props.removeStatusTodoAfterRequest(statusTodo.id)
-        alerts.handle('success', message)
-      } else {
-        alerts.handle('warning', message)
-      }
+    if (props.statusTodo.todos.length > 0) {
+      alerts.handle('warning', `Você precisa deletar todos Todos antes do status ${props.statusTodo.name}.`)
+      return
     }
-
-    _remove()
-      .then()
-      .catch(() => alerts.handle('error', 'Sistema fora do ar, tente novamente mais tarde'))
-      .finally(() => setToggleRemoveStatusTodoModal(false))
-  }, [removeStatusTodo.handle, alerts.handle])
-
-  const handleGetTodoAfterAdd = useCallback((todo: Todo) => {
-    setStatusTodo(old => ({ ...old, todos: [todo, ...old.todos] }))
-  }, [statusTodo.todos])
-
-  const handlerAfterDeleteTodoItem = useCallback((todoId: number) => {
-    setStatusTodo(old => ({ ...old, todos: old.todos.filter(todo => todo.id !== todoId) }))
+    dispatch(deleteStatusTodoRequest({ statusTodoId: props.statusTodo.id }))
   }, [])
-
-  const getStatusTodoAfterUpdated = (statusTodo: StatusTodo) => {
-    setStatusTodo(statusTodo)
-  }
 
   return (
     <Container>
       <HeaderStack>
         <Title>
-          {statusTodo.name}
+          {props.statusTodo.name}
         </Title>
         <ButtonsHeader>
           <ButtonHeader
-            disabled={isLoading}
+            disabled={props.isLoading}
             variant="contained"
             size="small"
             onClick={() => setToggleAddTodoModal(true)}>
             <IconAddTodo />
           </ButtonHeader>
           <ButtonHeader
-            disabled={isLoading}
+            disabled={props.isLoading}
             variant="contained"
             size="small"
             color="warning"
@@ -114,7 +90,7 @@ const StatusTodoList = (props: Props) => {
             <IconEditAddTodo />
           </ButtonHeader>
           <ButtonHeader
-            disabled={isLoading}
+            disabled={props.isLoading}
             variant="contained"
             size="small"
             color="error"
@@ -125,24 +101,22 @@ const StatusTodoList = (props: Props) => {
       </HeaderStack>
       <Body>
         <TodoList
-          todos={statusTodo.todos}
+          todos={props.statusTodo.todos}
           statusTodo={props.statusTodo}
-          afterDeleteTodoItem={handlerAfterDeleteTodoItem}
-          getTodoAfterUpdate={props.getTodoAfterUpdated}
-          isLoading={isLoading}
+          isLoading={props.isLoading}
         />
       </Body>
       <AddTodoModal
-        statusTodo={statusTodo}
-        getTodoAfterAdd={handleGetTodoAfterAdd}
+        isLoading={props.isLoading}
+        statusTodo={props.statusTodo}
         handleClose={() => setToggleAddTodoModal(false)}
         open={toggleAddTodoModal}
       />
       <UpdateStatusTodoModal
-        statusTodo={statusTodo}
+        isLoading={props.isLoading}
+        statusTodo={props.statusTodo}
         open={toggleUpdateStatusTodoModal}
         handleClose={() => setToggleUpdateStatusTodoModal(false)}
-        getStatusTodoAfterUpdated={getStatusTodoAfterUpdated}
       />
       <RemoveStatusTodoDialog
         open={toggleRemoveStatusTodoModal}

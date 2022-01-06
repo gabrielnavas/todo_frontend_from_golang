@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
+
+import { useDispatch } from 'react-redux'
 
 import Modal from '@mui/material/Modal'
 
-import { useUpdateStatusTodo } from './hooks/http/useUpdateStatusTodo'
-import useForm from './hooks/data/useForm'
+import useForm from './hooks/useForm'
 
 import { useAlert } from '../../../../../shared/hooks/alert/useAlert'
 import { useUtils } from '../../../../../shared/hooks/utils/useUtils'
@@ -16,6 +17,7 @@ import {
   Title,
   FormStack
 } from './styles'
+import { updateStatusTodoRequest } from '../../../../../store/actions/todo/statusTodo'
 
 type StatusTodo = {
   id: number
@@ -26,24 +28,16 @@ type StatusTodo = {
 
 type Props = {
   statusTodo: StatusTodo
-  getStatusTodoAfterUpdated: (statusTodo: StatusTodo) => void
   handleClose: () => void
   open: boolean
+  isLoading: boolean
 }
 
 const UpdateStatusTodoModal = (props: Props) => {
+  const form = useForm({ name: props.statusTodo.name })
   const alerts = useAlert()
-  const [isLoading, setIsLoading] = useState(false)
-  const updateStatusTodo = useUpdateStatusTodo()
-  const form = useForm()
-  const utils = useUtils()
 
-  useEffect(() => {
-    form.setValues({
-      id: props.statusTodo.id,
-      name: props.statusTodo.name
-    })
-  }, [])
+  const dispatch = useDispatch()
 
   const handleUpdateStatusTodo = useCallback(async () => {
     const errors = await form.validate()
@@ -51,28 +45,11 @@ const UpdateStatusTodoModal = (props: Props) => {
     if (hasErrors) {
       return
     }
-    setIsLoading(true)
-    try {
-      const result = await updateStatusTodo.handlerRequest(form.values)
-      if (result.hasError) {
-        alerts.handle('warning', utils.capitalize(result.message))
-        return
-      }
-      alerts.handle('success', utils.capitalize(result.message))
-      form.setValues(old => ({ ...old, name: '' }))
-      props.getStatusTodoAfterUpdated({
-        id: form.values.id,
-        name: form.values.name,
-        createdAt: props.statusTodo.createdAt,
-        updatedAt: new Date()
-      })
-      props.handleClose()
-      form.setValues(old => ({ ...old, name: '' }))
-    } catch (ex) {
-      alerts.handle('error', 'Não foi possível atualizar o status, tente novamente mais tarde')
-    } finally {
-      setIsLoading(false)
-    }
+
+    dispatch(updateStatusTodoRequest({
+      id: props.statusTodo.id,
+      name: form.values.name
+    }))
   }, [form.values.name])
 
   return (
@@ -88,7 +65,7 @@ const UpdateStatusTodoModal = (props: Props) => {
           <TextFieldName
             variant="standard"
             label="Nome"
-            disabled={isLoading}
+            disabled={props.isLoading}
             error={!!form.errors.name}
             value={form.values.name}
             helperText={form.errors.name && form.errors.name}
@@ -98,14 +75,14 @@ const UpdateStatusTodoModal = (props: Props) => {
           <ButtonsStack direction='row' spacing={4}>
             <Button
               color="error"
-              disabled={isLoading}
+              disabled={props.isLoading}
               variant="contained"
               onClick={props.handleClose}>
                 Cancelar
             </Button>
             <Button
               color='warning'
-              disabled={isLoading}
+              disabled={props.isLoading}
               variant="contained"
               onClick={handleUpdateStatusTodo}>
                 Atualizar

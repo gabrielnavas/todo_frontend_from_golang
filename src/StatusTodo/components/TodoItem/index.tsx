@@ -10,10 +10,12 @@ import {
 } from './styles'
 
 import { IconDelete } from './icons'
-import { useDeleteTodo } from './hooks/http/useDeleteTodo'
 import { useAlert } from '../../../shared/hooks/alert/useAlert'
-import DeleteConfirmationDialog from './hooks/components/DeleteConfirmationDialog'
+
+import DeleteConfirmationDialog from './components/DeleteConfirmationDialog'
 import UpdateTodoModal from './components/UpdateTodoModal'
+import { useDispatch } from 'react-redux'
+import { deleteTodoRequest } from '../../../store/actions/todo/todo'
 
 type StatusTodo = {
   id: number
@@ -36,41 +38,22 @@ type Props = {
   todo: Todo
   statusTodo: StatusTodo
   isLoading: boolean
-  afterDelete: (todoId: number) => void
-  getTodoAfterUpdate:(todo: Todo, statusTodoId: number) => void
 }
 
-/**
- * Renderiza um simples todo
- * @param props todo: Todo é um simples todo
- * @returns um Todo Item
- */
 const TodoItem = (props: Props) => {
   const [delTodoOpenDialog, setDelTodoOpenDialog] = useState(false)
   const [updateTodoOpenModal, setUpdateTodoOpenModal] = useState(false)
-  const [isLoading, setIsloading] = useState(false)
-  const deleteTodo = useDeleteTodo()
+
   const alerts = useAlert()
+  const dispatch = useDispatch()
 
-  const handleDeleteTodo = useCallback(async () => {
-    setIsloading(true)
-    try {
-      const result = await deleteTodo.handler(props.todo.id)
-      if (result.hasError) {
-        alerts.handle('warning', result.message)
-        return
-      }
-      alerts.handle('success', result.message)
-      setDelTodoOpenDialog(false)
-      props.afterDelete(props.todo.id)
-      setIsloading(false)
-    } catch (ex) {
-      alerts.handle('error', 'Tente mais tarde, servidor fora do ar.')
-      setIsloading(false)
+  const handleDeleteTodo = useCallback(() => {
+    const payload = {
+      statusId: props.statusTodo.id,
+      todoId: props.todo.id
     }
+    dispatch(deleteTodoRequest(payload))
   }, [])
-
-  const isLoadingAll = props.isLoading || isLoading
 
   return (
     <Container>
@@ -79,7 +62,7 @@ const TodoItem = (props: Props) => {
           {props.todo.title}
         </Title>
         <ButtonHeader
-          disabled={isLoadingAll}
+          disabled={props.isLoading}
           variant="contained"
           size="small"
           color="error"
@@ -105,10 +88,10 @@ const TodoItem = (props: Props) => {
       />
       <UpdateTodoModal
         todo={props.todo}
+        isLoading={props.isLoading}
         statusTodo={props.statusTodo}
         open={updateTodoOpenModal}
         onClose={() => setUpdateTodoOpenModal(false)}
-        getTodoAfterUpdate={props.getTodoAfterUpdate}
       />
     </Container>
   )
