@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import {
   Container,
@@ -10,11 +11,9 @@ import {
 } from './styles'
 
 import { IconDelete } from './icons'
-import { useAlert } from '../../../shared/hooks/alert/useAlert'
 
 import DeleteConfirmationDialog from './components/DeleteConfirmationDialog'
 import UpdateTodoModal from './components/UpdateTodoModal'
-import { useDispatch } from 'react-redux'
 import { deleteTodoRequest } from '../../../store/actions/todo/todo'
 
 type StatusTodo = {

@@ -18,12 +18,12 @@ export const deleteTodo = async (todoId: number): Promise<DeleteTodoResponse> =>
   if (response.status !== 204) {
     const data = await response.json()
     return {
-      ok: true,
+      ok: false,
       message: data.message
     }
   }
   return {
-    ok: false,
+    ok: true,
     message: 'Todo deletado com sucesso'
   }
 }

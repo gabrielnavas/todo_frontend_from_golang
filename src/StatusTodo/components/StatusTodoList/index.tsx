@@ -61,7 +61,8 @@ const StatusTodoList = (props: Props) => {
 
   const handleRemoveStatusTodo = useCallback(() => {
     if (props.statusTodo.todos.length > 0) {
-      alerts.handle('warning', `Você precisa deletar todos Todos antes do status ${props.statusTodo.name}.`)
+      alerts.handle('warning', `Você precisa deletar todos Todos antes do status '${props.statusTodo.name}'.`)
+      setToggleRemoveStatusTodoModal(false)
       return
     }
     dispatch(deleteStatusTodoRequest({ statusTodoId: props.statusTodo.id }))
