@@ -23,9 +23,7 @@ export function * addStatusTodoRequestSaga (actionParam: CustomActionSaga<action
 export function * getAllStatusTodoRequestSaga () {
   try {
     const statusTodos: statusTodoApi.GetAllStatusTodoResponse = yield call<statusTodoApi.GetAllStatusTodoFn>(statusTodoApi.getAllStatusTodo)
-    console.log(statusTodos)
-
-    yield put(actionStatusTodo.getAllStatusTodoSuccess([...statusTodos]))
+    yield put(actionStatusTodo.getAllStatusTodoSuccess(statusTodos))
   } catch (e) {
     yield put(actionStatusTodo.getAllStatusTodoFail({ message: e.message }))
   }

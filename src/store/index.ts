@@ -1,19 +1,21 @@
 import { applyMiddleware, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { createWrapper } from 'next-redux-wrapper'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 import rootReducer from './reducers'
 import rootSagas from './sagas/sagaRoot'
 
-const makeStore = context => {
+const makeStore = () => {
   const sagaMiddleware = createSagaMiddleware()
   const store = createStore(
     rootReducer,
-    applyMiddleware(sagaMiddleware)
+    composeWithDevTools(
+      applyMiddleware(sagaMiddleware)
+      // other store enhancers if any
+    )
   )
-
-  store.sagaTask = sagaMiddleware.run(rootSagas) as any
-
+  store.sagaTask = sagaMiddleware.run(rootSagas)
   return store
 }
 

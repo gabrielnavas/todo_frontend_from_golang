@@ -33,7 +33,7 @@ export const getAllStatusTodoFail = (param: actionTypes.FailParamDefault) => ({
 
 /** DELETE STATUS TODO */
 export const deleteStatusTodoRequest = (param: actionTypes.DeleteStatusTodoRequest) => ({
-  type: actionTypes.ADD_STATUS_TODO_REQUEST,
+  type: actionTypes.DELETE_STATUS_TODO_REQUEST,
   payload: param
 })
 

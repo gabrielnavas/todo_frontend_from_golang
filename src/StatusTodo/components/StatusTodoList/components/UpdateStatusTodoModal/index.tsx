@@ -1,13 +1,10 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 
 import { useDispatch } from 'react-redux'
 
 import Modal from '@mui/material/Modal'
 
 import useForm from './hooks/useForm'
-
-import { useAlert } from '../../../../../shared/hooks/alert/useAlert'
-import { useUtils } from '../../../../../shared/hooks/utils/useUtils'
 
 import {
   Container,
@@ -35,7 +32,6 @@ type Props = {
 
 const UpdateStatusTodoModal = (props: Props) => {
   const form = useForm({ name: props.statusTodo.name })
-  const alerts = useAlert()
 
   const dispatch = useDispatch()
 
@@ -50,6 +46,7 @@ const UpdateStatusTodoModal = (props: Props) => {
       id: props.statusTodo.id,
       name: form.values.name
     }))
+    props.handleClose()
   }, [form.values.name])
 
   return (

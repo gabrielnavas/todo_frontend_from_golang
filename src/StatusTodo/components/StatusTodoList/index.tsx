@@ -65,7 +65,8 @@ const StatusTodoList = (props: Props) => {
       return
     }
     dispatch(deleteStatusTodoRequest({ statusTodoId: props.statusTodo.id }))
-  }, [])
+    setToggleRemoveStatusTodoModal(false)
+  }, [props.statusTodo])
 
   return (
     <Container>

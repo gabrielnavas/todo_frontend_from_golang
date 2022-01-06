@@ -1,10 +1,11 @@
 import { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+
+import { addStatusTodoRequest } from '../../../store/actions/todo/statusTodo'
 
 import Modal from '@mui/material/Modal'
 
 import useForm from './hooks/useForm'
-
-import { useAlert } from '../../../shared/hooks/alert/useAlert'
 
 import {
   Container,
@@ -14,8 +15,6 @@ import {
   Title,
   FormStack
 } from './styles'
-import { useDispatch } from 'react-redux'
-import { addStatusTodoRequest } from '../../../store/actions/todo/statusTodo'
 
 type Props = {
   handleClose: () => void
@@ -25,8 +24,6 @@ type Props = {
 
 const AddStatusTodoModal = (props: Props) => {
   const form = useForm()
-
-  const alerts = useAlert()
 
   const dispatch = useDispatch()
 
@@ -40,7 +37,7 @@ const AddStatusTodoModal = (props: Props) => {
       name: form.values.name
     }
     dispatch(addStatusTodoRequest(payload))
-    form.setValues({ name: '' })
+    form.resetForm()
   }, [form.values])
 
   return (

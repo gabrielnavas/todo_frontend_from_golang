@@ -1,9 +1,5 @@
 import * as actionTypes from '../actionTypes'
 
-/**
- * TODO: refatorar para status todo
- */
-
 export const addTodoRequest = (param: actionTypes.AddTodoRequest) => ({
   type: actionTypes.ADD_TODO_REQUEST,
   payload: param

@@ -1,8 +1,7 @@
+/** For messages */
+export const RESET_ALL_MESSAGES = 'RESET_ALL_MESSAGES'
 
-/**
- * TODO: refatorar para status todo e todo
- */
-
+/** Default for all fails */
 export type FailParamDefault = {
   message: string
 }
@@ -25,14 +24,14 @@ export type AddStatusTodoSuccess = {
 export const ADD_STATUS_TODO_FAIL = 'ADD_STATUS_TODO_FAIL'
 
 export const GET_ALL_STATUS_TODO_REQUEST = 'GET_ALL_STATUS_TODO_REQUEST'
-export const GET_ALL_STATUS_TODO_SUCCESS = 'GET_ALL_STATUS_TODO_REQUEST'
+export const GET_ALL_STATUS_TODO_SUCCESS = 'GET_ALL_STATUS_TODO_SUCCESS'
 export type GetAllStatusTodoSuccess = {
   id: number
   name: string
   createdAt: Date
   updatedAt: Date
 }[]
-export const GET_ALL_STATUS_TODO_FAIL = 'GET_ALL_STATUS_TODO_REQUEST'
+export const GET_ALL_STATUS_TODO_FAIL = 'GET_ALL_STATUS_TODO_FAIL'
 
 export const DELETE_STATUS_TODO_REQUEST = 'DELETE_STATUS_TODO_REQUEST'
 export type DeleteStatusTodoRequest = {
@@ -52,7 +51,7 @@ export type UpdateStatusTodoSetGlobal = {
   id: number
   name: string
 }
-export const UPDATE_STATUS_TODO_UNSET_GLOBAL = 'UPDATE_STATUS_TODO_SET_GLOBAL'
+export const UPDATE_STATUS_TODO_UNSET_GLOBAL = 'UPDATE_STATUS_TODO_UNSET_GLOBAL'
 export const UPDATE_STATUS_TODO_REQUEST = 'UPDATE_STATUS_TODO_REQUEST'
 export type UpdateStatusTodoRequest = {
   id: number

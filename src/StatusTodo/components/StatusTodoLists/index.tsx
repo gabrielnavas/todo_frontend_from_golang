@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
 import { getAllStatusTodoRequest } from '../../../store/actions/todo/statusTodo'
 import { getAllTodoRequest } from '../../../store/actions/todo/todo'
+
 import { Reducers } from '../../../store/reducers'
 
 import StatusTodoList from '../StatusTodoList'
@@ -18,8 +20,10 @@ const StatusTodoLists = (props: Props) => {
   const store = useSelector<Reducers, Reducers>(state => state)
   const dispatch = useDispatch()
 
-  dispatch(getAllStatusTodoRequest())
-  // dispatch(getAllTodoRequest())
+  useEffect(() => {
+    dispatch(getAllStatusTodoRequest())
+    dispatch(getAllTodoRequest())
+  }, [])
 
   if (props.isLoading) {
     return <EmptyStatusTodo>

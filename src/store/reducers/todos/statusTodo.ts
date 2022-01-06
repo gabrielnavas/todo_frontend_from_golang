@@ -48,6 +48,14 @@ const reducer = (state = initialState, action: AnyAction) => {
     case HYDRATE:
       return { ...state }
 
+    //* * ERRORS */
+    case actionTypes.RESET_ALL_MESSAGES: {
+      const newState = { ...state }
+      newState.messageOk = ''
+      newState.usecaseError = ''
+      newState.serverError = ''
+      return newState
+    }
     /** **** STATUS TODO */
     /** ADD STATUS TODO */
     case actionTypes.ADD_STATUS_TODO_SUCCESS: {
@@ -71,12 +79,9 @@ const reducer = (state = initialState, action: AnyAction) => {
     }
 
     /** GET ALL STATUS TODO */
-    case actionTypes.GET_ALL_STATUS_TODO_REQUEST: {
-      return { ...state }
-    }
 
     case actionTypes.GET_ALL_STATUS_TODO_SUCCESS: {
-      const payload = action.payload as actionTypes.GetAllStatusTodoSuccess
+      const payload: actionTypes.GetAllStatusTodoSuccess = action.payload
       const newState = { ...state }
       const newStatusTodos: StatusTodo[] = payload.map(statusTodo => ({ ...statusTodo, todos: [] }))
       newState.statusTodos = newStatusTodos
@@ -251,12 +256,8 @@ const reducer = (state = initialState, action: AnyAction) => {
     }
 
     /** GET ALL TODO */
-    case actionTypes.GET_ALL_TODO_REQUEST: {
-      return { ...state }
-    }
-
     case actionTypes.GET_ALL_TODO_SUCCESS: {
-      const payload = action.payload as actionTypes.GetAllTodoSuccess
+      const payload: actionTypes.GetAllTodoSuccess = action.payload
       const newState = { ...state }
       newState.statusTodos = newState.statusTodos.map(statusTodo => {
         const allTodoThisStatusTodo = payload.filter(todo => todo.statusId === statusTodo.id)
