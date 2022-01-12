@@ -25,17 +25,23 @@ const useForm = () => {
       if (values.name.length === 0) {
         errors.name = 'Digite um nome...'
       }
+      if (values.name.length > 255) {
+        errors.name = 'Nome muito longo...'
+      }
       if (values.username.length === 0) {
-        errors.username = 'Digite um nome...'
+        errors.username = 'Digite um nome de usuário...'
+      }
+      if (values.username.length > 255) {
+        errors.username = 'Nome de usuário muito longo...'
       }
       if (!validate.isEmail(values.email)) {
         errors.email = 'Digite um email válido...'
       }
-      if (values.password.length === 0) {
-        errors.password = 'Digite uma senha...'
+      if (values.password.length < 6) {
+        errors.password = 'Senha muito pequena...'
       }
       if (values.passwordConfirmation.length === 0) {
-        errors.passwordConfirmation = 'Digite a confirmação de senha...'
+        errors.passwordConfirmation = 'Confirmação de senha muito pequena...'
       }
       if (values.password !== values.passwordConfirmation) {
         errors.passwordConfirmation = 'Senha diferente da confirmação de senha...'
