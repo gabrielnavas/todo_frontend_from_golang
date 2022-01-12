@@ -1,6 +1,6 @@
 import { useFormik } from 'formik'
 
-type StatusTodoDto = {
+type StatusForm = {
   name: string
 }
 
@@ -10,13 +10,11 @@ const useForm = () => {
       name: ''
     },
     validate: values => {
-      const errors = {} as StatusTodoDto
+      const errors = {} as StatusForm
       if (values.name.length === 0) {
-        if (values.name.length === 0) {
-          errors.name = 'Digite um nome...'
-        }
-        return errors
+        errors.name = 'Digite um nome...'
       }
+      return errors
     },
     onSubmit: async values => {
     }
