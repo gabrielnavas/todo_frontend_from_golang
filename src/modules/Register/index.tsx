@@ -28,7 +28,6 @@ const RegisterPage = () => {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
-  // TODO: move to redux
   const handleAddUser = useCallback(() => {
     async function _fetch () {
       setIsLoading(true)
