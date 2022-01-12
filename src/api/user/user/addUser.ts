@@ -1,4 +1,4 @@
-import { getEndpoint } from '../getEndpoint'
+import { getEndpoint } from '../../getEndpoint'
 
 export type AddUserParam = {
   name: string

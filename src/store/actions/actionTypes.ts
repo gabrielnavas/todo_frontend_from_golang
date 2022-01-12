@@ -156,3 +156,27 @@ export type GetAllTodoSuccess = {
   imageUrl?: string
 }[]
 export const GET_ALL_TODO_FAIL = 'GET_ALL_TODO_FAIL'
+
+/** ** Login ****/
+export const LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST'
+export type LoginUserRequest = {
+  username: string
+  password: string
+}
+export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS'
+export type LoginUserSuccess = {
+  token: string
+  user: {
+    id: number
+    name: string
+    username: string
+    email: string
+    levelAccess: number
+    createdAt: Date
+    updatedAt: Date
+  }
+
+  messageOk: string
+  usecaseError: string
+}
+export const LOGIN_USER_FAIL = 'LOGIN_USER_FAIL'

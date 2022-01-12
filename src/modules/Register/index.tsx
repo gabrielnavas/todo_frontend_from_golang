@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 
-import { addUser, AddUserResponse } from '../../api/user/addUser'
+import { addUser, AddUserResponse } from '../../api/user/user/addUser'
 import { useAlert } from '../../hooks/alert/useAlert'
 
 import useForm from './hooks/useForm'

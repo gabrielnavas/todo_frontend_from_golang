@@ -3,6 +3,7 @@ import { takeEvery } from 'redux-saga/effects'
 import * as actions from '../actions/actionTypes'
 
 import * as statusTodoSagas from './todo/statusTodo'
+import * as loginUserSagas from './user/login'
 import * as todoSagas from './todo/todo'
 
 export default function * sagaRoot () {
@@ -17,4 +18,7 @@ export default function * sagaRoot () {
   yield takeEvery(actions.UPDATE_TODO_REQUEST as any, todoSagas.UpdateTodoRequestSaga)
   yield takeEvery(actions.DELETE_TODO_REQUEST as any, todoSagas.DeleteTodoRequestSaga)
   yield takeEvery(actions.GET_ALL_TODO_REQUEST as any, todoSagas.GetAllTodoRequestSaga)
+
+  /** * Login User */
+  yield takeEvery(actions.LOGIN_USER_REQUEST as any, loginUserSagas.loginUserRequestSaga)
 }
