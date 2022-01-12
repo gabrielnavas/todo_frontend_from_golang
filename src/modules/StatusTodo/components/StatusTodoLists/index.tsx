@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getAllStatusTodoRequest } from '../../../store/actions/todo/statusTodo'
-import { getAllTodoRequest } from '../../../store/actions/todo/todo'
+import { getAllStatusTodoRequest } from '../../../../store/actions/todo/statusTodo'
+import { getAllTodoRequest } from '../../../../store/actions/todo/todo'
 
-import { Reducers } from '../../../store/reducers/reducerRoot'
+import { Reducers } from '../../../../store/reducers/reducerRoot'
 
 import StatusTodoList from '../StatusTodoList'
 

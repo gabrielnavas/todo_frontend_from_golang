@@ -14,7 +14,7 @@ import { IconDelete } from './icons'
 
 import DeleteConfirmationDialog from './components/DeleteConfirmationDialog'
 import UpdateTodoModal from './components/UpdateTodoModal'
-import { deleteTodoRequest } from '../../../store/actions/todo/todo'
+import { deleteTodoRequest } from '../../../../store/actions/todo/todo'
 
 type StatusTodo = {
   id: number

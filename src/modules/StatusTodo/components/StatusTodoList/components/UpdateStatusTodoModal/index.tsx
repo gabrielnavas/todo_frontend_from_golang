@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
 
-import { addStatusTodoRequest } from '../../../store/actions/todo/statusTodo'
+import { useDispatch } from 'react-redux'
 
 import Modal from '@mui/material/Modal'
 
@@ -15,30 +14,40 @@ import {
   Title,
   FormStack
 } from './styles'
+import { updateStatusTodoRequest } from '../../../../../../store/actions/todo/statusTodo'
+
+type StatusTodo = {
+  id: number
+  name: string
+  createdAt: Date
+  updatedAt: Date
+}
 
 type Props = {
+  statusTodo: StatusTodo
   handleClose: () => void
   open: boolean
   isLoading: boolean
 }
 
-const AddStatusTodoModal = (props: Props) => {
-  const form = useForm()
+const UpdateStatusTodoModal = (props: Props) => {
+  const form = useForm({ name: props.statusTodo.name })
 
   const dispatch = useDispatch()
 
-  const handleCreateStatusTodo = useCallback(async () => {
+  const handleUpdateStatusTodo = useCallback(async () => {
     const errors = await form.validate()
     const hasErrors = errors && Object.keys(errors).length > 0
     if (hasErrors) {
       return
     }
-    const payload = {
+
+    dispatch(updateStatusTodoRequest({
+      id: props.statusTodo.id,
       name: form.values.name
-    }
-    dispatch(addStatusTodoRequest(payload))
-    form.resetForm()
-  }, [form.values])
+    }))
+    props.handleClose()
+  }, [form.values.name])
 
   return (
     <Modal
@@ -47,7 +56,7 @@ const AddStatusTodoModal = (props: Props) => {
     >
       <Container>
         <Title variant="h6" >
-          Adicionar novo status.
+          Atualizar novo status.
         </Title>
         <FormStack spacing={4}>
           <TextFieldName
@@ -58,21 +67,22 @@ const AddStatusTodoModal = (props: Props) => {
             value={form.values.name}
             helperText={form.errors.name && form.errors.name}
             onChange={e => form.setValues(old => ({ ...old, name: e.target.value }))}
-            onKeyPress={e => e.key === 'Enter' && handleCreateStatusTodo()}
+            onKeyPress={e => e.key === 'Enter' && handleUpdateStatusTodo()}
           />
           <ButtonsStack direction='row' spacing={4}>
             <Button
+              color="error"
               disabled={props.isLoading}
               variant="contained"
-              color="error"
               onClick={props.handleClose}>
                 Cancelar
             </Button>
             <Button
+              color='warning'
               disabled={props.isLoading}
               variant="contained"
-              onClick={handleCreateStatusTodo}>
-                Inserir
+              onClick={handleUpdateStatusTodo}>
+                Atualizar
             </Button>
           </ButtonsStack>
         </FormStack>
@@ -81,4 +91,4 @@ const AddStatusTodoModal = (props: Props) => {
   )
 }
 
-export default AddStatusTodoModal
+export default UpdateStatusTodoModal

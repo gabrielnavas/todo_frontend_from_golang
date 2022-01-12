@@ -1,12 +1,12 @@
 import Head from 'next/head'
-import StatusTodo from '../modules/StatusTodo'
+import Login from '../modules/Login'
 
 const Page = () => (
   <>
     <Head>
-      <title>Meus Todos</title>
+      <title>Já é cadastrado? Faça o login!</title>
     </Head>
-    <StatusTodo />
+    <Login />
   </>
 )
 

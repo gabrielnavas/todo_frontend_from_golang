@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { useDispatch } from 'react-redux'
 
-import { deleteStatusTodoRequest } from '../../../store/actions/todo/statusTodo'
+import { deleteStatusTodoRequest } from '../../../../store/actions/todo/statusTodo'
 
 import TodoList from '../TodoLists'
 
@@ -21,7 +21,7 @@ import {
   IconRemoveAddTodo
 } from './icons'
 
-import { useAlert } from '../../../hooks/alert/useAlert'
+import { useAlert } from '../../../../hooks/alert/useAlert'
 
 import AddTodoModal from './components/AddTodoModal'
 import UpdateStatusTodoModal from './components/UpdateStatusTodoModal'

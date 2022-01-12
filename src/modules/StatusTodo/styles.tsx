@@ -8,7 +8,7 @@ export const Page = styled('div')(({ theme }) => ({
 
 export const Container = styled('div')(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'center'
 }))
 
 export const Paper = styled(PaperMUI)(({ theme }) => ({
@@ -23,7 +23,7 @@ export const Paper = styled(PaperMUI)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     background: 'none',
     width: '100%',
-    marginTop: 20,
+    marginTop: 20
   }
 }))
 
