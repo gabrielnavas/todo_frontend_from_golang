@@ -19,16 +19,12 @@ export function * loginUserRequestSaga (actionParam: CustomActionSaga<actionsTyp
       yield put(actionLoginUser.loginUserSuccess({
         token: resultRequest.token,
         user: resultRequest.user,
-        messageOk: resultRequest.message,
-        usecaseError: ''
+        messageOk: resultRequest.message
       }))
     } else {
-      yield put(actionLoginUser.loginUserSuccess({
-        token: resultRequest.token,
-        user: resultRequest.user,
-        messageOk: '',
+      yield put(actionLoginUser.loginUserCredencialsWrong({
         usecaseError: resultRequest.message
-      }))
+      } as actionsTypes.LoginUserCredencialsWrong))
     }
   } catch (e) {
     yield put(actionLoginUser.loginUserFail({ message: e.message }))
