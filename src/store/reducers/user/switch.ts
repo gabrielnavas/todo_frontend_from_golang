@@ -15,6 +15,7 @@ export type StateUser = {
       updatedAt: Date;
   }
 
+  isLoading: boolean
   messageOk: string,
   usecaseError: string,
   serverError: string,
@@ -32,6 +33,7 @@ const initialState: StateUser = {
     updatedAt: new Date()
   },
 
+  isLoading: false,
   messageOk: '',
   usecaseError: '',
   serverError: ''
@@ -42,11 +44,17 @@ const reducer = (state = initialState, action: AnyAction) => {
     case HYDRATE:
       return { ...state }
 
-    case actionTypes.RESET_ALL_MESSAGES: {
+    case actionTypes.LOGIN_RESET_ALL_MESSAGES: {
       const newState: StateUser = Object.assign({}, state)
       newState.messageOk = ''
       newState.usecaseError = ''
       newState.serverError = ''
+      return newState
+    }
+
+    case actionTypes.LOGIN_USER_REQUEST: {
+      const newState: StateUser = Object.assign({}, state)
+      newState.isLoading = true
       return newState
     }
 
@@ -57,6 +65,15 @@ const reducer = (state = initialState, action: AnyAction) => {
       newState.user = payload.user
       newState.messageOk = payload.messageOk
       newState.usecaseError = payload.usecaseError
+      newState.isLoading = false
+      return newState
+    }
+
+    case actionTypes.LOGIN_USER_FAIL: {
+      const payload: actionTypes.FailParamDefault = action.payload
+      const newState: StateUser = Object.assign({}, state)
+      newState.serverError = payload.message
+      newState.isLoading = false
       return newState
     }
 

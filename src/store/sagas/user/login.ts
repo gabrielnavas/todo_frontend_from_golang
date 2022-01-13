@@ -12,7 +12,9 @@ export function * loginUserRequestSaga (actionParam: CustomActionSaga<actionsTyp
       username: actionParam.payload.username,
       password: actionParam.payload.password
     }
-    const resultRequest: loginUserApi.LoginUserResponse = yield call<loginUserApi.loginUserFn>(loginUserApi.loginUser, payload)
+    const resultRequest: loginUserApi.LoginUserResponse =
+      yield call<loginUserApi.loginUserFn>(loginUserApi.loginUser, payload)
+
     if (resultRequest.ok) {
       yield put(actionLoginUser.loginUserSuccess({
         token: resultRequest.token,

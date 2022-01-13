@@ -1,12 +1,10 @@
-/** For messages */
-export const RESET_ALL_MESSAGES = 'RESET_ALL_MESSAGES'
-
 /** Default for all fails */
 export type FailParamDefault = {
   message: string
 }
 
 /** ** Status Todo ****/
+export const STATUS_TODO_RESET_ALL_MESSAGES = 'STATUS_TODO_RESET_ALL_MESSAGES'
 
 export const ADD_STATUS_TODO_REQUEST = 'ADD_STATUS_TODO_REQUEST'
 export type AddStatusTodoRequest = {
@@ -158,6 +156,9 @@ export type GetAllTodoSuccess = {
 export const GET_ALL_TODO_FAIL = 'GET_ALL_TODO_FAIL'
 
 /** ** Login ****/
+
+export const LOGIN_RESET_ALL_MESSAGES = 'LOGIN_RESET_ALL_MESSAGES'
+
 export const LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST'
 export type LoginUserRequest = {
   username: string

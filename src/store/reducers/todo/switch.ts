@@ -22,7 +22,7 @@ const reducer = (state = initialState, action: AnyAction) => {
     case HYDRATE:
       return { ...state }
 
-    case actionTypes.RESET_ALL_MESSAGES: {
+    case actionTypes.STATUS_TODO_RESET_ALL_MESSAGES: {
       const newState: todoTypes.StateStatusTodo = Object.assign({}, state)
       newState.messageOk = ''
       newState.usecaseError = ''

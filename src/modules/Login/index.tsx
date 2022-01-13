@@ -1,7 +1,12 @@
-import { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
-import { loginUserRequest } from '../../store/actions/user/login'
+import { useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { useAlert } from '../../hooks/alert/useAlert'
 import useForm from './hooks/useForm'
+
+import { loginUserRequest, resetAllMessages } from '../../store/actions/user/login'
+import { Reducers } from '../../store/reducers/reducerRoot'
+
 import {
   Page,
   Container,
@@ -15,21 +20,46 @@ import {
   ButtonLoggin,
   ButtonRegister
 } from './styles'
+import { useRouter } from 'next/router'
 
 const LoginPage = () => {
   const form = useForm()
+  const alerts = useAlert()
+  const router = useRouter()
 
-  // TODO: adicionar isso no redux
-  const isLoading = false
   const dispatch = useDispatch()
+  const userStore = useSelector<Reducers, Reducers>(store => store)
 
   const handleLogin = useCallback(() => {
-    // TODO: FALTA TESTAR TODO O FLUXO DESSE REDUX
     dispatch(loginUserRequest({
       username: form.values.username,
       password: form.values.password
     }))
-  }, [])
+    router.replace('/')
+  }, [dispatch, loginUserRequest, form.values])
+
+  useEffect(() => {
+    if (userStore.statusTodoStore.messageOk) {
+      alerts.handle('success', userStore.statusTodoStore.messageOk)
+      return
+    }
+    dispatch(resetAllMessages())
+  }, [userStore.statusTodoStore.messageOk])
+
+  useEffect(() => {
+    if (userStore.statusTodoStore.usecaseError) {
+      alerts.handle('warning', userStore.statusTodoStore.usecaseError)
+      return
+    }
+    dispatch(resetAllMessages())
+  }, [userStore.statusTodoStore.usecaseError])
+
+  useEffect(() => {
+    if (userStore.statusTodoStore.serverError) {
+      alerts.handle('error', userStore.statusTodoStore.serverError)
+    }
+    dispatch(resetAllMessages())
+  }, [userStore.statusTodoStore.serverError])
 
   return (
     <Page>
@@ -43,7 +73,7 @@ const LoginPage = () => {
               type="text"
               label="Nome de usuário"
               variant="standard"
-              disabled={isLoading}
+              disabled={userStore.userStore.isLoading}
               error={!!form.errors.username}
               value={form.values.username}
               helperText={form.errors.username && form.errors.username}
@@ -54,7 +84,7 @@ const LoginPage = () => {
               type="password"
               label="Senha"
               variant="standard"
-              disabled={isLoading}
+              disabled={userStore.userStore.isLoading}
               error={!!form.errors.password}
               value={form.values.password}
               helperText={form.errors.password && form.errors.password}
