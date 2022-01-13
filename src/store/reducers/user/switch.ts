@@ -4,16 +4,18 @@ import { AnyAction } from 'redux'
 import * as actionTypes from '../../actions/actionTypes'
 
 export type StateUser = {
-  token: string;
+  token: string
   user: {
-      id: number;
-      name: string;
-      username: string;
-      email: string;
-      levelAccess: number;
-      createdAt: Date;
-      updatedAt: Date;
+      id: number
+      name: string
+      username: string
+      email: string
+      levelAccess: number
+      createdAt: Date
+      updatedAt: Date
   }
+
+  isLogging: boolean
 
   isLoading: boolean
   messageOk: string,
@@ -32,6 +34,8 @@ const initialState: StateUser = {
     createdAt: new Date(),
     updatedAt: new Date()
   },
+
+  isLogging: false,
 
   isLoading: false,
   messageOk: '',
@@ -66,6 +70,7 @@ const reducer = (state = initialState, action: AnyAction) => {
       newState.messageOk = payload.messageOk
       newState.usecaseError = payload.usecaseError
       newState.isLoading = false
+      newState.isLogging = true
       return newState
     }
 

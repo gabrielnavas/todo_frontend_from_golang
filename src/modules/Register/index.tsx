@@ -1,5 +1,5 @@
+import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useCallback, useState } from 'react'
 
 import { addUser, AddUserResponse } from '../../api/user/user/addUser'
 import { useAlert } from '../../hooks/alert/useAlert'
@@ -21,12 +21,15 @@ import {
   ButtonRegister,
   ButtonLogin
 } from './styles'
+import { useSelector } from 'react-redux'
+import { Reducers } from '../../store/reducers/reducerRoot'
 
 const RegisterPage = () => {
   const form = useForm()
   const alert = useAlert()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const store = useSelector<Reducers, Reducers>(store => store)
 
   const handleAddUser = useCallback(() => {
     async function _fetch () {
@@ -55,6 +58,12 @@ const RegisterPage = () => {
         alert.handle('error', 'Servidor fora do ar, tente novamente mais tarde')
       })
   }, [addUser, form.values])
+
+  useEffect(() => {
+    if (store.userStore.isLogging) {
+      router.replace('/')
+    }
+  }, [store.userStore.isLogging])
 
   return (
     <Page>
