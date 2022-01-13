@@ -23,6 +23,7 @@ import {
 } from './styles'
 import { useSelector } from 'react-redux'
 import { Reducers } from '../../store/reducers/reducerRoot'
+import TopBar from '../../components/TopBar'
 
 const RegisterPage = () => {
   const form = useForm()
@@ -67,6 +68,7 @@ const RegisterPage = () => {
 
   return (
     <Page>
+      <TopBar />
       <Container>
         <ContentStack spacing={4}>
           <ContentHeaderStack spacing={2}>
@@ -135,7 +137,9 @@ const RegisterPage = () => {
               onClick={handleAddUser}>
                 Logar
             </ButtonRegister>
-            <ButtonLogin>Já tenho cadastro</ButtonLogin>
+            <ButtonLogin onClick={() => router.push('/login')}>
+              Já tenho cadastro
+            </ButtonLogin>
           </ContentFooterStack>
         </ContentStack>
       </Container>
