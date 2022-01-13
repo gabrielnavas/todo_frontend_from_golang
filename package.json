@@ -12,7 +12,6 @@
     "clsx": "latest",
     "formik": "^2.2.9",
     "next": "latest",
-    "next-redux-saga": "^4.1.2",
     "next-redux-wrapper": "^7.0.5",
     "prop-types": "latest",
     "react": "latest",

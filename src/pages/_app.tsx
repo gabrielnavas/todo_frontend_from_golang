@@ -1,5 +1,4 @@
 import { wrapper } from '../store'
-// import withReduxSaga from 'next-redux-saga'
 
 import { PersistGate } from 'redux-persist/integration/react'
 
@@ -34,17 +33,11 @@ function MyApp (props: any) {
         <CssBaseline />
         <ToastContainer />
         {
-          process.browser
-            ? (
-            <PersistGate persistor={store.__persistor} loading={<div>Loading</div>}>
-              <Component {...pageProps} />
-            </PersistGate>
-              )
-            : (
-            <PersistGate persistor={store}>
-              <Component {...pageProps} />
-            </PersistGate>
-              )
+          <PersistGate
+            persistor={store.__persistor}
+            loading={<div>Loading</div>}>
+            <Component {...pageProps} />
+          </PersistGate>
         }
       </ThemeProvider>
     </CacheProvider>
