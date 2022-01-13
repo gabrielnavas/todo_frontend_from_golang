@@ -36,7 +36,7 @@ export const Header = styled('div')(() => ({
 export const Title = styled('span')(({ theme }) => ({
   flexGrow: 1,
   fontWeight: '500',
-  fontSize: 30,
+  fontSize: 25,
   fontFamily: 'Roboto',
   color: 'white',
   letterSpacing: 1.5
