@@ -21,6 +21,7 @@ import {
   ButtonRegister
 } from './styles'
 import { useRouter } from 'next/router'
+import TopBar from '../../components/TopBar'
 
 const LoginPage = () => {
   const form = useForm()
@@ -30,45 +31,42 @@ const LoginPage = () => {
   const dispatch = useDispatch()
   const store = useSelector<Reducers, Reducers>(store => store)
 
+  useEffect(() => {
+    if (store.userStore.isLogging) {
+      router.replace('/')
+    }
+    return () => {
+      if (store.userStore.isLogging && store.userStore.messageOk) {
+        alerts.handle('success', store.userStore.messageOk)
+      }
+    }
+  }, [store.userStore.isLogging])
+
+  useEffect(() => {
+    if (store.userStore.usecaseError) {
+      alerts.handle('warning', store.userStore.usecaseError)
+      return
+    }
+    dispatch(resetAllMessages())
+  }, [store.userStore.usecaseError])
+
+  useEffect(() => {
+    if (store.userStore.serverError) {
+      alerts.handle('error', store.userStore.serverError)
+    }
+    dispatch(resetAllMessages())
+  }, [store.userStore.serverError])
+
   const handleLogin = useCallback(() => {
     dispatch(loginUserRequest({
       username: form.values.username,
       password: form.values.password
     }))
-    router.replace('/')
   }, [dispatch, loginUserRequest, form.values])
-
-  useEffect(() => {
-    if (store.userStore.isLogging) {
-      router.replace('/')
-    }
-  }, [store.userStore.isLogging])
-
-  useEffect(() => {
-    if (store.statusTodoStore.messageOk) {
-      alerts.handle('success', store.statusTodoStore.messageOk)
-      return
-    }
-    dispatch(resetAllMessages())
-  }, [store.statusTodoStore.messageOk])
-
-  useEffect(() => {
-    if (store.statusTodoStore.usecaseError) {
-      alerts.handle('warning', store.statusTodoStore.usecaseError)
-      return
-    }
-    dispatch(resetAllMessages())
-  }, [store.statusTodoStore.usecaseError])
-
-  useEffect(() => {
-    if (store.statusTodoStore.serverError) {
-      alerts.handle('error', store.statusTodoStore.serverError)
-    }
-    dispatch(resetAllMessages())
-  }, [store.statusTodoStore.serverError])
 
   return (
     <Page>
+      <TopBar />
       <Container>
         <ContentStack spacing={4}>
           <ContentHeaderStack spacing={4}>
@@ -101,10 +99,15 @@ const LoginPage = () => {
           <ContentFooterStack spacing={3}>
             <ButtonLoggin
               variant="contained"
+              disabled={store.userStore.isLoading}
               onClick={handleLogin}>
                 Logar
             </ButtonLoggin>
-            <ButtonRegister>Ainda não sou cadastrado</ButtonRegister>
+            <ButtonRegister
+              onClick={() => router.push('/register')}
+              disabled={store.userStore.isLoading}>
+              Ainda não sou cadastrado
+            </ButtonRegister>
           </ContentFooterStack>
         </ContentStack>
       </Container>
