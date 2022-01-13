@@ -19,6 +19,8 @@ import StatusTodoLists from './components/StatusTodoLists'
 import AddStatusTodoModal from './components/AddStatusTodoModal'
 
 import { useAlert } from '../../hooks/alert/useAlert'
+import TopBar from '../../components/TopBar'
+import { useRouter } from 'next/router'
 
 const StatusTodoView = () => {
   const [toggleAddStatusTodoModal, setToggleAddStatusTodoModal] = useState(false)
@@ -27,9 +29,16 @@ const StatusTodoView = () => {
   const isLoading = false
 
   const alerts = useAlert()
+  const router = useRouter()
 
   const store = useSelector<Reducers, Reducers>(state => state)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (!store.userStore.isLogging) {
+      router.replace('/login')
+    }
+  }, [store.userStore.isLogging])
 
   // watch message ok
   useEffect(() => {
@@ -59,10 +68,11 @@ const StatusTodoView = () => {
 
   return (
     <Page>
+      <TopBar />
       <Container>
         <Paper>
           <Header>
-            <Title>Todo App</Title>
+            <Title>Seus status Todo</Title>
             <ButtonAddStatusTodo
               variant="contained"
               size="small"
