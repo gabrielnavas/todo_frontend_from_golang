@@ -155,7 +155,7 @@ export type GetAllTodoSuccess = {
 }[]
 export const GET_ALL_TODO_FAIL = 'GET_ALL_TODO_FAIL'
 
-/** ** Login ****/
+/** ** User ****/
 
 export const LOGIN_RESET_ALL_MESSAGES = 'LOGIN_RESET_ALL_MESSAGES'
 
@@ -178,6 +178,13 @@ export type LoginUserSuccess = {
   }
 
   messageOk: string
+}
+export const LOGIN_USER_CREDENCIALS_WRONG = 'LOGIN_USER_CREDENCIALS_WRONG'
+export type LoginUserCredencialsWrong = {
   usecaseError: string
 }
 export const LOGIN_USER_FAIL = 'LOGIN_USER_FAIL'
+
+export const LOGOFF_USER_REQUEST = 'LOGOFF_USER_REQUEST'
+export const LOGOFF_USER_SUCCESS = 'LOGOFF_USER_SUCCESS'
+export const LOGOFF_USER_FAIL = 'LOGOFF_USER_FAIL'

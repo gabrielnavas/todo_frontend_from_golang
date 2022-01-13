@@ -68,9 +68,16 @@ const reducer = (state = initialState, action: AnyAction) => {
       newState.token = payload.token
       newState.user = payload.user
       newState.messageOk = payload.messageOk
-      newState.usecaseError = payload.usecaseError
       newState.isLoading = false
       newState.isLogging = true
+      return newState
+    }
+
+    case actionTypes.LOGIN_USER_CREDENCIALS_WRONG: {
+      const payload: actionTypes.LoginUserCredencialsWrong = action.payload
+      const newState: StateUser = Object.assign({}, state)
+      newState.usecaseError = payload.usecaseError
+      newState.isLoading = false
       return newState
     }
 
@@ -79,6 +86,21 @@ const reducer = (state = initialState, action: AnyAction) => {
       const newState: StateUser = Object.assign({}, state)
       newState.serverError = payload.message
       newState.isLoading = false
+      return newState
+    }
+
+    case actionTypes.LOGOFF_USER_REQUEST: {
+      const newState: StateUser = Object.assign({}, state)
+      newState.isLoading = true
+      return newState
+    }
+
+    case actionTypes.LOGOFF_USER_SUCCESS: {
+      return { ...initialState }
+    }
+
+    case actionTypes.LOGOFF_USER_FAIL: {
+      const newState: StateUser = Object.assign({}, state)
       return newState
     }
 
