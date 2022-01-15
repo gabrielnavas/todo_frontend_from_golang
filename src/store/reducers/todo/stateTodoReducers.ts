@@ -3,7 +3,7 @@ import * as actionTypes from '../../actions/actionTypes'
 
 export const addStatusTodoSuccessReducer = (state: todoTypes.StateStatusTodo, payload: actionTypes.AddStatusTodoSuccess) => {
   const newState: todoTypes.StateStatusTodo = Object.assign({}, state)
-  newState.statusTodos.unshift({
+  newState.statusTodos.push({
     id: payload.id,
     name: payload.name,
     createdAt: payload.createdAt,

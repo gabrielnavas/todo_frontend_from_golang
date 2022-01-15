@@ -5,7 +5,7 @@ export const addTodoSuccessReducer = (state: todoTypes.StateStatusTodo, payload:
   const newState: todoTypes.StateStatusTodo = Object.assign({}, state)
   newState.statusTodos = newState.statusTodos.map(statusTodo => {
     if (statusTodo.id === payload.statusId) {
-      statusTodo.todos.unshift({
+      statusTodo.todos.push({
         id: payload.id,
         title: payload.title,
         description: payload.description,
