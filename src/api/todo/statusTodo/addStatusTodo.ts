@@ -14,14 +14,15 @@ export type AddStatusTodoResponse = {
   message: string
 }
 
-export type addStatusTodoFn = (statusTodo: AddStatusTodoParam) => Promise<AddStatusTodoResponse>
+export type addStatusTodoFn = (token: string, statusTodo: AddStatusTodoParam) => Promise<AddStatusTodoResponse>
 
-export const addStatusTodo = async (statusTodo: AddStatusTodoParam): Promise<AddStatusTodoResponse> => {
+export const addStatusTodo: addStatusTodoFn = async (token: string, statusTodo: AddStatusTodoParam): Promise<AddStatusTodoResponse> => {
   const url = `${getEndpoint()}/todos/status`
   const response = await fetch(url, {
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
     },
     method: 'POST',
     body: JSON.stringify(statusTodo)

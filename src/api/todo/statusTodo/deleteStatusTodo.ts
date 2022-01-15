@@ -5,11 +5,14 @@ export type DeleteStatusTodoResponse = {
   message: string
 }
 
-export type DeleteStatusTodoFn = (statusTodoId: number) => Promise<DeleteStatusTodoResponse>
+export type DeleteStatusTodoFn = (token: string, statusTodoId: number) => Promise<DeleteStatusTodoResponse>
 
-export const deleteStatusTodo = async (statusTodoId: number): Promise<DeleteStatusTodoResponse> => {
+export const deleteStatusTodo = async (token: string, statusTodoId: number): Promise<DeleteStatusTodoResponse> => {
   const response = await fetch(`${getEndpoint()}/todos/status/${statusTodoId}`, {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   })
 
   if (response.status === 204) {

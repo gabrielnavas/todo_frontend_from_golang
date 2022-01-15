@@ -1,19 +1,24 @@
 import { getEndpoint } from '../../getEndpoint'
 
-const urlBlobToFile = async (url: string, fileName: string): Promise<File> => {
-  const theBlob = await fetch(url).then(r => r.blob())
+const urlBlobToFile = async (token: string, url: string, fileName: string): Promise<File> => {
+  const theBlob = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }).then(r => r.blob())
   const b: any = theBlob
   b.lastModifiedDate = new Date()
   b.name = fileName
   return theBlob as File
 }
 
-const postForm = async (todoId: number, title: string, description: string, statusId: number): Promise<Response> => {
+const postForm = async (token: string, todoId: number, title: string, description: string, statusId: number): Promise<Response> => {
   const url = `${getEndpoint()}/todos/${todoId}`
   const response = await fetch(url, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify({ title, description, statusId })
   })
@@ -21,22 +26,28 @@ const postForm = async (todoId: number, title: string, description: string, stat
   return response
 }
 
-const patchImage = async (todoId: number, image: File): Promise<Response> => {
+const patchImage = async (token: string, todoId: number, image: File): Promise<Response> => {
   const url = `${getEndpoint()}/todos/image/${todoId}`
   const formFileImageName = 'image'
   const formData = new FormData()
   formData.set(formFileImageName, image, image.name)
   const response = await fetch(url, {
     method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
     body: formData
   })
   return response
 }
 
-const deleteImage = async (todoId: number): Promise<Response> => {
+const deleteImage = async (token: string, todoId: number): Promise<Response> => {
   const url = `${getEndpoint()}/todos/image/${todoId}`
   const response = await fetch(url, {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   })
   return response
 }
@@ -57,11 +68,11 @@ export type UpdateTodoResult = {
   message: string
 }
 
-export type UpdateTodoFn = (todo: UpdateTodoParams) => Promise<UpdateTodoResult>
+export type UpdateTodoFn = (token: string, todo: UpdateTodoParams) => Promise<UpdateTodoResult>
 
-export const updateTodo = async (todo: UpdateTodoParams): Promise<UpdateTodoResult> => {
+export const updateTodo: UpdateTodoFn = async (token: string, todo: UpdateTodoParams): Promise<UpdateTodoResult> => {
   let image: File | null = null
-  const response = await postForm(todo.id, todo.title, todo.description, todo.statusId)
+  const response = await postForm(token, todo.id, todo.title, todo.description, todo.statusId)
 
   if (response.status !== 204) {
     const data = await response.json()
@@ -73,8 +84,8 @@ export const updateTodo = async (todo: UpdateTodoParams): Promise<UpdateTodoResu
   }
 
   if (todo.imageUrl) {
-    image = await urlBlobToFile(todo.imageUrl, 'image')
-    const response = await patchImage(todo.id, image)
+    image = await urlBlobToFile(token, todo.imageUrl, 'image')
+    const response = await patchImage(token, todo.id, image)
     if (response.status !== 204) {
       const data = await response.json()
       return {
@@ -84,7 +95,7 @@ export const updateTodo = async (todo: UpdateTodoParams): Promise<UpdateTodoResu
       }
     }
   } else {
-    const response = await deleteImage(todo.id)
+    const response = await deleteImage(token, todo.id)
     if (response.status !== 204) {
       const data = await response.json()
       return {

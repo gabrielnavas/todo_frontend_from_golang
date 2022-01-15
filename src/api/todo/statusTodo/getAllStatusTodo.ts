@@ -7,10 +7,14 @@ export type GetAllStatusTodoResponse = {
   updatedAt: Date
 }[]
 
-export type GetAllStatusTodoFn = () => Promise<GetAllStatusTodoResponse>
+export type GetAllStatusTodoFn = (token: string) => Promise<GetAllStatusTodoResponse>
 
-export const getAllStatusTodo = async (): Promise<GetAllStatusTodoResponse> => {
-  const response = await fetch(`${getEndpoint()}/todos/status`)
+export const getAllStatusTodo: GetAllStatusTodoFn = async (token: string): Promise<GetAllStatusTodoResponse> => {
+  const response = await fetch(`${getEndpoint()}/todos/status`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
   if (response.status !== 200) {
     throw new Error(`status is ${response.status}, but expected ${200}`)
   }

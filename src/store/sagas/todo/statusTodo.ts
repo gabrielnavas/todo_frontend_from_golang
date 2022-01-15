@@ -1,14 +1,20 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, select } from 'redux-saga/effects'
 
 import * as actionsTypes from '../../actions/actionTypes'
 import * as actionStatusTodo from '../../actions/todo/statusTodo'
 import * as statusTodoApi from '../../../api/todo/statusTodo'
 
-import { CustomActionSaga } from '../sagasType'
+import { CustomActionSaga, SelectState } from '../sagasType'
+import { Reducers } from '../../reducers/reducerRoot'
 
 export function * addStatusTodoRequestSaga (actionParam: CustomActionSaga<actionsTypes.AddStatusTodoRequest>) {
   try {
-    const statusTodo: statusTodoApi.AddStatusTodoResponse = yield call<statusTodoApi.addStatusTodoFn>(statusTodoApi.addStatusTodo, { name: actionParam.payload.name })
+    const state: Reducers = yield select<SelectState>(state => state)
+    const token = state.userStore.token
+    const statusTodo: statusTodoApi.AddStatusTodoResponse = yield call<statusTodoApi.addStatusTodoFn>(
+      statusTodoApi.addStatusTodo, token, { name: actionParam.payload.name }
+    )
+
     if (statusTodo.ok) {
       yield put(actionStatusTodo.addStatusTodoSuccess({
         id: statusTodo.id,
@@ -37,7 +43,9 @@ export function * addStatusTodoRequestSaga (actionParam: CustomActionSaga<action
 
 export function * getAllStatusTodoRequestSaga () {
   try {
-    const statusTodos: statusTodoApi.GetAllStatusTodoResponse = yield call<statusTodoApi.GetAllStatusTodoFn>(statusTodoApi.getAllStatusTodo)
+    const state: Reducers = yield select<SelectState>(state => state)
+    const token = state.userStore.token
+    const statusTodos: statusTodoApi.GetAllStatusTodoResponse = yield call<statusTodoApi.GetAllStatusTodoFn>(statusTodoApi.getAllStatusTodo, token)
     yield put(actionStatusTodo.getAllStatusTodoSuccess(statusTodos))
   } catch (e) {
     yield put(actionStatusTodo.getAllStatusTodoFail({ message: e.message }))
@@ -46,7 +54,9 @@ export function * getAllStatusTodoRequestSaga () {
 
 export function * deleteStatusTodoRequestSaga (actionParam: CustomActionSaga<actionsTypes.DeleteStatusTodoRequest>) {
   try {
-    const response: statusTodoApi.DeleteStatusTodoResponse = yield call<statusTodoApi.DeleteStatusTodoFn>(statusTodoApi.deleteStatusTodo, actionParam.payload.statusTodoId)
+    const state: Reducers = yield select<SelectState>(state => state)
+    const token = state.userStore.token
+    const response: statusTodoApi.DeleteStatusTodoResponse = yield call<statusTodoApi.DeleteStatusTodoFn>(statusTodoApi.deleteStatusTodo, token, actionParam.payload.statusTodoId)
     if (response.ok) {
       yield put(actionStatusTodo.deleteStatusTodoSuccess({
         messageOk: response.message,
@@ -67,8 +77,10 @@ export function * deleteStatusTodoRequestSaga (actionParam: CustomActionSaga<act
 
 export function * updateStatusTodoRequestSaga (actionParam: CustomActionSaga<actionsTypes.UpdateStatusTodoRequest>) {
   try {
+    const state: Reducers = yield select<SelectState>(state => state)
+    const token = state.userStore.token
     const response: statusTodoApi.UpdateStatusTodoResponse =
-      yield call<statusTodoApi.UpdateStatusTodoFn>(statusTodoApi.updateStatusTodo, actionParam.payload)
+      yield call<statusTodoApi.UpdateStatusTodoFn>(statusTodoApi.updateStatusTodo, token, actionParam.payload)
     if (response.ok) {
       yield put(actionStatusTodo.updateStatusTodoSuccess({
         id: actionParam.payload.id,

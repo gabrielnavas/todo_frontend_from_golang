@@ -10,9 +10,9 @@ export type GetAllTodoResponse = {
   imageUrl?: string
 }[]
 
-export type GetAllTodoFn = () => Promise<GetAllTodoResponse>
+export type GetAllTodoFn = (token: string) => Promise<GetAllTodoResponse>
 
-export const getAllTodo = async (): Promise<GetAllTodoResponse> => {
+export const getAllTodo = async (token: string): Promise<GetAllTodoResponse> => {
   const optionalImageUrl = (imageUrl: string) => {
     let imagePath: string | undefined
 
@@ -23,7 +23,11 @@ export const getAllTodo = async (): Promise<GetAllTodoResponse> => {
     return imagePath
   }
 
-  const response = await fetch(`${getEndpoint()}/todos`)
+  const response = await fetch(`${getEndpoint()}/todos`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
 
   if (response.status !== 200) {
     throw new Error(`status is ${response.status}, but expected ${200}`)

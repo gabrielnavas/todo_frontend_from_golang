@@ -10,13 +10,14 @@ export type UpdateStatusTodoResponse = {
   message: string
 }
 
-export type UpdateStatusTodoFn = (statusTodo: UpdateStatusTodoParam) => Promise<UpdateStatusTodoResponse>
+export type UpdateStatusTodoFn = (token: string, statusTodo: UpdateStatusTodoParam) => Promise<UpdateStatusTodoResponse>
 
-export const updateStatusTodo = async (statusTodo: UpdateStatusTodoParam): Promise<UpdateStatusTodoResponse> => {
+export const updateStatusTodo: UpdateStatusTodoFn = async (token: string, statusTodo: UpdateStatusTodoParam): Promise<UpdateStatusTodoResponse> => {
   const url = `${getEndpoint()}/todos/status/${statusTodo.id}`
   const response = await fetch(url, {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
     },
     method: 'PUT',
     body: JSON.stringify(statusTodo)

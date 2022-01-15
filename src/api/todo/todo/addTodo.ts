@@ -6,32 +6,36 @@ const makeImageUrl = (todoId: number) => {
   return url
 }
 
-const patchImage = async (todoId: number, image: File): Promise<Response> => {
+const patchImage = async (token: string, todoId: number, image: File): Promise<Response> => {
   const url = `${getEndpoint()}/todos/image/${todoId}`
   const formFileImageName = 'image'
   const formData = new FormData()
   formData.set(formFileImageName, image, image.name)
   const response = await fetch(url, {
     method: 'PATCH',
-    body: formData
+    body: formData,
+    headers: {
+      Authorization: `Bearer ${token} `
+    }
   })
   return response
 }
 
-const postForm = async (title: string, description: string, statusId: number): Promise<Response> => {
+const postForm = async (token: string, title: string, description: string, statusId: number): Promise<Response> => {
   const url = `${getEndpoint()}/todos`
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Accept: 'application/json'
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify({ title, description, statusId })
   })
   return response
 }
 
-type Params = {
+type Todo = {
   title: string
   description: string
   image: File | null
@@ -54,10 +58,10 @@ export type AddTodoResult = {
   message: string
 }
 
-export type AddTodoFn = (payload: Params) => Promise<AddTodoResult>
+export type AddTodoFn = (token: string, payload: Todo) => Promise<AddTodoResult>
 
-export const addTodo = async (payload: Params): Promise<AddTodoResult> => {
-  const response = await postForm(payload.title, payload.description, payload.statusId)
+export const addTodo: AddTodoFn = async (token, payload: Todo): Promise<AddTodoResult> => {
+  const response = await postForm(token, payload.title, payload.description, payload.statusId)
 
   const data = await response.json()
   if (response.status !== 201) {
@@ -79,7 +83,7 @@ export const addTodo = async (payload: Params): Promise<AddTodoResult> => {
   }
 
   if (payload.image) {
-    const response = await patchImage(todo.id, payload.image)
+    const response = await patchImage(token, todo.id, payload.image)
     if (response.status !== 204) {
       const data = await response.json()
       return {
