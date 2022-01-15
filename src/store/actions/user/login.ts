@@ -1,9 +1,5 @@
 import * as actionTypes from '../actionTypes'
 
-export const resetAllMessages = () => ({
-  type: actionTypes.LOGIN_RESET_ALL_MESSAGES
-})
-
 export const loginUserRequest = (param: actionTypes.LoginUserRequest) => ({
   type: actionTypes.LOGIN_USER_REQUEST,
   payload: param
@@ -14,14 +10,12 @@ export const loginUserSuccess = (param: actionTypes.LoginUserSuccess) => ({
   payload: param
 })
 
-export const loginUserCredencialsWrong = (param: actionTypes.LoginUserCredencialsWrong) => ({
-  type: actionTypes.LOGIN_USER_CREDENCIALS_WRONG,
-  payload: param
+export const loginUserCredencialsWrong = () => ({
+  type: actionTypes.LOGIN_USER_CREDENCIALS_WRONG
 })
 
-export const loginUserFail = (param: actionTypes.FailParamDefault) => ({
-  type: actionTypes.LOGIN_USER_FAIL,
-  payload: param
+export const loginUserFail = () => ({
+  type: actionTypes.LOGIN_USER_FAIL
 })
 
 export const logOffUserRequest = () => ({

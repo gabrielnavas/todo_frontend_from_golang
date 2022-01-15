@@ -1,7 +1,10 @@
 import { call, put } from 'redux-saga/effects'
 
 import * as actionsTypes from '../../actions/actionTypes'
+
 import * as actionLoginUser from '../../actions/user/login'
+import * as actionMessages from '../../actions/messages/messages'
+
 import * as loginUserApi from '../../../api/user/login/loginUser'
 
 import { CustomActionSaga } from '../sagasType'
@@ -12,21 +15,20 @@ export function * loginUserRequestSaga (actionParam: CustomActionSaga<actionsTyp
       username: actionParam.payload.username,
       password: actionParam.payload.password
     }
-    const resultRequest: loginUserApi.LoginUserResponse =
-      yield call<loginUserApi.loginUserFn>(loginUserApi.loginUser, payload)
+    const response: loginUserApi.LoginUserResponse = yield call<loginUserApi.loginUserFn>(loginUserApi.loginUser, payload)
 
-    if (resultRequest.ok) {
-      yield put(actionLoginUser.loginUserSuccess({
-        token: resultRequest.token,
-        user: resultRequest.user,
-        messageOk: resultRequest.message
-      }))
+    yield put(actionLoginUser.loginUserSuccess({
+      token: response.token,
+      user: response.user
+    }))
+
+    if (response.ok) {
+      yield put(actionMessages.AddMessagesSuccess({ messagesSuccess: [response.message] }))
     } else {
-      yield put(actionLoginUser.loginUserCredencialsWrong({
-        usecaseError: resultRequest.message
-      } as actionsTypes.LoginUserCredencialsWrong))
+      yield put(actionMessages.AddMessageUsecaseError({ usecaseErrors: [response.message] }))
     }
   } catch (e) {
-    yield put(actionLoginUser.loginUserFail({ message: e.message }))
+    yield put(actionLoginUser.loginUserFail())
+    yield put(actionMessages.AddMessageServerError({ serverErrors: [e.message] }))
   }
 }

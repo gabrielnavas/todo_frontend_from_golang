@@ -11,8 +11,8 @@ const useForm = () => {
     },
     validate: values => {
       const errors = {} as StatusForm
-      if (values.name.length === 0) {
-        errors.name = 'Digite um nome...'
+      if (values.name.length <= 1) {
+        errors.name = 'Nome muito pequeno...'
       }
       return errors
     },

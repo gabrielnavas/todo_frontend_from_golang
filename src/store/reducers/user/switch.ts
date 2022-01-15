@@ -18,9 +18,6 @@ export type StateUser = {
   isLogging: boolean
 
   isLoading: boolean
-  messageOk: string,
-  usecaseError: string,
-  serverError: string,
 }
 
 const initialState: StateUser = {
@@ -37,24 +34,13 @@ const initialState: StateUser = {
 
   isLogging: false,
 
-  isLoading: false,
-  messageOk: '',
-  usecaseError: '',
-  serverError: ''
+  isLoading: false
 }
 
 const reducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case HYDRATE:
       return { ...state }
-
-    case actionTypes.LOGIN_RESET_ALL_MESSAGES: {
-      const newState: StateUser = Object.assign({}, state)
-      newState.messageOk = ''
-      newState.usecaseError = ''
-      newState.serverError = ''
-      return newState
-    }
 
     case actionTypes.LOGIN_USER_REQUEST: {
       const newState: StateUser = Object.assign({}, state)
@@ -67,25 +53,19 @@ const reducer = (state = initialState, action: AnyAction) => {
       const newState: StateUser = Object.assign({}, state)
       newState.token = payload.token
       newState.user = payload.user
-      newState.messageOk = payload.messageOk
       newState.isLoading = false
       newState.isLogging = true
       return newState
     }
 
     case actionTypes.LOGIN_USER_CREDENCIALS_WRONG: {
-      const payload: actionTypes.LoginUserCredencialsWrong = action.payload
       const newState: StateUser = Object.assign({}, state)
-      newState.usecaseError = payload.usecaseError
       newState.isLoading = false
       return newState
     }
 
     case actionTypes.LOGIN_USER_FAIL: {
-      const payload: actionTypes.FailParamDefault = action.payload
       const newState: StateUser = Object.assign({}, state)
-      newState.serverError = payload.message
-      newState.isLoading = false
       return newState
     }
 

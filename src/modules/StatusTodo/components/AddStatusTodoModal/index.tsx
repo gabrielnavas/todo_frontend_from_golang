@@ -33,10 +33,10 @@ const AddStatusTodoModal = (props: Props) => {
     if (hasErrors) {
       return
     }
-    const payload = {
+
+    dispatch(addStatusTodoRequest({
       name: form.values.name
-    }
-    dispatch(addStatusTodoRequest(payload))
+    }))
     form.resetForm()
   }, [form.values])
 

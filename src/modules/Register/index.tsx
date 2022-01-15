@@ -24,6 +24,7 @@ import {
 import { useSelector } from 'react-redux'
 import { Reducers } from '../../store/reducers/reducerRoot'
 import TopBar from '../../components/TopBar'
+import MessagesGlobal from '../MessagesGlobal'
 
 const RegisterPage = () => {
   const form = useForm()
@@ -143,6 +144,7 @@ const RegisterPage = () => {
           </ContentFooterStack>
         </ContentStack>
       </Container>
+      <MessagesGlobal />
     </Page>
   )
 }

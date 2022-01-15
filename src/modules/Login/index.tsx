@@ -1,10 +1,9 @@
 import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { useAlert } from '../../hooks/alert/useAlert'
 import useForm from './hooks/useForm'
 
-import { loginUserRequest, resetAllMessages } from '../../store/actions/user/login'
+import { loginUserRequest } from '../../store/actions/user/login'
 import { Reducers } from '../../store/reducers/reducerRoot'
 
 import {
@@ -22,10 +21,10 @@ import {
 } from './styles'
 import { useRouter } from 'next/router'
 import TopBar from '../../components/TopBar'
+import MessagesGlobal from '../MessagesGlobal'
 
 const LoginPage = () => {
   const form = useForm()
-  const alerts = useAlert()
   const router = useRouter()
 
   const dispatch = useDispatch()
@@ -35,27 +34,7 @@ const LoginPage = () => {
     if (store.userStore.isLogging) {
       router.replace('/')
     }
-    return () => {
-      if (store.userStore.isLogging && store.userStore.messageOk) {
-        alerts.handle('success', store.userStore.messageOk)
-      }
-    }
   }, [store.userStore.isLogging])
-
-  useEffect(() => {
-    if (store.userStore.usecaseError) {
-      alerts.handle('warning', store.userStore.usecaseError)
-      return
-    }
-    dispatch(resetAllMessages())
-  }, [store.userStore.usecaseError])
-
-  useEffect(() => {
-    if (store.userStore.serverError) {
-      alerts.handle('error', store.userStore.serverError)
-    }
-    dispatch(resetAllMessages())
-  }, [store.userStore.serverError])
 
   const handleLogin = useCallback(() => {
     dispatch(loginUserRequest({
@@ -111,6 +90,7 @@ const LoginPage = () => {
           </ContentFooterStack>
         </ContentStack>
       </Container>
+      <MessagesGlobal />
     </Page>
   )
 }

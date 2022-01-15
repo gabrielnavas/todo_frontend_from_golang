@@ -16,12 +16,10 @@ const useForm = (props: Props) => {
     },
     validate: values => {
       const errors = {} as StatusTodoDto
-      if (values.name.length === 0) {
-        if (values.name.length === 0) {
-          errors.name = 'Digite um nome...'
-        }
-        return errors
+      if (values.name.length <= 1) {
+        errors.name = 'Nome muito pequeno...'
       }
+      return errors
     },
     onSubmit: async values => {
     }

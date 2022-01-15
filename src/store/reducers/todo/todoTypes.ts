@@ -21,10 +21,6 @@ export type StatusTodo = {
 export type StateStatusTodo = {
   statusTodos: StatusTodo[]
 
-  messageOk: string
-  usecaseError: string
-  serverError: string
-
   statusTodoUpdate: actionTypes.UpdateStatusTodoSetGlobal | null
   todoUpdate: actionTypes.UpdateTodoSetGlobal | null
 }

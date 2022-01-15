@@ -3,8 +3,6 @@ import * as actionTypes from '../../actions/actionTypes'
 
 export const addTodoSuccessReducer = (state: todoTypes.StateStatusTodo, payload: actionTypes.AddTodoSuccess) => {
   const newState: todoTypes.StateStatusTodo = Object.assign({}, state)
-  newState.messageOk = payload.messageOk
-  newState.usecaseError = payload.usecaseError
   newState.statusTodos = newState.statusTodos.map(statusTodo => {
     if (statusTodo.id === payload.statusId) {
       statusTodo.todos.unshift({
@@ -22,9 +20,8 @@ export const addTodoSuccessReducer = (state: todoTypes.StateStatusTodo, payload:
   return newState
 }
 
-export const addTodoFailReducer = (state: todoTypes.StateStatusTodo, payload: actionTypes.FailParamDefault) => {
+export const addTodoFailReducer = (state: todoTypes.StateStatusTodo) => {
   const newState: todoTypes.StateStatusTodo = Object.assign({}, state)
-  newState.serverError = payload.message
   return newState
 }
 
@@ -42,8 +39,6 @@ export const updateTodoUnSetGlobalReducer = (state: todoTypes.StateStatusTodo) =
 
 export const updateTodoSuccessReducer = (state: todoTypes.StateStatusTodo, payload: actionTypes.UpdateTodoSuccess) => {
   const newState: todoTypes.StateStatusTodo = Object.assign({}, state)
-  newState.messageOk = payload.messageOk
-  newState.usecaseError = payload.usecaseError
 
   // remove
   newState.statusTodos = newState.statusTodos.map(statusTodo => {
@@ -72,16 +67,13 @@ export const updateTodoSuccessReducer = (state: todoTypes.StateStatusTodo, paylo
   return newState
 }
 
-export const updateTodoFailReducer = (state: todoTypes.StateStatusTodo, payload: actionTypes.FailParamDefault) => {
+export const updateTodoFailReducer = (state: todoTypes.StateStatusTodo) => {
   const newState: todoTypes.StateStatusTodo = Object.assign({}, state)
-  newState.serverError = payload.message
   return newState
 }
 
 export const deleteTodoSuccessReducer = (state: todoTypes.StateStatusTodo, payload: actionTypes.DeleteTodoSuccess) => {
   const newState: todoTypes.StateStatusTodo = Object.assign({}, state)
-  newState.messageOk = payload.messageOk
-  newState.usecaseError = payload.usecaseError
   newState.statusTodos = newState.statusTodos.map(statusTodo => {
     if (statusTodo.id === payload.statusId) {
       statusTodo.todos = statusTodo.todos.filter(todo => todo.id !== payload.todoId)
@@ -91,9 +83,8 @@ export const deleteTodoSuccessReducer = (state: todoTypes.StateStatusTodo, paylo
   return newState
 }
 
-export const deleteTodoFailReducer = (state: todoTypes.StateStatusTodo, payload: actionTypes.FailParamDefault) => {
+export const deleteTodoFailReducer = (state: todoTypes.StateStatusTodo) => {
   const newState: todoTypes.StateStatusTodo = Object.assign({}, state)
-  newState.serverError = payload.message
   return newState
 }
 
@@ -107,8 +98,7 @@ export const getAllTodoSuccessReducer = (state: todoTypes.StateStatusTodo, paylo
   return newState
 }
 
-export const getAllTodoFailReducer = (state: todoTypes.StateStatusTodo, payload: actionTypes.FailParamDefault) => {
+export const getAllTodoFailReducer = (state: todoTypes.StateStatusTodo) => {
   const newState: todoTypes.StateStatusTodo = Object.assign({}, state)
-  newState.serverError = payload.message
   return newState
 }

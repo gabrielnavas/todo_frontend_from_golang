@@ -10,9 +10,8 @@ export const addTodoSuccess = (param: actionTypes.AddTodoSuccess) => ({
   payload: param
 })
 
-export const addTodoFail = (param: actionTypes.FailParamDefault) => ({
-  type: actionTypes.ADD_TODO_FAIL,
-  payload: param
+export const addTodoFail = () => ({
+  type: actionTypes.ADD_TODO_FAIL
 })
 
 export const updateTodoSetGlobal = (param: actionTypes.UpdateTodoSetGlobal) => ({
@@ -34,9 +33,8 @@ export const updateTodoSuccess = (param: actionTypes.UpdateTodoSuccess) => ({
   payload: param
 })
 
-export const updateTodoFail = (param: actionTypes.FailParamDefault) => ({
-  type: actionTypes.UPDATE_TODO_FAIL,
-  payload: param
+export const updateTodoFail = () => ({
+  type: actionTypes.UPDATE_TODO_FAIL
 })
 
 export const deleteTodoRequest = (param: actionTypes.DeleteTodoRequest) => ({
@@ -49,9 +47,8 @@ export const deleteTodoSuccess = (param: actionTypes.DeleteTodoSuccess) => ({
   payload: param
 })
 
-export const deleteTodoFail = (param: actionTypes.FailParamDefault) => ({
-  type: actionTypes.DELETE_TODO_FAIL,
-  payload: param
+export const deleteTodoFail = () => ({
+  type: actionTypes.DELETE_TODO_FAIL
 })
 
 export const getAllTodoRequest = () => ({
@@ -63,7 +60,6 @@ export const getAllTodoSuccess = (param: actionTypes.GetAllTodoSuccess) => ({
   payload: param
 })
 
-export const getAllTodoFail = (param: actionTypes.FailParamDefault) => ({
-  type: actionTypes.GET_ALL_TODO_FAIL,
-  payload: param
+export const getAllTodoFail = () => ({
+  type: actionTypes.GET_ALL_TODO_FAIL
 })

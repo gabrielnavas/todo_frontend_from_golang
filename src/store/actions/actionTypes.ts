@@ -1,10 +1,19 @@
-/** Default for all fails */
-export type FailParamDefault = {
-  message: string
+/** ** Messages */
+export const RESET_ALL_MESSAGES = 'RESET_ALL_MESSAGES'
+export const ADD_MESSAGES_SUCCESS = 'ADD_MESSAGES_SUCCESS'
+export type AddMessagesSuccess = {
+  messagesSuccess: string[]
+}
+export const ADD_MESSAGE_USECASE_ERRORS = 'ADD_MESSAGE_USECASE_ERRORS'
+export type AddMessageUsecaseErrors = {
+  usecaseErrors: string[]
+}
+export const ADD_MESSAGE_SERVER_ERRORS = 'ADD_MESSAGE_SERVER_ERRORS'
+export type AddMessageServerErrors = {
+  serverErrors: string[]
 }
 
 /** ** Status Todo ****/
-export const STATUS_TODO_RESET_ALL_MESSAGES = 'STATUS_TODO_RESET_ALL_MESSAGES'
 
 export const ADD_STATUS_TODO_REQUEST = 'ADD_STATUS_TODO_REQUEST'
 export type AddStatusTodoRequest = {
@@ -17,9 +26,6 @@ export type AddStatusTodoSuccess = {
   name: string
   createdAt: Date
   updatedAt: Date
-
-  messageOk: string
-  usecaseError: string
 }
 
 export const ADD_STATUS_TODO_FAIL = 'ADD_STATUS_TODO_FAIL'
@@ -41,9 +47,6 @@ export type DeleteStatusTodoRequest = {
 export const DELETE_STATUS_TODO_SUCCESS = 'DELETE_STATUS_TODO_SUCCESS'
 export type DeleteStatusTodoSuccess = {
   statusTodoId: number
-
-  messageOk: string
-  usecaseError: string
 }
 export const DELETE_STATUS_TODO_FAIL = 'DELETE_STATUS_TODO_FAIL'
 
@@ -62,9 +65,6 @@ export const UPDATE_STATUS_TODO_SUCCESS = 'UPDATE_STATUS_TODO_SUCCESS'
 export type UpdateStatusTodoSuccess = {
   id: number
   name: string
-
-  messageOk: string
-  usecaseError: string
 }
 export const UPDATE_STATUS_TODO_FAIL = 'UPDATE_STATUS_TODO_FAIL'
 
@@ -86,9 +86,6 @@ export type AddTodoSuccess = {
   updatedAt: Date
   statusId: number
   imageUrl: string
-
-  messageOk: string
-  usecaseError: string
 }
 export const ADD_TODO_FAIL = 'ADD_TODO_FAIL'
 
@@ -122,9 +119,6 @@ export type UpdateTodoSuccess = {
   updatedAt: Date
   statusId: number
   imageUrl?: string
-
-  messageOk: string
-  usecaseError: string
 }
 export const UPDATE_TODO_FAIL = 'UPDATE_TODO_FAIL'
 
@@ -137,8 +131,6 @@ export const DELETE_TODO_SUCCESS = 'DELETE_TODO_SUCCESS'
 export type DeleteTodoSuccess = {
   todoId: number
   statusId: number
-  messageOk: string
-  usecaseError: string
 }
 export const DELETE_TODO_FAIL = 'DELETE_TODO_FAIL'
 
@@ -157,8 +149,6 @@ export const GET_ALL_TODO_FAIL = 'GET_ALL_TODO_FAIL'
 
 /** ** User ****/
 
-export const LOGIN_RESET_ALL_MESSAGES = 'LOGIN_RESET_ALL_MESSAGES'
-
 export const LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST'
 export type LoginUserRequest = {
   username: string
@@ -176,13 +166,8 @@ export type LoginUserSuccess = {
     createdAt: Date
     updatedAt: Date
   }
-
-  messageOk: string
 }
 export const LOGIN_USER_CREDENCIALS_WRONG = 'LOGIN_USER_CREDENCIALS_WRONG'
-export type LoginUserCredencialsWrong = {
-  usecaseError: string
-}
 export const LOGIN_USER_FAIL = 'LOGIN_USER_FAIL'
 
 export const LOGOFF_USER_REQUEST = 'LOGOFF_USER_REQUEST'

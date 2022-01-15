@@ -9,10 +9,6 @@ import * as todoTypes from './todoTypes'
 const initialState: todoTypes.StateStatusTodo = {
   statusTodos: [],
 
-  messageOk: '',
-  usecaseError: '',
-  serverError: '',
-
   statusTodoUpdate: null,
   todoUpdate: null
 }
@@ -22,20 +18,12 @@ const reducer = (state = initialState, action: AnyAction) => {
     case HYDRATE:
       return { ...state }
 
-    case actionTypes.STATUS_TODO_RESET_ALL_MESSAGES: {
-      const newState: todoTypes.StateStatusTodo = Object.assign({}, state)
-      newState.messageOk = ''
-      newState.usecaseError = ''
-      newState.serverError = ''
-      return newState
-    }
-
     case actionTypes.ADD_STATUS_TODO_SUCCESS: {
       return addStatusTodoSuccessReducer(state, action.payload)
     }
 
     case actionTypes.ADD_STATUS_TODO_FAIL: {
-      return addStatusTodoFailReducer(state, action.payload)
+      return addStatusTodoFailReducer(state)
     }
 
     case actionTypes.GET_ALL_STATUS_TODO_SUCCESS: {
@@ -43,7 +31,7 @@ const reducer = (state = initialState, action: AnyAction) => {
     }
 
     case actionTypes.GET_ALL_STATUS_TODO_FAIL: {
-      return getAllStatusTodoFailReducer(state, action.payload)
+      return getAllStatusTodoFailReducer(state)
     }
 
     case actionTypes.DELETE_STATUS_TODO_SUCCESS: {
@@ -51,7 +39,7 @@ const reducer = (state = initialState, action: AnyAction) => {
     }
 
     case actionTypes.DELETE_STATUS_TODO_FAIL: {
-      return deleteStatusTodoFailReducer(state, action.payload)
+      return deleteStatusTodoFailReducer(state)
     }
 
     case actionTypes.UPDATE_STATUS_TODO_SET_GLOBAL: {
@@ -67,7 +55,7 @@ const reducer = (state = initialState, action: AnyAction) => {
     }
 
     case actionTypes.UPDATE_STATUS_TODO_FAIL: {
-      return updateStatusTodoFailReducer(state, action.payload)
+      return updateStatusTodoFailReducer(state)
     }
 
     case actionTypes.ADD_TODO_SUCCESS: {
@@ -75,7 +63,7 @@ const reducer = (state = initialState, action: AnyAction) => {
     }
 
     case actionTypes.ADD_TODO_FAIL: {
-      return addTodoFailReducer(state, action.payload)
+      return addTodoFailReducer(state)
     }
 
     case actionTypes.UPDATE_TODO_SET_GLOBAL: {
@@ -91,7 +79,7 @@ const reducer = (state = initialState, action: AnyAction) => {
     }
 
     case actionTypes.UPDATE_TODO_FAIL: {
-      return updateTodoFailReducer(state, action.payload)
+      return updateTodoFailReducer(state)
     }
 
     case actionTypes.DELETE_TODO_SUCCESS: {
@@ -99,7 +87,7 @@ const reducer = (state = initialState, action: AnyAction) => {
     }
 
     case actionTypes.DELETE_TODO_FAIL: {
-      return deleteTodoFailReducer(state, action.payload)
+      return deleteTodoFailReducer(state)
     }
 
     case actionTypes.GET_ALL_TODO_SUCCESS: {
@@ -107,7 +95,7 @@ const reducer = (state = initialState, action: AnyAction) => {
     }
 
     case actionTypes.GET_ALL_TODO_FAIL: {
-      return getAllTodoFailReducer(state, action.payload)
+      return getAllTodoFailReducer(state)
     }
 
     default:
