@@ -21,6 +21,9 @@ const StatusTodoLists = (props: Props) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    if (!store.userStore.isLogging) {
+      return
+    }
     dispatch(getAllStatusTodoRequest())
     dispatch(getAllTodoRequest())
   }, [])
