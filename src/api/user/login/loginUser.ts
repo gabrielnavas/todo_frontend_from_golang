@@ -37,9 +37,10 @@ export const loginUser: loginUserFn = async (params: LoginUserParam): Promise<Lo
   const data = await response.json()
 
   if (response.status === 400) {
+    const messageCapitalize = `${data.message[0].toLocaleUpperCase()}${data.message.slice(1)}.`
     return {
       ok: false,
-      message: data.message
+      message: messageCapitalize
     } as LoginUserResponse
   }
 
@@ -47,13 +48,13 @@ export const loginUser: loginUserFn = async (params: LoginUserParam): Promise<Lo
     return {
       token: data.token,
       user: {
-        id: data.id,
-        name: data.name,
-        username: data.username,
-        email: data.email,
-        levelAccess: data.levelAccess,
-        createdAt: new Date(data.createdAt),
-        updatedAt: new Date(data.updatedAt)
+        id: data.user.id,
+        name: data.user.name,
+        username: data.user.username,
+        email: data.user.email,
+        levelAccess: data.user.levelAccess,
+        createdAt: new Date(data.user.createdAt),
+        updatedAt: new Date(data.user.updatedAt)
       },
 
       ok: true,

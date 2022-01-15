@@ -18,6 +18,10 @@ const reducer = (state = initialState, action: AnyAction) => {
     case HYDRATE:
       return { ...state }
 
+    case actionTypes.LOGOFF_USER: {
+      return { ...initialState }
+    }
+
     case actionTypes.ADD_STATUS_TODO_SUCCESS: {
       return addStatusTodoSuccessReducer(state, action.payload)
     }

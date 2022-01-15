@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Reducers } from '../../store/reducers/reducerRoot'
-import { logOffUserRequest, logOffUserSuccess } from '../../store/actions/user/login'
+import { logOffUser } from '../../store/actions/user/login'
 
 import {
   AppBar,
@@ -35,12 +35,11 @@ const TopBar = () => {
   const router = useRouter()
 
   const handleLogoff = useCallback(() => {
-    dispatch(logOffUserRequest())
-    dispatch(logOffUserSuccess())
+    dispatch(logOffUser())
     setAnchorEl(null)
     alert.handle('success', 'Até mais!')
     router.replace('/login')
-  }, [dispatch, logOffUserRequest, logOffUserSuccess])
+  }, [dispatch, logOffUser, alert.handle, router.replace])
 
   const renderWhenLogging = () => (
     <div>

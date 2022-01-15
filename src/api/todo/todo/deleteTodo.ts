@@ -18,9 +18,10 @@ export const deleteTodo = async (token: string, todoId: number): Promise<DeleteT
   })
   if (response.status !== 204) {
     const data = await response.json()
+    const messageCapitalize = `${data.message[0].toLocaleUpperCase()}${data.message.slice(1)}.`
     return {
       ok: false,
-      message: data.message
+      message: messageCapitalize
     }
   }
   return {

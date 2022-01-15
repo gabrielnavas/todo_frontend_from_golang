@@ -20,6 +20,10 @@ const reducer = (state = initialState, action: AnyAction) => {
     case HYDRATE:
       return { ...state }
 
+    case actionTypes.LOGOFF_USER: {
+      return { ...initialState }
+    }
+
     case actionTypes.RESET_ALL_MESSAGES: {
       const newState: StateMessage = Object.assign({}, state)
       newState.messagesSuccess = []

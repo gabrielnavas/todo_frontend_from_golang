@@ -29,7 +29,7 @@ const makeStore = () => {
 
     const persistConfig = {
       key: 'nextjs',
-      whitelist: ['userStore'], // only counter will be persisted, add other reducers if needed
+      whitelist: ['statusTodoStore', 'userStore', 'messagesStore'], // only counter will be persisted, add other reducers if needed
       storage: syncStorage // if needed, use a safer storage
     }
 

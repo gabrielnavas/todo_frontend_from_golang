@@ -15,6 +15,10 @@ const MessagesGlobal = () => {
 
   // watch message ok
   useEffect(() => {
+    console.log(store)
+    if (!store.messagesStore.messagesSuccess) {
+      return
+    }
     if (store.messagesStore.messagesSuccess.length === 0) {
       return
     }
@@ -25,6 +29,10 @@ const MessagesGlobal = () => {
 
   // watch usecase error
   useEffect(() => {
+    if (!store.messagesStore.usecaseErrors) {
+      return
+    }
+
     if (store.messagesStore.usecaseErrors.length === 0) {
       return
     }
@@ -35,6 +43,10 @@ const MessagesGlobal = () => {
 
   // watch server error
   useEffect(() => {
+    if (!store.messagesStore.serverErrors) {
+      return
+    }
+
     if (store.messagesStore.serverErrors.length === 0) {
       return
     }

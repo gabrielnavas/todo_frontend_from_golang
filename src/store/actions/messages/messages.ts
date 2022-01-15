@@ -10,7 +10,7 @@ export const AddMessagesSuccess = (payload: actionTypes.AddMessagesSuccess) => (
 })
 
 export const AddMessageUsecaseError = (payload: actionTypes.AddMessageUsecaseErrors) => ({
-  type: actionTypes.ADD_MESSAGES_SUCCESS,
+  type: actionTypes.ADD_MESSAGE_USECASE_ERRORS,
   payload
 })
 

@@ -69,18 +69,8 @@ const reducer = (state = initialState, action: AnyAction) => {
       return newState
     }
 
-    case actionTypes.LOGOFF_USER_REQUEST: {
-      const newState: StateUser = Object.assign({}, state)
-      newState.isLoading = true
-      return newState
-    }
-
-    case actionTypes.LOGOFF_USER_SUCCESS: {
-      return { ...initialState }
-    }
-
-    case actionTypes.LOGOFF_USER_FAIL: {
-      const newState: StateUser = Object.assign({}, state)
+    case actionTypes.LOGOFF_USER: {
+      const newState: StateUser = Object.assign({}, initialState)
       return newState
     }
 

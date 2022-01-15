@@ -16,15 +16,14 @@ export function * loginUserRequestSaga (actionParam: CustomActionSaga<actionsTyp
       password: actionParam.payload.password
     }
     const response: loginUserApi.LoginUserResponse = yield call<loginUserApi.loginUserFn>(loginUserApi.loginUser, payload)
-
-    yield put(actionLoginUser.loginUserSuccess({
-      token: response.token,
-      user: response.user
-    }))
-
     if (response.ok) {
+      yield put(actionLoginUser.loginUserSuccess({
+        token: response.token,
+        user: response.user
+      }))
       yield put(actionMessages.AddMessagesSuccess({ messagesSuccess: [response.message] }))
     } else {
+      yield put(actionLoginUser.loginUserCredencialsWrong())
       yield put(actionMessages.AddMessageUsecaseError({ usecaseErrors: [response.message] }))
     }
   } catch (e) {

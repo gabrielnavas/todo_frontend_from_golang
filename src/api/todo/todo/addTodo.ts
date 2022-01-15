@@ -31,10 +31,11 @@ export const addTodo: AddTodoFn = async (token, payload: Todo): Promise<AddTodoR
 
   const data = await response.json()
   if (response.status !== 201) {
+    const messageCapitalize = `${data.message[0].toLocaleUpperCase()}${data.message.slice(1)}.`
     return {
       todo: null,
       ok: false,
-      message: data.message
+      message: messageCapitalize
     }
   }
 
@@ -52,10 +53,11 @@ export const addTodo: AddTodoFn = async (token, payload: Todo): Promise<AddTodoR
     const response = await patchImage(token, todo.id, payload.image)
     if (response.status !== 204) {
       const data = await response.json()
+      const messageCapitalize = `${data.message[0].toLocaleUpperCase()}${data.message.slice(1)}.`
       return {
         todo,
         ok: false,
-        message: data.message
+        message: messageCapitalize
       }
     }
     const imageApiUrl: string = makeApiUrlById(todo.id)

@@ -28,10 +28,11 @@ export const updateTodo: UpdateTodoFn = async (token: string, todo: UpdateTodoPa
 
   if (response.status !== 204) {
     const data = await response.json()
+    const messageCapitalize = `${data.message[0].toLocaleUpperCase()}${data.message.slice(1)}.`
     return {
       todo: {} as UpdateTodoParams,
       ok: false,
-      message: data.message
+      message: messageCapitalize
     }
   }
 
@@ -40,20 +41,22 @@ export const updateTodo: UpdateTodoFn = async (token: string, todo: UpdateTodoPa
     const response = await patchImage(token, todo.id, image)
     if (response.status !== 204) {
       const data = await response.json()
+      const messageCapitalize = `${data.message[0].toLocaleUpperCase()}${data.message.slice(1)}.`
       return {
         todo: {} as UpdateTodoParams,
         ok: false,
-        message: data.message
+        message: messageCapitalize
       }
     }
   } else {
     const response = await deleteImage(token, todo.id)
     if (response.status !== 204) {
       const data = await response.json()
+      const messageCapitalize = `${data.message[0].toLocaleUpperCase()}${data.message.slice(1)}.`
       return {
         todo: {} as UpdateTodoParams,
         ok: false,
-        message: data.message
+        message: messageCapitalize
       }
     }
   }

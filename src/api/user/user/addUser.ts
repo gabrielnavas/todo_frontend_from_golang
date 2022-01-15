@@ -36,9 +36,10 @@ export const addUser: addStatusTodoFn = async (statusTodo: AddUserParam): Promis
   const data = await response.json()
 
   if (response.status === 400) {
+    const messageCapitalize = `${data.message[0].toLocaleUpperCase()}${data.message.slice(1)}.`
     return {
       ok: false,
-      message: data.message
+      message: messageCapitalize
     } as AddUserResponse
   }
 
