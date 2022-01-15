@@ -53,6 +53,7 @@ const AddStatusTodoModal = (props: Props) => {
           <TextFieldName
             variant="standard"
             label="Nome"
+            autoFocus
             disabled={props.isLoading}
             error={!!form.errors.name}
             value={form.values.name}
