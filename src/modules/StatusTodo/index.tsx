@@ -45,7 +45,7 @@ const StatusTodoView = () => {
       <Container>
         <Paper>
           <Header>
-            <Title>Seus status Todo</Title>
+            <Title>Status</Title>
             <ButtonAddStatusTodo
               variant="contained"
               size="small"
