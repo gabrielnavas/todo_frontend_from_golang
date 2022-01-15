@@ -1,39 +1,5 @@
 import { getEndpoint } from '../../getEndpoint'
-
-const makeImageUrl = (todoId: number) => {
-  const endpoint = getEndpoint()
-  const url = `${endpoint}/todos/image/${todoId}`
-  return url
-}
-
-const patchImage = async (token: string, todoId: number, image: File): Promise<Response> => {
-  const url = `${getEndpoint()}/todos/image/${todoId}`
-  const formFileImageName = 'image'
-  const formData = new FormData()
-  formData.set(formFileImageName, image, image.name)
-  const response = await fetch(url, {
-    method: 'PATCH',
-    body: formData,
-    headers: {
-      Authorization: `Bearer ${token} `
-    }
-  })
-  return response
-}
-
-const postForm = async (token: string, title: string, description: string, statusId: number): Promise<Response> => {
-  const url = `${getEndpoint()}/todos`
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify({ title, description, statusId })
-  })
-  return response
-}
+import { getImage, makeApiUrlById, makeLocalUrl } from './getImage'
 
 type Todo = {
   title: string
@@ -92,11 +58,43 @@ export const addTodo: AddTodoFn = async (token, payload: Todo): Promise<AddTodoR
         message: data.message
       }
     }
-    todo.imageUrl = makeImageUrl(todo.id)
+    const imageApiUrl: string = makeApiUrlById(todo.id)
+    const image: File = await getImage(token, imageApiUrl, 'image')
+    const imageLocalUrl: string = makeLocalUrl(image)
+    todo.imageUrl = imageLocalUrl
   }
   return {
     todo,
     ok: true,
     message: 'Todo adicionado com sucesso!'
   }
+}
+
+const patchImage = async (token: string, todoId: number, image: File): Promise<Response> => {
+  const url = `${getEndpoint()}/todos/image/${todoId}`
+  const formFileImageName = 'image'
+  const formData = new FormData()
+  formData.set(formFileImageName, image, image.name)
+  const response = await fetch(url, {
+    method: 'PATCH',
+    body: formData,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  return response
+}
+
+const postForm = async (token: string, title: string, description: string, statusId: number): Promise<Response> => {
+  const url = `${getEndpoint()}/todos`
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({ title, description, statusId })
+  })
+  return response
 }

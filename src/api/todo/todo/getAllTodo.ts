@@ -1,6 +1,7 @@
 import { getEndpoint } from '../../getEndpoint'
+import { getImage, makeApiUrlByUrl, makeLocalUrl } from './getImage'
 
-export type GetAllTodoResponse = {
+export type Todo = {
   id: number
   title: string
   description: string
@@ -8,21 +9,13 @@ export type GetAllTodoResponse = {
   updatedAt: Date
   statusId: number
   imageUrl?: string
-}[]
+}
+
+export type GetAllTodoResponse = Todo[]
 
 export type GetAllTodoFn = (token: string) => Promise<GetAllTodoResponse>
 
 export const getAllTodo = async (token: string): Promise<GetAllTodoResponse> => {
-  const optionalImageUrl = (imageUrl: string) => {
-    let imagePath: string | undefined
-
-    if (imageUrl && imageUrl.length > 0) {
-      imagePath = `${getEndpoint()}${imageUrl}`
-    }
-
-    return imagePath
-  }
-
   const response = await fetch(`${getEndpoint()}/todos`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -33,15 +26,25 @@ export const getAllTodo = async (token: string): Promise<GetAllTodoResponse> => 
     throw new Error(`status is ${response.status}, but expected ${200}`)
   }
 
-  const data = await response.json()
+  const data: Todo[] = await response.json()
 
-  return data.map(item => ({
-    id: item.id,
-    title: item.title,
-    description: item.description,
-    createdAt: new Date(item.createdAt),
-    updatedAt: new Date(item.updatedAt),
-    statusId: item.statusId,
-    imageUrl: optionalImageUrl(item.imageUrl)
+  const allTodos = await Promise.all(data.map(async (item: Todo): Promise<Todo> => {
+    let imageLocalUrl: string | undefined
+    if (item.imageUrl && item.imageUrl.length > 0) {
+      const imageApiUrl = makeApiUrlByUrl(item.imageUrl)
+      const image: File = await getImage(token, imageApiUrl, 'image')
+      imageLocalUrl = makeLocalUrl(image)
+    }
+
+    return {
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      createdAt: new Date(item.createdAt),
+      updatedAt: new Date(item.updatedAt),
+      statusId: item.statusId,
+      imageUrl: imageLocalUrl
+    }
   }))
+  return allTodos
 }
