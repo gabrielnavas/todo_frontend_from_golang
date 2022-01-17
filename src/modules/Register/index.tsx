@@ -43,7 +43,6 @@ const RegisterPage = () => {
         password: form.values.password,
         passwordConfirmation: form.values.passwordConfirmation
       })
-      setIsLoading(true)
       return response
     }
 
@@ -58,6 +57,9 @@ const RegisterPage = () => {
       })
       .catch(() => {
         alert.handle('error', 'Servidor fora do ar, tente novamente mais tarde')
+      })
+      .finally(() => {
+        setIsLoading(false)
       })
   }, [addUser, form.values])
 

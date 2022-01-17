@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import useForm from './hooks/useForm'
 
-import { loginUserRequest } from '../../store/actions/user/login'
+import { loginUserFail, loginUserRequest } from '../../store/actions/user/login'
 import { Reducers } from '../../store/reducers/reducerRoot'
 
 import {
@@ -37,10 +37,14 @@ const LoginPage = () => {
   }, [store.userStore.isLogging])
 
   const handleLogin = useCallback(() => {
-    dispatch(loginUserRequest({
-      username: form.values.username,
-      password: form.values.password
-    }))
+    try {
+      dispatch(loginUserRequest({
+        username: form.values.username,
+        password: form.values.password
+      }))
+    } catch (ex) {
+      dispatch(loginUserFail())
+    }
   }, [dispatch, loginUserRequest, form.values])
 
   return (
