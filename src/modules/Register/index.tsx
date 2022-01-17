@@ -136,7 +136,7 @@ const RegisterPage = () => {
             <ButtonRegister
               variant="contained"
               onClick={handleAddUser}>
-                Logar
+                Registrar
             </ButtonRegister>
             <ButtonLogin onClick={() => router.push('/login')}>
               Já tenho cadastro
