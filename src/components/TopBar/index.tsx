@@ -3,14 +3,10 @@ import { useRouter } from 'next/router'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Reducers } from '../../store/reducers/reducerRoot'
-import { logOffUser } from '../../store/actions/user/login'
-
 import {
   AppBar,
   Box,
   Toolbar,
-  Typography,
   IconButton,
   MenuItem,
   Menu,
@@ -22,8 +18,14 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import AccountBoxIcon from '@mui/icons-material/AccountBox'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import SettingsIcon from '@mui/icons-material/Settings'
 import LoginIcon from '@mui/icons-material/Login'
+
+import { Reducers } from '../../store/reducers/reducerRoot'
+import { logOffUser } from '../../store/actions/user/login'
+
 import { useAlert } from '../../hooks/alert/useAlert'
+import { TitleTopBar } from './styles'
 
 const TopBar = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -40,6 +42,14 @@ const TopBar = () => {
     alert.handle('success', 'Até mais!')
     router.replace('/login')
   }, [dispatch, logOffUser, alert.handle, router.replace])
+
+  const handleSettings = useCallback(() => {
+    router.push('/settings')
+  }, [router.push])
+
+  const handleMainPage = useCallback(() => {
+    router.push('/')
+  }, [router.push])
 
   const renderWhenLogging = () => (
     <div>
@@ -65,6 +75,9 @@ const TopBar = () => {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
+        <MenuItem onClick={handleSettings}>
+          <SettingsIcon /> <span>Configurações</span>
+        </MenuItem>
         <MenuItem onClick={handleLogoff}>
           <ExitToAppIcon /> <span>Sair</span>
         </MenuItem>
@@ -98,9 +111,9 @@ const TopBar = () => {
           >
             <CheckCircleIcon />
           </IconButton>
-          <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+          <TitleTopBar variant="h5" onClick={handleMainPage}>
             Todo App
-          </Typography>
+          </TitleTopBar>
           {
             state.userStore.isLogging ? renderWhenLogging() : renderWhenNotLogging()
           }
