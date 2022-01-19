@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { changePassword } from '../../api/user/user/changePassword'
 
@@ -31,6 +31,12 @@ const ChangePasswordPage = () => {
   const dispatch = useDispatch()
   const store = useSelector<Reducers, Reducers>(store => store)
   const form = useForm()
+
+  useEffect(() => {
+    if (!store.userStore.isLogging) {
+      router.replace('/login')
+    }
+  }, [store.userStore.isLogging])
 
   const handleToBack = useCallback(() => {
     router.back()

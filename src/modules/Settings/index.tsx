@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import TopBar from '../../components/TopBar'
+import { Reducers } from '../../store/reducers/reducerRoot'
 import {
   Container,
   ContentStack,
@@ -16,6 +18,13 @@ import {
 
 const SettingsPage = () => {
   const router = useRouter()
+  const store = useSelector<Reducers, Reducers>(store => store)
+
+  useEffect(() => {
+    if (!store.userStore.isLogging) {
+      router.replace('/login')
+    }
+  }, [store.userStore.isLogging])
 
   const handleToBack = useCallback(() => {
     router.back()
